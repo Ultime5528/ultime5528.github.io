@@ -3,6 +3,8 @@ content/Exemples/Java-Exemples.listing
 *.lof
 *.mybox
 *.log
+*.out
 *.gz
+*.toc
 *.pygtex
 *.pygstyle
