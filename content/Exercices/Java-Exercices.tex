@@ -1,0 +1,350 @@
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+%	Guide d'introduction à Java et WPILib
+%	Par Étienne Beaulac
+%	Ultime 5528
+%	Mai 2017
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+
+
+\documentclass[12pt]{article}
+
+%Code display, avant Babel !
+%\usepackage{listings, minted}
+
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault} 
+%\usepackage{libertine}
+%\usepackage{libertinust1math}
+\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+%\usepackage{avant}
+
+% Marges
+\usepackage[margin=2cm]{geometry}
+
+%Custom font sizes
+\usepackage{anyfontsize}
+
+%Tableau en français (et non table)
+%\usepackage{caption}
+%\captionsetup[table]{name=Tableau}
+
+%packages graphiques, mathématiques
+%\usepackage{amsfonts, amsmath, amssymb}
+
+%Afficher des images avec includegraphics
+\usepackage{graphicx}
+
+%Image avec caption
+\newcommand{\image}[2]{%
+
+}
+
+
+%Utilisation de code R, après Babel pour éviter erreurs
+%\lstloadlanguages{}
+
+
+%Virgule pour nombres français
+%\usepackage{icomma}
+
+%Liens hypertextes
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+%Couleurs
+\usepackage{xcolor}
+\definecolor{ultRed}{RGB}{190,30,45}
+\definecolor{ec-red}{RGB}{237,28,36}
+\definecolor{ec-orange}{RGB}{255,127,39}
+\definecolor{ec-yellow}{RGB}{255,242,0}
+\definecolor{ec-green}{RGB}{34,177,76}
+\definecolor{ec-purple}{RGB}{163,73,164}
+
+%\usepackage{eso-pic}
+
+%Nice code snippets
+\usepackage[section]{minted}
+\setminted[java]{%
+	linenos,
+	autogobble
+}
+
+%Nice frames for minted
+\usepackage{tcolorbox}
+\tcbuselibrary{minted, skins, xparse}
+
+%Frame for commands
+\newcommand{\commande}[1]{%
+\tcbox[on line, size=fbox, colframe=black, boxrule=0.75pt, tcbox raise base]{#1} %boxsep=0pt, left=5pt, right=5pt, top=8pt, bottom=8pt
+}
+
+%Frame for minted listings
+\newtcblisting[list inside=mybox, auto counter, number within=section]{MyTCB}[2][]{%
+	colframe=ultRed,
+	title={\textsc{Code \thetcbcounter} --- #2},
+	sharp corners=south,
+	boxsep=3mm,
+	left=0.7cm,
+	listing only,
+	list text={#2},
+	minted language=java,
+	minted options={linenos, autogobble, baselinestretch=1, tabsize=4, breaklines=true}, #1}
+
+
+% My own code snippet environment
+\newenvironment{snippet}[1]
+	{
+	\begin{MyTCB}{#1}
+	}
+	{
+	\end{MyTCB}
+	}
+	
+%Commande pour images inline
+\newcommand{\inlinepic}[1]{%
+  \begingroup\normalfont
+  \includegraphics[height=1em]{#1}%\fontcharht\font`\B
+  \endgroup
+}
+
+%Listings caption
+\renewcommand{\listingscaption}{Extrait de code}
+\renewcommand{\listoflistingscaption}{Liste des extraits de code}
+
+%Better aligned lists
+\usepackage{scrextend}
+
+%\usepackage{multirow}
+%\usepackage{tikz}
+%\usepackage{pgfplots}
+%\pgfplotsset{width=7cm, compat=1.13}
+%\usepgfplotslibrary{fillbetween}
+
+%\setlength{\jot}{10pt} % Modifie l'espace entre les équations d'un bloc Align
+
+%\showboxdepth=\maxdimen
+%\showboxbreadth=\maxdimen
+
+
+%Indentation nul au début de paragraphe
+\setlength{\parindent}{0pt}
+
+%Espace entre les paragraphes
+\setlength{\parskip}{0.5\baselineskip}
+
+
+%Espace entre les notes de bas de page
+\setlength{\footnotesep}{0.95\baselineskip}
+
+%----------------------------------------------------
+%----------------------------------------------------
+%----------------------------------------------------
+% Début du document
+%----------------------------------------------------
+%----------------------------------------------------
+%----------------------------------------------------
+
+\begin{document}
+%
+%
+%----------------------------------------------------
+%----------------------------------------------------
+% Page titre
+%----------------------------------------------------
+%----------------------------------------------------
+%
+%
+\begin{titlepage}
+	\vspace*{2.5cm}
+	\hspace*{-2cm}\colorbox{ultRed}{%
+	{\begin{minipage}{\paperwidth}	
+		{\ \\[1cm] \hspace*{2cm} {\fontsize{40}{50}\selectfont Exercices} \\[10pt]
+		\hspace*{2cm} {\Large Formation Java} \vspace*{1cm}}
+	\end{minipage}}}\\[10pt]
+	%
+	\begin{minipage}{6cm}
+		\raisebox{-0.1\height}{\parbox[b]{4cm}{\raggedleft {\large Étienne Beaulac\\[5pt] Ultime FRC 5528}\\[15pt] {\small Dernière modification\\ \today} }}%
+		\hspace*{0.05\textwidth}%
+		\raisebox{-0.5\height}{\rule{0.5pt}{6cm}}%
+		\hspace*{0.32\textwidth}%
+		\raisebox{-0.5\height}{\includegraphics[trim={2.6cm 0 2.6cm 0}, clip, height=7cm]{logo_ultime.png}}%
+	\end{minipage}
+\end{titlepage}
+\pagebreak
+%
+\thispagestyle{empty}
+\strut
+\newpage
+%
+% Enlever les hyperliens bleus
+{\hypersetup{hidelinks}
+%
+\clearpage
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\tableofcontents
+
+\newpage
+%
+%
+\linespread{1.5}
+\normalsize
+\pagenumbering{arabic}
+\setcounter{page}{1}
+} % Fin hyperliens noirs
+
+
+%----------------------------------------------------
+% Ajouter fancyhf{}
+%----------------------------------------------------
+
+%----------------------------------------------------
+%----------------------------------------------------
+% Première séance
+%----------------------------------------------------
+%----------------------------------------------------
+%
+
+\begin{center}
+\begin{tabular}{c c c}
+\hline \\
+\quad & Dans tous vos programmes, vous devez utiliser & \quad \\
+& des identificateurs significatifs (noms de variables, etc.)\\
+& et commenter votre code de manière appropriée.\\
+\ \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Interactions avec la console et variables}
+\vspace*{-\baselineskip}
+Séance du 10 mai 2017. Références du manuel : p. 1 à 38
+
+\subsection{Présentation}
+
+Votre programme doit demander à l'utilisateur son \textbf{nom}, son \textbf{âge} et son \textbf{salaire}. Par la suite, il doit le réafficher dans la console.
+
+Exemple de sortie console :
+
+{\footnotesize \fontfamily{pcr}\selectfont
+\begin{tabular}{|p{0.98\textwidth}|}
+\hline 
+Saisissez votre nom : \textcolor{blue}{Jonathan}\\
+Saisissez votre âge : \textcolor{blue}{24}\\
+Saisissez votre salaire : \textcolor{blue}{17.45}\\[\baselineskip]
+
+Bonjour Jonathan! Vous avez 24 ans et votre salaire est de 17.45 \$ par heure.\\
+\hline
+\end{tabular}
+}
+%
+%
+%
+%
+%
+
+\subsection{Aire d'un rectangle}
+
+Votre programme doit demander à l'utilisateur de saisir une largeur et une hauteur, puis retourner l'aire du rectangle correspondant.
+
+%
+%
+%
+%
+
+\subsection{Moyenne}
+
+Votre programme doit permettre à l’utilisateur de saisir cinq nombres, puis calculer et afficher la moyenne de ces nombres.
+
+\textit{Défi : Soyez astucieux et tentez d'utiliser seulement deux variables!}
+
+
+
+\end{document}
+
+
+
+
+
+
+% Faire demander l'âge
+
+\section{Conversion d'années en mois et jours}
+
+Écrire un programme qui, à partir d'une variable \commande{age}, affiche le nombre correspondants de mois et de jours. Ne tenez pas compte des années bissextiles. Vous devez :
+
+\begin{itemize}
+\item Utiliser deux constantes pour la conversion en mois et en jours.
+\item Utiliser trois variables différentes pour contenir les trois durées.
+\end{itemize}
+
+\begin{MyTCB}{ConversionAge.java}
+/**
+ * Conversion d'années en mois et en jours
+ * @author Etienne
+ *
+ */
+public class ConversionAge {
+
+	public static void main(String[] args) {
+		
+		int age = 10;
+		int mois, jours;
+		
+		final int MOIS_DANS_ANNEE = 12;
+		final int JOURS_DANS_MOIS = 365;
+		
+		//Conversion
+		mois = age * MOIS_DANS_ANNEE;
+		jours = mois * JOURS_DANS_MOIS;
+		
+		//Affichage
+		System.out.println("Bonjour! J'ai " + age + " ans,");
+		System.out.println("soit " + mois + " mois et " + jours + " jours.");
+
+	}
+
+}
+\end{MyTCB}
+
+
+
+
+
+\begin{tcolorbox}[adjusted title=Titre 1]
+Allo !
+\end{tcolorbox}
+%
+\begin{tcblisting}{}
+	Test!
+\end{tcblisting}
+
+
+
+
+
+%Enlever les trop grands espaces entre les titres
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]   
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}   
+\titlespacing*{\chapter}{0pt}{\parskip}{-\parskip}
+\titlespacing{\section}{0pt}{\parskip}{-\parskip}
+\titlespacing{\subsection}{0pt}{\parskip}{-\parskip}
+\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
+
+
+
+
+

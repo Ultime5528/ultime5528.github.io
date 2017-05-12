@@ -1,0 +1,8 @@
+*.aux
+content/Exemples/Java-Exemples.listing
+*.lof
+*.mybox
+*.log
+*.gz
+*.pygtex
+*.pygstyle
