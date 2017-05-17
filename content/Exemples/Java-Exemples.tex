@@ -420,6 +420,52 @@ public class MessageAge {
 }
 \end{MyTCB}
 
+%
+%
+%
+%
+
+\subsection{Validation d'une année de naissance}
+
+Votre programme doit demander une année de naissance à l'utilisateur, puis la valider. On considère que l'année minimale est 1900 et que quelqu'un ne peut pas être né plus tard que cette année. Utilisez des constantes lorsque possible.
+
+\begin{MyTCB}{ValidationNaissance.java}
+import java.util.Calendar;
+import java.util.Scanner;
+/**
+ * Validation d'une année de naissance.
+ * 
+ * @author Etienne
+ */
+public class ValidationNaissance {
+
+	public static void main(String[] args) {
+		
+		int annee;
+		final int ANNEE_MINIMALE = 1900;
+		final int ANNEE_COURANTE = Calendar.getInstance().get(Calendar.YEAR); //2017
+		Scanner scanner = new Scanner(System.in);
+		
+		
+		//Obtention de l'année
+		System.out.print("Saisissez une année de naissance : ");
+		annee = scanner.nextInt();
+		
+		
+		//Validation
+		if(annee >= ANNEE_MINIMALE && annee <= ANNEE_COURANTE)
+			System.out.println("Année valide.");
+		
+		else {
+			System.out.println("L'année " + annee + " est invalide.");
+			System.out.println("Vous devez recommencer!");
+		}
+
+	}
+
+}
+\end{MyTCB}
+
 \end{document}
 
 
