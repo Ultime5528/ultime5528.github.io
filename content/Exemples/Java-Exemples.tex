@@ -318,11 +318,107 @@ public class Majorite {
 %
 %
 %
+%----------------------------------------------------
+%----------------------------------------------------
+% Deuxième séance
+%----------------------------------------------------
+%----------------------------------------------------
+%
+\section{Constantes, classe \emph{Math} et structures conditionnelles}
+\vspace*{-\baselineskip}
+Séance du 15 mai 2017. Références du manuel : p. 39 à 43
+
+
+\subsection{Valeur absolue et exposant}
+
+Utiliser quelques méthodes de la class \emph{Math}.
+
+\begin{MyTCB}{TestMath.java}
+import java.util.Scanner;
+
+/**
+ * Affiche la valeur absolue et le cube d'un nombre.
+ * 
+ * @author Etienne
+ *
+ */
+public class TestMath {
+
+	public static void main(String[] args) {
+		
+		double nombre;
+		Scanner scanner = new Scanner(System.in);
+		
+		//Obtention du nombre
+		System.out.print("Saisissez un nombre : ");
+		nombre = scanner.nextDouble();
+		
+		//Calculs
+		System.out.println("\nLa valeur absolue du nombre est : " + Math.abs(nombre));
+		System.out.println("Le cube du nombre est : " + Math.pow(nombre, 3));
+
+	}
+
+}
+\end{MyTCB}
 %
 %
 %
 
+\subsection{Messages selon l'âge}
 
+Écrire un programme qui demande l'âge de l'utilisateur et qui affiche un message le nombre obtenu. 
+
+\begin{itemize}
+	\item[$\bullet$] Entre 0 et 4 ans, il n'est pas encore à l'école.
+	\item[$\bullet$] Entre 5 et 11 ans, il est au primaire.
+	\item[$\bullet$] Entre 12 et 17 ans, il est au secondaire.
+	\item[$\bullet$] À partir de 18 ans, il est majeur.
+	\item[$\bullet$] Tout autre âge affiche un message d'erreur.
+\end{itemize}
+
+Vous devez utiliser trois constantes : \verb|AGE_PRIMAIRE = 5|, \verb|AGE_SECONDAIRE = 12| et \verb|AGE_MAJORITE = 18|.
+
+
+\begin{MyTCB}{MessageAge.java}
+import java.util.Scanner;
+/**
+ * Affiche un message selon l'âge de l'utilisateur.
+ * 
+ * @author Etienne
+ */
+public class MessageAge {
+
+	public static void main(String[] args) {
+		
+		int age;
+		final int AGE_PRIMAIRE = 5, AGE_SECONDAIRE = 12, AGE_MAJORITE = 18;
+		Scanner scanner = new Scanner(System.in);
+		
+		//Obtention de l'âge
+		System.out.print("Saisissez votre âge : ");
+		age = scanner.nextInt();
+		
+		//Message selon l'âge
+		if(age < 0)
+			System.out.println("Âge invalide!");
+		
+		else if(age < AGE_PRIMAIRE)
+			System.out.println("Pas encore à l'école!");
+		
+		else if(age < AGE_SECONDAIRE)
+			System.out.println("Au primaire!");
+		
+		else if(age < AGE_MAJORITE)
+			System.out.println("Au secondaire!");
+		
+		else
+			System.out.println("Vous êtes majeur!");
+		
+	}
+
+}
+\end{MyTCB}
 
 \end{document}
 
