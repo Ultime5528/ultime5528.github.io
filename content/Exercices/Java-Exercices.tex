@@ -34,10 +34,14 @@
 %\captionsetup[table]{name=Tableau}
 
 %packages graphiques, mathématiques
-%\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{amsfonts, amsmath, amssymb}
 
 %Afficher des images avec includegraphics
 \usepackage{graphicx}
+
+%Larger titles
+\usepackage{titlesec}
+\titleformat*{\section}{\LARGE\bfseries}
 
 %Image avec caption
 \newcommand{\image}[2]{%
@@ -209,13 +213,6 @@
 % Ajouter fancyhf{}
 %----------------------------------------------------
 
-%----------------------------------------------------
-%----------------------------------------------------
-% Première séance
-%----------------------------------------------------
-%----------------------------------------------------
-%
-
 \begin{center}
 \begin{tabular}{c c c}
 \hline \\
@@ -227,9 +224,22 @@
 \end{tabular}
 \end{center}
 
+
+
+
+%---------------------------------------------------
+%
+% Console et variables
+%
+%---------------------------------------------------
+
 \section{Interactions avec la console et variables}
 \vspace*{-\baselineskip}
 Séance du 10 mai 2017. Références du manuel : p. 1 à 38
+
+%
+%
+%
 
 \subsection{Présentation}
 
@@ -248,8 +258,8 @@ Bonjour Jonathan! Vous avez 24 ans et votre salaire est de 17.45 \$ par heure.\\
 \hline
 \end{tabular}
 }
-%
-%
+
+
 %
 %
 %
@@ -267,8 +277,61 @@ Votre programme doit demander à l'utilisateur de saisir une largeur et une haut
 
 Votre programme doit permettre à l’utilisateur de saisir cinq nombres, puis calculer et afficher la moyenne de ces nombres.
 
-\textit{Défi : Soyez astucieux et tentez d'utiliser seulement deux variables!}
+\textit{Défi : Soyez astucieux et tentez d'utiliser une seule variable!}
 
+
+
+
+%---------------------------------------------------
+%
+% Structures conditionnelles
+%
+%---------------------------------------------------
+
+\section{Structures conditionnelles}
+\vspace*{-\baselineskip}
+Séance du ... mai 2017. Références du manuel : p. 39 à 43
+
+\subsection{Résultats à l'examen}
+
+À partir d'une note sur 100 saisie par l'utilisateur, affichez un message correspondant :
+
+\begin{itemize}
+	\item[$\bullet$] 100\% : Affichez qu'il s'agit d'une note parfaite.
+	\item[$\bullet$] Plus de 60\% (sauf 100\%) : Affichez que l'utilisateur a réussi l'examen.
+	\item[$\bullet$] Moins de 60\% : Affichez qu'il s'agit d'un échec et indiquez le pourcentage qu'il manquait à l'utilisateur pour avoir 60\%.
+	\item[$\bullet$] Note qui n'est pas comprise et 0 et 100 : Affichez un message d'erreur.
+\end{itemize}
+
+% 
+%
+%
+
+\subsection{Compagnie de téléphone}
+
+À partir du nombre de minutes utilisées saisi par l’utilisateur, calculez et affichez le prix de la facture de téléphone selon les modalités ci-dessous. \textbf{Vous devez utiliser des constantes lorsque possible.}
+
+\begin{itemize}
+	\item[$\bullet$] La compagnie facture un montant initial de 10\$ par mois.
+	\item[$\bullet$] Les 30 premières minutes sont facturées à un prix de 0,20\$ par minute.
+	\item[$\bullet$] Les minutes suivantes sont facturées à un prix de 0,10\$ par minute.
+\end{itemize}
+
+Par exemple, une utilisation de 44 minutes serait facturée 17,40\$.
+
+%
+%
+%
+%
+
+\subsection{Conversion Celsius - Fahrenheit}
+
+Votre programme doit demander à l'utilisateur s'il souhaite convertir une température des Celsius vers les Fahrenheit ou des Fahrenheit vers les Celsius. Il doit ensuite pouvoir saisir sa température et obtenir le résultat.
+%
+\begin{align*}
+	\text{Celsius vers Fahrenheit :} \quad F &= \frac{9}{5} \times C + 32\\[5pt]
+	\text{Fahrenheit vers Celsius :} \quad C &= \frac{5}{9} \times (F - 32)
+\end{align*}
 
 
 \end{document}
@@ -277,8 +340,6 @@ Votre programme doit permettre à l’utilisateur de saisir cinq nombres, puis c
 
 
 
-
-% Faire demander l'âge
 
 \section{Conversion d'années en mois et jours}
 
