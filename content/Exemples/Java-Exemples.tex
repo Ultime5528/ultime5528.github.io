@@ -81,7 +81,7 @@
 
 %Nice frames for minted
 \usepackage{tcolorbox}
-\tcbuselibrary{minted, skins, xparse}
+\tcbuselibrary{minted, skins, xparse, breakable}
 
 %Frame for commands
 \newcommand{\commande}[1]{%
@@ -97,6 +97,7 @@
 	left=0.7cm,
 	listing only,
 	list text={#2},
+	breakable, enhanced,
 	minted language=java,
 	minted options={linenos, autogobble, baselinestretch=1, tabsize=4, breaklines=true}, #1}
 
@@ -463,6 +464,251 @@ public class ValidationNaissance {
 
 	}
 
+}
+\end{MyTCB}
+
+
+
+%---------------------------------------------------
+% Séance #3 - Méthodes (fonctions
+%---------------------------------------------------
+
+\section{Les méthodes (fonctions)}
+\vspace*{-\baselineskip}
+Séance du 24 mai 2017. Références du manuel : p. 69 à 77
+
+\subsection{Dire bonjour}
+
+Écrire et utiliser une méthode qui affiche un message de bienvenue dans la console.
+
+\begin{MyTCB}{Bonjour.java}
+/**
+ * Dire bonjour dans la console
+ *
+ * @author Etienne
+ */
+public class Bonjour {
+
+	public static void main(String[] args) {
+		
+		direBonjour();
+		
+	}
+	
+	
+	/**
+	 * Affiche un message de bienvenue dans la console.
+	 */
+	public static void direBonjour() {
+		
+		System.out.println("Bonjour!");
+		
+	}
+	
+}
+
+\end{MyTCB}
+
+%
+%
+%
+%
+%
+
+\subsection{Ajouter deux à un entier}
+
+Écrire et utiliser une méthode qui reçoit un entier en paramètre et qui lui ajoute deux. La méthode doit ensuite renvoyer ce nombre.
+
+\begin{MyTCB}{AjouteDeux.java}
+import java.util.Scanner;
+
+/**
+ * Utilisation d'une méthode qui ajoute 2
+ * à un entier.
+ *
+ * @author Etienne
+ */
+public class AjouteDeux {
+
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		int nbre;
+		
+		//Obtention d'une valeur
+		System.out.print("Saisissez un entier : ");
+		nbre = scanner.nextInt();
+		
+		//Calcul et affichage
+		nbre = ajouteDeux(nbre);
+		System.out.println("Nouvelle valeur : " + nbre);
+		
+	}
+	
+	
+	/**
+	 * Additionne 2 à un entier.
+	 * @param nombre le nombre à additionner
+	 * @return le nombre augmenté de 2
+	 */
+	public static int ajouteDeux(int nombre) {
+		
+		int valeur = nombre + 2;
+		
+		return valeur;
+		
+		//return nombre + 2;
+	}
+	
+}
+\end{MyTCB}
+
+%
+%
+%
+%
+%
+%
+
+\subsection{Méthode \emph{estMajeur}}
+
+Écrire et utiliser une méthode qui reçoit en paramètre un âge et qui renvoit le booléen VRAI si la personne est majeure, FAUX dans le cas contraire. On considère que l'âge de majorité est 18 ans.
+
+\begin{MyTCB}{Majorite.java}
+import java.util.Scanner;
+
+/**
+ * Détermine si l'utilisateur est majeur.
+ * 
+ * @author Etienne
+ */
+public class Majorite {
+
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		int ageUtilisateur;
+		
+		//Obtention d'une valeur
+		System.out.print("Saisissez votre âge : ");
+		ageUtilisateur = scanner.nextInt();
+		
+		//Vérification majorité
+		if(estMajeur(ageUtilisateur)) {
+			
+			System.out.println("Wow!");
+			System.out.println("Vous êtes majeur!");
+			
+		}
+		else {
+			System.out.println("Vous n'êtes pas encore majeur.");
+		}
+		
+	}
+	
+	
+	/**
+	 * Détermine si une personne est majeure selon son âge.
+	 * @param age L'âge à vérifier
+	 * @return VRAI si la personne est majeure, FAUX dans le cas contraire
+	 */
+	public static boolean estMajeur(int age) {
+		
+		boolean majeur;
+		
+		if(age >= 18)
+			majeur = true;
+		else
+			majeur = false;
+		
+		return majeur; //return (age >= 18);
+	}
+	
+}
+\end{MyTCB}
+
+%
+%
+%
+%
+%
+
+\subsection{Méthode \emph{estMajeur} surchargée}
+
+Ajouter une méthode surchargée à votre programme précédent. La nouvelle méthode \verb|estMajeur| doit avoir deux paramètres : l'âge de l'utilisateur et l'âge nécessaire pour être majeur.
+
+\begin{MyTCB}{Majorite2.java}
+import java.util.Scanner;
+
+/**
+ * Détermine si l'utilisateur est majeur au Canada et aux États-Unis.
+ * 
+ * @author Etienne
+ */
+public class Majorite2 {
+
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		int ageUtilisateur;
+		
+		//Obtention de l'âge
+		System.out.print("Saisissez votre âge : ");
+		ageUtilisateur = scanner.nextInt();
+		
+		//Vérification majorité par défaut
+		if(estMajeur(ageUtilisateur)) {
+			
+			System.out.println("Wow!");
+			System.out.println("Vous êtes majeur au Canada!");
+			
+		}
+		else {
+			System.out.println("Vous n'êtes pas encore majeur au Canada.");
+		}
+		
+		
+		//Vérification majorité américaine
+		if(estMajeur(ageUtilisateur, 21))
+			System.out.println("Vous êtes majeur aux États-Unis.");
+		
+		else
+			System.out.println("Vous n'êtes pas encore majeur aux États-Unis.");
+		
+	}
+	
+	
+	/**
+	 * Détermine si une personne est majeure selon son âge (par défaut à 18 ans). 
+	 * @param age L'âge à vérifier.
+	 * @return VRAI si la personne est majeure, FAUX dans le cas contraire.
+	 */
+	public static boolean estMajeur(int age) {
+		
+		return estMajeur(age, 18);
+		
+	}
+	
+	
+	/**
+	 * Détermine si une personne est majeure selon son âge.
+	 * @param age L'âge à vérifier.
+	 * @param ageMajorite L'âge pour être majeur.
+	 * @return VRAI si la personne est majeure, FAUX dans le cas contraire.
+	 */
+	public static boolean estMajeur(int age, int ageMajorite) {
+		
+		boolean majeur;
+		
+		if(age >= ageMajorite)
+			majeur = true;
+		else
+			majeur = false;
+		
+		return majeur; //return (age >= ageMajorite);
+		
+	}
+	
 }
 \end{MyTCB}
 
