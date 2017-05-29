@@ -570,6 +570,133 @@ public class AjouteDeux {
 %
 %
 
+\subsection{Méthode \emph{demanderNom}}
+
+Écrire et utiliser une méthode qui demande un nom et qui retourne le nom saisi.\\
+\emph{Défi : vérifier si le nom est vide (ne contient que des espaces).}
+
+\begin{MyTCB}{DemanderNom.java}
+import java.util.Scanner;
+
+/**
+ * Demande 3 noms à l'utilisateur et les affiche.
+ * 
+ * @author Etienne
+ *
+ */
+public class DemanderNom {
+
+	
+	public static void main(String[] args) {
+
+		String nom1, nom2, nom3;
+		
+		nom1 = demanderNom();
+		nom2 = demanderNom();
+		nom3 = demanderNom();
+		
+		System.out.println(nom1 + ", " + nom2 + " et " + nom3 + "!");		
+
+	}
+	
+	
+	/**
+	 * Demande un nom à l'utilisateur.
+	 * Affiche un message d'erreur si le nom ne contient que des espaces.
+	 * 
+	 * @return Le nom saisi.
+	 */
+	public static String demanderNom() {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Écrivez un nom : ");
+		String nom = sc.nextLine();
+		
+		if(nom.trim().isEmpty())
+			System.out.println("Ce nom est vide!");
+		
+		return nom;
+		
+	}
+
+}
+
+\end{MyTCB}
+
+\subsection{Nombre de secondes}
+
+Écrire et utiliser une méthode qui reçoit en paramètres un nombre d'heures, de minutes et de secondes et qui retourne le nombre total de secondes.
+
+\begin{MyTCB}{DureeSecondes.java}
+import java.util.Scanner;
+
+/**
+ * Utilisation de la méthode nombreDeSecondes, qui
+ * transforme une durée en nombre de secondes.
+ *
+ * @author Etienne
+ *
+ */
+public class DureeSecondes {
+
+	
+	public static void main(String[] args) {
+
+		
+		//Première durée
+		System.out.println("Il y a " + nombreDeSecondes(24, 0, 0) + " secondes"
+				+ " dans une journée.");
+		
+		
+		//Deuxième durée
+		int h = 12, m = 32, s = 17, duree;
+		duree = nombreDeSecondes(h, m, s);
+		
+		System.out.println("Il y a " + duree + " secondes dans " 
+				+ h + " heures, " + m + " minutes et " + s + " secondes.");
+
+		
+		//Troisième durée
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Heures : ");
+		h = sc.nextInt();
+		
+		System.out.print("Minutes : ");
+		m = sc.nextInt();
+		
+		System.out.print("Secondes : ");
+		s = sc.nextInt();
+		
+		System.out.println("Durée totale : " + nombreDeSecondes(h, m, s) + " secondes.");
+		
+	}
+	
+	
+	/**
+	 * Calcul le nombre de secondes d'une durée déterminée.
+	 * 
+	 * @param heures Le nombre d'heures.
+	 * @param minutes Le nombre de minutes.
+	 * @param secondes Le nombre de secondes.
+	 * 
+	 * @return La durée totale.
+	 */
+	public static int nombreDeSecondes(int heures, int minutes, int secondes) {
+		
+		int temps = 0;
+		
+		temps += heures * 60 * 60;
+		temps += minutes * 60;
+		temps += secondes;
+		
+		return temps;
+		
+	}
+
+}
+\end{MyTCB}
 \subsection{Méthode \emph{estMajeur}}
 
 Écrire et utiliser une méthode qui reçoit en paramètre un âge et qui renvoit le booléen VRAI si la personne est majeure, FAUX dans le cas contraire. On considère que l'âge de majorité est 18 ans.
