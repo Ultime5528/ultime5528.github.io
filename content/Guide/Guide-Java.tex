@@ -34,7 +34,7 @@
 %\captionsetup[table]{name=Tableau}
 
 %packages graphiques, mathématiques
-%\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{amsfonts, amsmath, amssymb}
 
 %Afficher des images avec includegraphics
 \usepackage{graphicx}
@@ -44,9 +44,6 @@
 
 }
 
-
-%Utilisation de code R, après Babel pour éviter erreurs
-%\lstloadlanguages{}
 
 
 %Virgule pour nombres français
@@ -82,11 +79,18 @@
 %Nice frames for minted
 \usepackage{tcolorbox}
 \tcbuselibrary{minted, skins, xparse}
+\usepackage{tikz}
 
 %Frame for commands
 \newcommand{\commande}[1]{%
 \tcbox[on line, size=fbox, colframe=black, boxrule=0.75pt, tcbox raise base]{#1} %boxsep=0pt, left=5pt, right=5pt, top=8pt, bottom=8pt
 }
+
+%inline code
+%\usepackage{varwidth}
+%\newcommand{\code}[1]{%
+%\tcbox[on line, size=fbox, colframe=gray, boxrule = 0.25pt, tcbox raise base]{\texttt{#1}} %boxsep=0pt, left=5pt, right=5pt, top=8pt, bottom=8pt
+%}
 
 %Frame for minted listings
 \newtcblisting[list inside=mybox, auto counter, number within=chapter]{MyTCB}[2][]{%
@@ -100,16 +104,18 @@
 	minted language=java,
 	minted options={linenos, autogobble, baselinestretch=1, tabsize=4}, #1}
 
+%Frame for minted listings
+\newtcblisting{code}[1][\linewidth]{%
+	colframe=ultRed,
+	sharp corners=all,
+	boxsep=1mm,
+	left=0.7cm,
+	listing only,
+	width = #1,
+	minted language=java,
+	minted options={linenos = false, autogobble, baselinestretch=1, tabsize=4}}
 
-% My own code snippet environment
-\newenvironment{snippet}[1]
-	{
-	\begin{MyTCB}{#1}
-	}
-	{
-	\end{MyTCB}
-	}
-	
+
 %Commande pour images inline
 \newcommand{\inlinepic}[1]{%
   \begingroup\normalfont
@@ -145,6 +151,8 @@
 
 %Espace entre les notes de bas de page
 \setlength{\footnotesep}{0.95\baselineskip}
+
+
 
 %----------------------------------------------------
 %----------------------------------------------------
@@ -218,7 +226,9 @@
 
 %----------------------------------------------------
 %----------------------------------------------------
-% Chapitre - Introduction au Java
+%----------------------------------------------------
+% Chapitre 1 - Introduction au Java
+%----------------------------------------------------
 %----------------------------------------------------
 %----------------------------------------------------
 \chapter{Introduction au Java}
@@ -239,9 +249,12 @@ La programmation, en somme, est l'art de formuler ses algorithmes de manière à
   \includegraphics[width=0.9\textwidth]{compilation.png}
   \caption{Le processus de compilation.}
 \end{figure}
-%
-%
-%
+
+
+
+
+
+
 %----------------------------------------------------
 % Section - Qu'est-ce que le Java?
 %----------------------------------------------------
@@ -251,20 +264,24 @@ La programmation, en somme, est l'art de formuler ses algorithmes de manière à
 %
 Le langage Java a été créé , entre autres, par James Gosling, Patrick Naughton et Mike Sheridan, tous les trois employés chez \emph{Sun Microsystems} dans les années 1990. Sa première version parut en 1995. Java est maintenant propriété de \emph{Oracle Corporation}.
 
-Java reprend une grande partie de la syntaxe du C/C++. Toutefois, les notions de pointeurs et d'héritage multiple, souvent synonymes de problèmes, y sont absentes. Java est donc un langage presque entièrement \textbf{orienté objet}.
+Java reprend une grande partie de la syntaxe du C/C++. Toutefois, les notions de pointeurs et d'héritage multiple, complexes pour les débutants, y sont absentes. Java est donc un langage presque entièrement \textbf{orienté objet}.
 
 Le Java compte un nombre impressionnant d'utilisateurs. Une de ses forces est d'ailleurs sa portabilité. Tout programme Java, une fois compilé, peut fonctionner sur n'importe quelle machine, tant qu'une machine virtuelle Java (JRE, ou \emph{Java Runtime Environment}) y est installée.
-%
-%
-%
+
+
+
+
+
 %--------------------------------------------------------
 % Section - Les environnements de développement intégré 
 %--------------------------------------------------------
 % TODO : Annexe A - Eclipse
 %
-\section{Votre premier programme en Java}
+\section{L'IDE Eclipse}
 %
 Pour programmer, il est préférable d'utiliser un bon environnement de développement (\textbf{IDE}, ou \emph{Integrated Development Environment}). De tels logiciels comprennent un \textbf{éditeur de texte}, un \textbf{compilateur} et un \textbf{débogueur}. Nous utiliserons l'IDE Eclipse\footnote{Pour plus d'information concernant Eclipse, consultez ...} avec l'extension WPILib fournie par FIRST.
+
+Eclipse est disponible gratuitement sur \href{https://www.eclipse.org}{eclipse.org}. Vous devrez également vous assurer d'avoir installé une version récente du \href{http://www.oracle.com/technetwork/java/javase/downloads/index.html}{JDK} (\emph{Java Development Kit}). Les étapes d'installation sont également détaillées \href{http://wpilib.screenstepslive.com/s/4485/m/13809/l/599681-installing-eclipse-c-java}{ici}.
 
 % Image - Interface principale de Eclipse
 %
@@ -290,14 +307,19 @@ Eclipse est un logiciel ayant plusieurs fonctionnalités. On peut d'ailleurs lui
 \end{labeling}
 
 Évidemment, toute l'interface est entièrement personnalisable. À vous de l'adapter comme il vous plaira!
-%
-%
-%
+
+
+
+
+
+
 %--------------------------------------------------------
 % Section - Votre premier programme en Java 
 %--------------------------------------------------------
 %
 \section{Votre premier programme en Java}
+%
+\subsection{Création du projet}
 %
 \begin{enumerate}
 \item Dans Eclipse, créez un nouveau projet avec \commande{File > New > Java Project}. Donnez un nom à votre projet, puis cliquez sur \commande{Finish}.
@@ -338,9 +360,71 @@ Le bouton \inlinepic{debug-btn-eclipse.png} vous permet de lancer votre programm
 	\includegraphics[scale=1]{ecriture-console.png}
 	\caption{Écriture dans la console.}
 \end{figure}
+
+Félicitations, vous venez d'exécuter votre premier programme! Décortiquons en détails ce qu'il se passe à l'intérieur.
+
+
+
+
+
+
+%--------------------------------------------------------
+% Sous-section - Instructions
+%--------------------------------------------------------
 %
+\subsection{Les instructions}
+En Java, une \textbf{instruction} est une commande effectuant une certaine action. On écrit une instruction par ligne, et chacune se termine toujours par un \textbf{point-virgule} (\ {;}\ ). Pour l'instant, votre programme ne contient qu'une instruction : 
+\begin{code}
+System.out.println("Hello, world!");
+\end{code}
+
+
+
+
+
+
+%--------------------------------------------------------
+% Sous-section - Les chaînes de caractères
+%--------------------------------------------------------
 %
+\subsection{Les chaînes de caractères}
 %
+Le rôle de votre programme est d'afficher du texte dans la console. Vous avez sûrement remarqué que le texte à afficher est encadré de guillemets anglais ("..."), mais qu'ils n'apparaissent pas dans la console. Ils sont essentiels pour que le compilateur fasse la différence entre du code et du texte. On les appelle des \textbf{chaînes de caractères}, ou \emph{\bfseries String} en anglais. Essayer de modifier le texte entre les guillemets et d'exécuter votre programme : vous constaterez que la chaîne de caractères affichée dans la console s'est modifiée!
+
+On peut joindre plusieurs chaînes de caractères ensemble avec l'opérateur \commande{+}. Cette opération s'appelle la \textbf{concaténation}. On peut donc écrire :%
+\begin{code}
+System.out.println("Bonjour " + "à tous" + " et à toutes" + "!");
+\end{code} 
+
+
+
+
+
+%--------------------------------------------------------
+% Sous-section - La méthode println
+%--------------------------------------------------------
+%
+\subsection{La méthode \texttt{println}}
+%
+En Java, une \textbf{méthode} est une instruction qui réalise une opération prédéfinie. On utilise une méthode en écrivant son nom suivi d'une paire de parenthèses. Certaines méthodes ont besoin de paramètres pour effectuer leur travail. C'est le cas de la méthode \texttt{System.out.println}, qui demande un \emph{String} en paramètre. Elle s'occupe ensuite de l'afficher sur la console.
+
+
+
+
+%--------------------------------------------------------
+% Sous-section - Indentation
+%--------------------------------------------------------
+%
+\subsection{L'indentation}
+%
+Dans l'exemple précédent, vous pouvez constater qu'à chaque fois que des accolades ({...}) sont ouvertes, on ajoute de l'espace au code qui se situe à l'intérieur. C'est ce que l'on appelle l'\textbf{indentation} du code. C'est essentiel pour rendre le code clair et facile à modifier. Pour indenter son code, on ajoute une tabulation (touche \commande{Tab $\rightleftarrows$}) pour chaque paire ouverte d'accolades. Eclipse s'en occupe automatiquement la plupart du temps.
+
+
+
+
+
+
+
 %--------------------------------------------------------
 % Section - Les commentaires
 %--------------------------------------------------------
@@ -379,11 +463,21 @@ public class MonPremierProgramme {
 \end{MyTCB}
 %
 %
-Les plus courants sont les commentaires en fin de ligne. Ils débutent par deux barres obliques \commande{//}. Ils informent le compilateur d'ignorer tout le reste de la ligne.
+Les plus courants sont les \textbf{commentaires en fin de ligne}. Ils débutent par deux barres obliques \mbox{\commande{//}.} Ils informent le compilateur d'ignorer tout le reste de la ligne. Ils sont souvent courts et précis. On les utilise pour mettre en contexte une instruction ou en début de section.
 
-Pour de longs commentaires, on utilise les commentaires en blocs. Ils débutent par \commande{/*} et se terminent par \commande{*/}. Le compilateur ignore alors tout ce qui se trouve entre ces deux balises, un peu comme des parenthèses.
+Pour de longs commentaires, on utilise les \textbf{commentaires en blocs}. Ils débutent par \commande{/*} et se terminent par \commande{*/}. Le compilateur ignore alors tout ce qui se trouve entre ces deux balises, un peu comme des parenthèses. On les utilise, entre autres, en entête de fichier, pour spécifier le rôler du fichier (ou de la classe), les noms des auteurs et les dates de création et de modification.
 
-Il est important de mettre des commentaires, mais il ne faut pas en abuser (comme dans l'exemple précédent). Il suffit de trouver le juste équilibre entre clarté et concision.
+Il est important de mettre des commentaires, mais il ne faut pas en abuser (comme dans l'exemple précédent). Il suffit de trouver le juste équilibre entre clarté et concision. Il est également essentiel de mettre en contexte l'instruction.
+
+Bon commentaire :
+\begin{code}
+age += 1; // L'utilisateur vieillit d'un an.
+\end{code}
+
+Mauvais commentaire :
+\begin{code}
+age += 1; // Ajout de 1 à la variable age.
+\end{code}
 %
 %
 %
@@ -391,7 +485,7 @@ Il est important de mettre des commentaires, mais il ne faut pas en abuser (comm
 \subsection{Les commentaires Javadoc}
 %
 %
-Ses commentaires particuliers sont propres au Java. Ils permettent de créer une documentation accessible pour votre projet. Ils sont très semblables aux commentaires en blocs : il suffit de les faire débuter avec deux étoiles \commande{/**}. Vous aurez donc accès au contenu de votre commentaire partout dans votre projet, sans devoir ouvrir à nouveau le fichier d'origine!
+Ces commentaires spéciaux sont propres au Java. Ils permettent de créer une documentation accessible pour votre projet. Ils sont très semblables aux commentaires en blocs : il suffit de les faire débuter avec deux étoiles \commande{/**}. Vous aurez donc accès au contenu de votre commentaire partout dans votre projet, sans devoir ouvrir à nouveau le fichier d'origine!
 %
 %
 % Code : Commentaire Javadoc
@@ -413,7 +507,7 @@ public class MonPremierProgramme { ... }
 \end{figure}
 %
 %
-La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe (@). Les exemples de ce guide en utiliseront trois :
+La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \commande{@}. Les exemples de ce guide feront appel à les trois attributs suivants.
 
 \begin{labeling}{@author\ }
 
@@ -423,16 +517,6 @@ La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe (@). L
 
 \end{labeling}
 %
-%
-%
-%--------------------------------------------------------
-% Section - Les commentaires
-%--------------------------------------------------------
-%
-\section{Les commentaires}
-%
-
-
 
 
 
