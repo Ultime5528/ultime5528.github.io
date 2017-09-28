@@ -224,6 +224,8 @@
 % Ajouter fancyhf{}
 %----------------------------------------------------
 
+\part{Les bases de Java}
+
 %----------------------------------------------------
 %----------------------------------------------------
 %----------------------------------------------------
@@ -271,6 +273,11 @@ Le Java compte un nombre impressionnant d'utilisateurs. Une de ses forces est d'
 
 
 
+%--------------------------------------------------------
+% Chapitre - Votre premier programme 
+%--------------------------------------------------------
+%
+\chapter{Votre premier programme}
 
 %--------------------------------------------------------
 % Section - Les environnements de développement intégré 
@@ -314,12 +321,10 @@ Eclipse est un logiciel ayant plusieurs fonctionnalités. On peut d'ailleurs lui
 
 
 %--------------------------------------------------------
-% Section - Votre premier programme en Java 
+% Section - Création du projet 
 %--------------------------------------------------------
 %
-\section{Votre premier programme en Java}
-%
-\subsection{Création du projet}
+\section{Création du projet}
 %
 \begin{enumerate}
 \item Dans Eclipse, créez un nouveau projet avec \commande{File > New > Java Project}. Donnez un nom à votre projet, puis cliquez sur \commande{Finish}.
@@ -369,25 +374,25 @@ Félicitations, vous venez d'exécuter votre premier programme! Décortiquons en
 
 
 %--------------------------------------------------------
-% Sous-section - Instructions
+% Section - Instructions
 %--------------------------------------------------------
 %
-\subsection{Les instructions}
+\section{Les instructions}
 En Java, une \textbf{instruction} est une commande effectuant une certaine action. On écrit une instruction par ligne, et chacune se termine toujours par un \textbf{point-virgule} (\ {;}\ ). Pour l'instant, votre programme ne contient qu'une instruction : 
 \begin{code}
 System.out.println("Hello, world!");
 \end{code}
-
+Vos instructions sont écrites dans la méthode \texttt{\bfseries main}. En Java, tous les programmes ont une méthode \texttt{main}. Il s'agit, en quelque sorte, du point d'entrée du programme.
 
 
 
 
 
 %--------------------------------------------------------
-% Sous-section - Les chaînes de caractères
+% Section - Les chaînes de caractères
 %--------------------------------------------------------
 %
-\subsection{Les chaînes de caractères}
+\section{Les chaînes de caractères}
 %
 Le rôle de votre programme est d'afficher du texte dans la console. Vous avez sûrement remarqué que le texte à afficher est encadré de guillemets anglais ("..."), mais qu'ils n'apparaissent pas dans la console. Ils sont essentiels pour que le compilateur fasse la différence entre du code et du texte. On les appelle des \textbf{chaînes de caractères}, ou \emph{\bfseries String} en anglais. Essayer de modifier le texte entre les guillemets et d'exécuter votre programme : vous constaterez que la chaîne de caractères affichée dans la console s'est modifiée!
 
@@ -401,10 +406,10 @@ System.out.println("Bonjour " + "à tous" + " et à toutes" + "!");
 
 
 %--------------------------------------------------------
-% Sous-section - La méthode println
+% Section - La méthode println
 %--------------------------------------------------------
 %
-\subsection{La méthode \texttt{println}}
+\section{La méthode \texttt{println}}
 %
 En Java, une \textbf{méthode} est une instruction qui réalise une opération prédéfinie. On utilise une méthode en écrivant son nom suivi d'une paire de parenthèses. Certaines méthodes ont besoin de paramètres pour effectuer leur travail. C'est le cas de la méthode \texttt{System.out.println}, qui demande un \emph{String} en paramètre. Elle s'occupe ensuite de l'afficher sur la console.
 
@@ -412,10 +417,10 @@ En Java, une \textbf{méthode} est une instruction qui réalise une opération p
 
 
 %--------------------------------------------------------
-% Sous-section - Indentation
+% Section - Indentation
 %--------------------------------------------------------
 %
-\subsection{L'indentation}
+\section{L'indentation}
 %
 Dans l'exemple précédent, vous pouvez constater qu'à chaque fois que des accolades ({...}) sont ouvertes, on ajoute de l'espace au code qui se situe à l'intérieur. C'est ce que l'on appelle l'\textbf{indentation} du code. C'est essentiel pour rendre le code clair et facile à modifier. Pour indenter son code, on ajoute une tabulation (touche \commande{Tab $\rightleftarrows$}) pour chaque paire ouverte d'accolades. Eclipse s'en occupe automatiquement la plupart du temps.
 
@@ -441,7 +446,6 @@ Lors de l'écriture, il est possible de spécifier au compilateur de ne pas comp
 %
 % Code - Premier programme avec commentaires standards
 %
-
 \begin{MyTCB}{Programme de base avec commentaires}
 /* 
  * La classe suivante affiche un message
@@ -478,15 +482,14 @@ Mauvais commentaire :
 \begin{code}
 age += 1; // Ajout de 1 à la variable age.
 \end{code}
-%
-%
-%
+
+
+% Commentaires Javadoc
 %
 \subsection{Les commentaires Javadoc}
 %
 %
 Ces commentaires spéciaux sont propres au Java. Ils permettent de créer une documentation accessible pour votre projet. Ils sont très semblables aux commentaires en blocs : il suffit de les faire débuter avec deux étoiles \commande{/**}. Vous aurez donc accès au contenu de votre commentaire partout dans votre projet, sans devoir ouvrir à nouveau le fichier d'origine!
-%
 %
 % Code : Commentaire Javadoc
 %
@@ -507,7 +510,7 @@ public class MonPremierProgramme { ... }
 \end{figure}
 %
 %
-La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \commande{@}. Les exemples de ce guide feront appel à les trois attributs suivants.
+La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \commande{@}. Les exemples de ce guide feront appel aux trois attributs suivants.
 
 \begin{labeling}{@author\ }
 
