@@ -102,7 +102,7 @@
 	listing only,
 	list text={#2},
 	minted language=java,
-	minted options={linenos, autogobble, baselinestretch=1, tabsize=4}, #1}
+	minted options={linenos, autogobble, baselinestretch=1, tabsize=4, breaklines=true}, #1}
 
 %Frame for minted listings
 \newtcblisting{code}[1][\linewidth]{%
@@ -115,6 +115,17 @@
 	minted language=java,
 	minted options={linenos = false, autogobble, baselinestretch=1, tabsize=4}}
 
+\newenvironment{console}{%
+	Sortie console :%
+	\bgroup \footnotesize \fontfamily{pcr}\selectfont %
+	\center%
+	\tabular{|p{0.98 \linewidth}|} \hline}
+	{%
+	\hline
+	\endtabular
+	\endcenter
+	\egroup	
+	}
 
 %Commande pour images inline
 \newcommand{\inlinepic}[1]{%
@@ -266,9 +277,9 @@ La programmation, en somme, est l'art de formuler ses algorithmes de manière à
 %
 Le langage Java a été créé , entre autres, par James Gosling, Patrick Naughton et Mike Sheridan, tous les trois employés chez \emph{Sun Microsystems} dans les années 1990. Sa première version parut en 1995. Java est maintenant propriété de \emph{Oracle Corporation}.
 
-Java reprend une grande partie de la syntaxe du C/C++. Toutefois, les notions de pointeurs et d'héritage multiple, complexes pour les débutants, y sont absentes. Java est donc un langage presque entièrement \textbf{orienté objet}.
+Java est un langage presque entièrement \textbf{orienté objet}. Il reprend une grande partie de la syntaxe du C/C++, tout en y ajoutant certaines fonctionnalités : une librairie standard très complète, la réflexivité, les expressions lambdas, l'\emph{autoboxing} et l'\emph{unboxing}, les interfaces, et plusieurs autres.  Toutefois, les pointeurs et l'héritage multiple ne sont pas supportées. Ils ajouteraient une trop grande complexité au langage, alors que le but de Java est d'être simple, sécuritaire et robuste.
 
-Le Java compte un nombre impressionnant d'utilisateurs. Une de ses forces est d'ailleurs sa portabilité. Tout programme Java, une fois compilé, peut fonctionner sur n'importe quelle machine, tant qu'une machine virtuelle Java (JRE, ou \emph{Java Runtime Environment}) y est installée.
+Le Java compte un nombre impressionnant d'utilisateurs. Une de ses forces est d'ailleurs sa portabilité. Tout programme Java, une fois compilé en \emph{bytecode}, peut fonctionner sur n'importe quelle machine, tant qu'une machine virtuelle Java (JRE, ou \emph{Java Runtime Environment}) y est installée.
 
 
 
@@ -525,43 +536,151 @@ La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \comma
 
 
 
-\end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{tcolorbox}[adjusted title=Titre 1]
-Allo !
-\end{tcolorbox}
+%----------------------------------------------------
 %
-\begin{tcblisting}{}
-	Test!
-\end{tcblisting}
+%
+% Chapitre 3 - Variables et opérateurs
+%
+%
+%----------------------------------------------------
+\chapter{Variables et opérateurs}
+
+
+
+%--------------------------------------------------------
+% Section - Déclaration
+%--------------------------------------------------------
+%
+\section{La déclaration de variables}
+%
+Une \textbf{variable} est une case mémoire pouvant contenir un certain type de données. Comme son nom l'indique, sa valeur est \emph{variable} : elle peut changer au cours l'exécution.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.75]{variable-memoire.png}
+	\caption{Une variable contenant l'âge de l'utilisateur en mémoire.}
+\end{figure}
+
+Pour commencer, regardons un programme utilisant une variable de type \emph{String}.
+
+\begin{MyTCB}{Utilisation d'une variable String}
+/**
+ * Affiche des noms dans la console.
+ * 
+ * @author Etienne
+ */
+public class AffichageNom {
+
+	public static void main(String[] args) {
+		
+		String nom = "Étienne"; // Nom de l'utilisateur
+		
+		System.out.println("Je m'appelle " + nom + "!"); //Affichage
+		
+		nom = "Alexandre"; //Nouvelle valeur
+		
+		System.out.println("Je m'appelle maintenant " + nom + "!"); //Affichage de la nouvelle valeur
+		
+	}
+
+}
+\end{MyTCB}
+
+\begin{tcolorbox}[title={Sortie console}, sharp corners = south, boxsep = 1.5mm] \tt
+	Je m'appelle Étienne!\\
+	Je m'appelle maintenant Alexandre!
+\end{tcolorbox}
+
+On commence par créer la variable \texttt{nom} de type \emph{String} et on lui donne la valeur \texttt{"Étienne"}. On affiche ensuite la valeur de \texttt{nom} dans la console. À la troisième instruction, on met la valeur \texttt{"Alexandre"} dans \texttt{nom}. L'ancienne valeur est alors \textbf{écrasée} par la nouvelle. La dernière affiche alors la nouvelle valeur de \textt{nom} dans la console.
+
+
+% Déclaration de variables
+%
+\begin{tcolorbox}[enhanced,colframe=ultRed,
+	title={Déclaration et initialisation de variables},
+	sharp corners=south,
+	boxsep = 1.5mm]
+Déclaration et initialisation dans la même instruction\\
+\texttt{\color{ultRed} type} \texttt{\color[RGB]{255, 34, 12} nomVariable} = \texttt{\color[RGB]{63, 136, 197} valeur};%
+%
+\tcblower
+%
+Déclaration, puis initialisation plus tard\\
+\texttt{\color{ultRed} type} \texttt{\color[RGB]{255, 34, 12} nomVariable};\\
+...\\
+\texttt{\color[RGB]{255, 34, 12} nomVariable} = \texttt{\color[RGB]{63, 136, 197} valeur};
+\end{tcolorbox}
+
+
+Lorsque c'est possible, on déclare et on initialise une variable en même temps. C'est ce qui a été fait dans l'exemple précédent. Lorsqu'on ne connaît pas quelle valeur lui donner, on peut la déclarer et lui donner une valeur plus tard.
+
+On peut donner n'importe quel nom à une variable, tant qu'il respecte les conditions suivantes :
+\begin{itemize}
+	\item pas d'espace ni d'accent;
+	\item ne commence pas par un chiffre;
+	\item commence par une minuscule;
+	\item si son nom est composé de plusieurs mots, les autres mots peuvent commencer par une majuscule.
+\end{itemize}
+
+Par exemple, les identificateurs \texttt{prix}, \texttt{ageUtilisateur}, \texttt{vitesseMoteurGauche1} et \texttt{estOuvert} respectent cette convention. 
 
 
 
 
+%--------------------------------------------------------
+% Section - Lire console
+%--------------------------------------------------------
+%
+\section{Lire la console}
+%
+Vous savez déjà comment afficher du texte dans la console avec la méthode \texttt{System.out.println()}. Par contre, il pourrait être pratique de lire ce qui est écrit dans la console. Pour effectuer cette tâche, nous utiliserons la class \texttt{Scanner} de la manière suivante.
 
-%Enlever les trop grands espaces entre les titres
-\usepackage{titlesec}
+% Code Scanner
+%
+\begin{MyTCB}{DemanderNom.java}
+import java.util.Scanner;
 
-\titleformat{\chapter}[display]   
-{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}   
-\titlespacing*{\chapter}{0pt}{\parskip}{-\parskip}
-\titlespacing{\section}{0pt}{\parskip}{-\parskip}
-\titlespacing{\subsection}{0pt}{\parskip}{-\parskip}
-\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
+/**
+ * Demande le nom de l'utilisateur, puis l'affiche.
+ * 
+ * @author Etienne
+ */
+public class DemanderNom {
+
+	public static void main(String[] args) {
+		
+		String nom;
+		Scanner scanner = new Scanner(System.in);
+		
+		//Demander le nom
+		System.out.print("Saisissez votre nom : ");
+		nom = scanner.nextLine();
+		
+		//Affichage
+		System.out.println("Votre nom est " + nom + "!");
+
+	}
+
+}
+\end{MyTCB}
+
+Ici, on déclare une variable sans l'initialiser. C'est tout à fait logique, car on ne connaît pas encore le nom à afficher. On déclare ensuite une variable spéciale : la variable \texttt{scanner} de type \texttt{Scanner}. C'est elle qui va nous permettre de lire les entrées dans la console. Remarquez son initialisation : on utilise le \commande{new} suivi de \texttt{Scanner}, le type de notre variable. Nous verrons plus loin que c'est parce que \commande{scanner} est un \textbf{objet}, une sorte de « super-variable ». 
+
+Par la suite, on utilise une variante de \texttt{println()} : la méthode \texttt{print()}. Elles agissent presque de la même façon, sauf que \texttt{print()} n'ajoute pas de saut de ligne après avoir affiché le texte. Essayez les deux et constatez la différence.
+
+Ensuite, on utilise notre \texttt{scanner} et on appelle sa méthode \texttt{nextLine()}. Cela indique au programme de faire une pause jusqu'à ce qu'on écrive un mot dans la console et qu'on appuie sur la touche \commande{Entrée}. Le texte saisi est ensuite stocké dans la variable \texttt{nom} grâce à l'opérateur \commande{=}.
+
+Finalement, on affiche la valeur de \texttt{nom} par concaténation avec d'autres chaînes de caractères. 
 
 
+%--------------------------------------------------------
+% Section - Types primitifs
+%--------------------------------------------------------
+%
+\section{Les variables de type primitif}
+%
+Jusqu'à présent, nous avons rencontré 
 
+\end{document}
 
 
