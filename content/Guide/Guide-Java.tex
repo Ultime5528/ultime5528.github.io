@@ -727,7 +727,7 @@ public class AffichagePrimitif {
 	Je mesure 1.45 m.
 \end{tcolorbox}
 
-À la ligne 10, on déclare deux variables sur la même ligne. C'est tout à fait légal, il suffit de séparer leurs noms par des virgules.
+À la ligne 10, on déclare deux variables du même type sur la même ligne. C'est tout à fait légal, il suffit de séparer leurs noms par des virgules.
 
 Avant un \texttt{Scanner}, il est également possible d'obtenir des données de type primitif à partir de la console.
 
@@ -827,6 +827,7 @@ public class Majorite {
 	public static void main(String[] args) {
 		
 		int age;
+		final int AGE_MAJORITE = 18; // L'âge de la majorité est fixe
 		Scanner scanner = new Scanner(System.in);
 		
 		//Demander l'âge
@@ -834,7 +835,7 @@ public class Majorite {
 		age = scanner.nextInt();
 		
 		//Âge avant majorité
-		System.out.println("Vous serez majeur dans " + (18 - age) + " ans.");
+		System.out.println("Vous serez majeur dans " + (AGE_MAJORITE - age) + " ans.");
 
 	}
 
@@ -964,6 +965,107 @@ public class TestMath {
 \end{MyTCB}
 
 La méthode \texttt{pow()} prend deux paramètres : le premier est la base et le deuxième est l'exposant. Ainsi, \texttt{pow(x, y)} $= x^y$.
+
+
+
+
+%----------------------------------------------------
+%
+%
+% Chapitre 4 - Instructions conditionnelles
+%
+%
+%----------------------------------------------------
+\chapter{Les instructions conditionnelles}
+
+\textit{Manuel de référence : p. 39 à 46.}
+
+\section{Le \textit{if else}}
+Jusqu'à présent, vos programmes se sont exécutés de manière \textbf{séquentielle} : toutes les instructions sont exécutées les unes après les autres. En réalité, il est bien rare qu'un programme suive une seule séquence. Avec les \textbf{instructions conditionnelles}, il sera possible d'exécuter une certaine partie de votre programme uniquement si une certaine condition est respectée. Nous utiliserons alors le \emph{if else}.
+
+\begin{tcolorbox}[enhanced,colframe=ultRed,
+	title={La structure \emph{if else}},
+	sharp corners=south,
+	boxsep = 1.5mm]
+\texttt{{\color{ultRed}if} (} {\color[RGB]{255, 34, 12} condition} \texttt{) \{}\\
+	\hspace*{0.5cm} {\color[RGB]{63, 136, 197} instruction1};\\	
+	\hspace*{0.5cm} ... \texttt{// Si la condition est vraie...}\\
+\texttt{\}\\
+{\color{ultRed} else} \{ // Facultatif \\}
+	\hspace*{0.5cm} {\color[RGB]{63, 136, 197} instruction2};\\ 
+	\hspace*{0.5cm} ... \texttt{// Si la condition est fausse...} \\
+\texttt{\}}
+%
+\end{tcolorbox}
+
+Si la condition donnée est vraie, alors les instructions contenues dans le premier bloc seront exécutées. Sinon, ce sont celles du deuxième bloc qui seront exécutées. Le \emph{else} est facultatif. S'il n'y a pas de \emph{else} et que la condition est fausse, alors le programme continu son exécution normalement, sans exécuter le contenu du \emph{if}.
+
+Comme une condition peut être vraie ou fausse, on dit que c'est une condition \textbf{booléenne}. C'est d'ailleurs une des principales utilités du type \texttt{boolean}.
+
+
+
+\section{Les opérateurs de comparaison et les opérateurs logiques}
+
+Pour exprimer une condition, on peut utiliser les \textbf{opérateurs de comparaison} et les \textbf{opérateurs logiques}. Les principaux sont les suivants.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+	\begin{tabularx}{0.8\linewidth}{l c X X} \toprule
+		\textbf{Rôle} & \textbf{Symbole} & \textbf{Exemple} \\ \midrule
+		égal & \texttt{==} & \texttt{a == 2} \\
+		n'est pas égal & \texttt{!=} & \texttt{prix != 10} \\
+		est plus grand & \texttt{>} & \texttt{rabais > prix} \\
+		est plus grand ou égal & \texttt{>=} & \texttt{age >= AGE\_MAJORITE} \\
+		est plus petit & \texttt{<} & \texttt{rotation < 25.1} \\
+		est plus petit ou égal & \texttt{<=} & \texttt{distance <= 120} \\
+		ou & \texttt{||} & \texttt{a == 10 || b == 5} \\
+		et & \texttt{\&\&} & \texttt{distance >= 10 \&\& angle == 180} \\
+		n'est pas & \texttt{!} & \texttt{!estOuvert} \\ \bottomrule
+	\end{tabularx}
+	\captionof{figure}{Les opérateurs de comparaison et les opérateurs logiques.}
+\end{center}
+
+Les six premiers sont appelés les \textbf{opérateurs de comparaison}. On les utilise pour comparer des nombres ensemble. Les trois derniers sont appelés les \textbf{opérateurs logiques}. Ils permettent de modifier d'autres conditions ou booléens. Avec le \textbf{ou}, la nouvelle condition est vraie si la première ou la deuxième condition est vraie. Quant au \textbf{et}, il faut que les deux conditions soient vraies pour que la nouvelle condition soit vraie. Finalement, le dernier opérateur permet d'inverser une valeur booléenne. 
+
+
+\begin{MyTCB}{Validation d'une année de naissance}
+import java.util.Calendar;
+import java.util.Scanner;
+/**
+ * Validation d'une année de naissance.
+ * 
+ * @author Etienne
+ */
+public class ValidationNaissance {
+
+	public static void main(String[] args) {
+		
+		int annee;
+		final int ANNEE_MINIMALE = 1900;
+		final int ANNEE_COURANTE = Calendar.getInstance().get(Calendar.YEAR); //2017
+		Scanner scanner = new Scanner(System.in);
+		
+		
+		//Obtention de l'année
+		System.out.print("Saisissez une année de naissance : ");
+		annee = scanner.nextInt();
+		
+		
+		//Validation
+		if(annee >= ANNEE_MINIMALE && annee <= ANNEE_COURANTE) {
+			System.out.println("Année valide.");
+		}
+		else {
+			System.out.println("L'année " + annee + " est invalide.");
+			System.out.println("Vous devez recommencer!");
+		}
+
+	}
+
+}
+\end{MyTCB}
+
+%\section{Les \textit{else if} multiples}
 
 
 \end{document}
