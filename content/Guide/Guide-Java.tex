@@ -1074,7 +1074,7 @@ public class ValidationNaissance {
 }
 \end{MyTCB}
 
-%\section{Les \textit{else if} multiples}
+\section{Les \textit{else if} multiples}
 
 
 \part{La programmation orientée objet}
@@ -1179,7 +1179,7 @@ Ensuite, en période autonome, on met le moteur gauche à 50 \% de sa puissance 
 
 Finalement, en période téléopérée, on utilise la méthode \texttt{arcadeDrive} avec le Joystick pour contrôleur le robot naturellement. 
 
-\subsection{La classe VictorSP}
+\subsection{La classe \texttt{VictorSP}}
 Cette classe sert à déclarer des contrôleurs moteur de type VictorSP. Des classes existent pour chaque modèle de contrôleur moteur : Talon, Spark, Jaguar, etc.
 
 Son constructeur reçoit en paramètre un nombre entier (voir lignes 9 et 10). Il s'agit du port PWM du RoboRIO où est branché le contrôleur.
@@ -1188,11 +1188,21 @@ Cette classe possède la méthode \texttt{set(double)}. Elle reçoit un nombre c
 
 \subsection{La classe \texttt{DifferentialDrive}}
 
-Cette classe fournit plusieurs méthodes utiles pour contrôler la base pilotable. B serait possible de calculer manuellement les valeurs à envoyer à chaque moteur, il est plus pratique et rapide d'utiliser cette classe. Elle est configurée pour les bases pilotables de type « tank ». Les classes \texttt{MecanumDrive} et \texttt{KilloughDrive} (robot à trois roues) sont également disponibles.
+Cette classe fournit plusieurs méthodes utiles pour contrôler la base pilotable. Bien qu'il serait possible de calculer manuellement les valeurs à envoyer à chaque moteur, il est plus pratique (et rapide) d'utiliser cette classe. Elle est configurée pour les bases pilotables de type « tank ». Les classes \texttt{MecanumDrive} et \texttt{KilloughDrive} (robot à trois roues) sont également disponibles.
 
 Le constructeur reçoit comme arguments les deux contrôleurs moteur : celui de gauche et celui de droite. La \texttt{DifferentialDrive} doit les avoir en référence pour contrôler la base pilotable.
 
 Sa méthode \texttt{arcadeDrive(double, double)} reçoit deux nombres en paramètre : \texttt{forward} et \texttt{rotation}. Le paramètre \texttt{forward} (entre -1.0 et 1.0) représente la vitesse d'avancée en ligne droite. Le paramètre \texttt{rotation} (entre -1.0 et 1.0) représente la vitesse de rotation, où les valeurs positives vont vers la droite (sens horaire). 
+
+\subsection{La classe \texttt{Joystick}}
+
+On utilise évidemment cette classe pour lire les valeurs d'un Joystick. Son constructeur reçoit en paramètre l'ordre de branchement du Joystick dans la DriverStation (à partir de 0). Cet ordre est très important lorsque le robot est contrôlé par plus d'une manette en même temps.
+
+On accède aux valeurs des axes (de -1.0 à 1.0) avec la méthode \texttt{getRawAxis(int)}, où l'entier en paramètre est le numéro de l'axe (à partir de 0). Des raccourcis existent pour les axes principaux : \texttt{getX()} et \texttt{getY()}. Cependant, l'axe des Y est inversé selon notre logique : il renvoie -1.0 lorsqu'on pousse le Joytick vers l'avant, et 1.0 lorsqu'on le tire vers soi. On multiplie donc cette valeur par -1 avant de l'envoyer comme paramètre \texttt{forward} à \texttt{arcadeDrive} (voir ligne 24).
+
+L'état des boutons est donné par la méthode \texttt{getRawButton(int)}, où l'entier en paramètre est le numéro du bouton (à partir de 1). La méthode renvoie le booléen \texttt{\bfseries true} si le bouton est appuyé, et \texttt{\bfseries false} dans le cas contraire.
+
+
 \end{document}
 
 
