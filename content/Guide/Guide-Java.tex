@@ -84,6 +84,15 @@
 \usepackage{tcolorbox}
 \tcbuselibrary{minted, skins, xparse, breakable}
 \usepackage{tikz}
+\usetikzlibrary{arrows.meta, shapes.geometric}
+
+% Ne pas copier les numéros de lignes de code
+\usepackage{accsupp}
+\newcommand\emptyaccsupp[1]{\BeginAccSupp{ActualText={}}#1\EndAccSupp{}}
+%default definition is: \def\theFancyVerbLine{\rmfamily\tiny\arabic{FancyVerbLine}}
+\let\theHFancyVerbLine\theFancyVerbLine% don't apply our patch to hyperref's version
+\def\theFancyVerbLine{\rmfamily\tiny\emptyaccsupp{\arabic{FancyVerbLine}}}
+
 
 %Frame for commands
 \newcommand{\commande}[1]{%
@@ -1068,6 +1077,122 @@ public class ValidationNaissance {
 %\section{Les \textit{else if} multiples}
 
 
+\part{La programmation orientée objet}
+
+
+\part{La librairie WPILib}
+
+\chapter{La classe \texttt{TimedRobot}}
+
+\section{Création d'un projet}
+Jusqu'à présent, le coeur de vos programmes se trouvait dans la méthode \texttt{main}. Cependant, le comportement d'un robot est plus complexe qu'une simple méthode. Vos prochains programmes auront comme base la classe \texttt{Robot}, héritant de \texttt{TimedRobot}.
+
+\begin{enumerate}
+	\item Dans Eclipse, débutez la création d'un nouveau projet avec \commande{File > New > Other...}, puis, dans le dossier \commande{WPILib Robot Java Project}, sélectionnez \commande{Robot Java Project}.
+	\item Donnez un nom à votre projet (débutant avec une lettre majuscule).
+	\item Sélectionnez \commande{Command-Based Robot}ou \commande{Timed Robot}, selon le paradigme que vous souhaitez utiliser. Cliquez sur \commande{Finish}.
+\end{enumerate}
+
+Vous vous retrouverez ainsi avec un fichier \commande{Robot.java} contenant le squelette d'un programme pour la FRC.
+
+\section{Les méthodes \texttt{Init} et \texttt{Periodic}}
+
+La classe qu'Eclipse a générée pour vous contient déjà quelques méthodes prédéfinies. Chacune d'entre elles a un rôle bien précis.
+
+\tikzset{>={Stealth[scale=1.3,angle'=45]}}
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[every node/.style = {shape=rectangle, rounded corners, fill=gray!50, draw, minimum width=3.25cm, minimum height=0.8cm, }]
+
+\node (robotInit) at (0,5) {robotInit};
+\node (disabledInit) at (0,3) {disabledInit};
+\node (disabledPeriodic) at (0,1) {disabledPeriodic};
+\node (autonomousInit) at (4.5,3) {autonomousInit};
+\node (autonomousPeriodic) at (4.5,1) {autonomousPeriodic};
+\node (teleopInit) at (9,3) {teleopInit};
+\node (teleopPeriodic) at (9,1) {teleopPeriodic};
+\node (testInit) at (13.5,3) {testInit};
+\node (testPeriodic) at (13.5,1) {testPeriodic};
+
+\node (periode) [fill=white] at (6.75, 5) {Changement de période};
+
+\draw[fill] (0,7) circle [radius=0.25];
+
+\draw[->, to path={-- (\tikztotarget)}] (0,7) edge (robotInit) (robotInit) edge (disabledInit) (disabledInit) edge (disabledPeriodic) (autonomousInit) edge (autonomousPeriodic) (teleopInit) edge (teleopPeriodic) (testInit) edge (testPeriodic);
+\draw[->] (-1.0,1.5) arc [radius=0.7, start angle=45, end angle= 315];
+\draw[->] (3.25,1.5) arc [radius=0.7, start angle=45, end angle= 315];
+\draw[->] (8.0,1.5) arc [radius=0.7, start angle=45, end angle= 315];
+\draw[->] (12.5,1.5) arc [radius=0.7, start angle=45, end angle= 315];
+\draw (disabledPeriodic) edge ++(0,-1.5) (autonomousPeriodic) edge ++(0,-1.5) (teleopPeriodic) edge ++(0,-1.5) (testPeriodic) edge ++(0,-1.5);
+\draw (0,-0.5) -| (16,5);
+\draw[->] (16,5) -- (9.1, 5);
+\draw (periode) edge (6.75, 4);
+\draw[->] (6.75, 4) -| (1.0,3.4);
+\draw[->] (6.75, 4) -| (4.5,3.4);
+\draw[->] (6.75, 4) -| (9,3.4);
+\draw[->] (6.75, 4) -| (13.5,3.4);
+\end{tikzpicture}
+\caption{Séquence d'éxécution des méthodes de la classe Robot.}
+\end{center}
+\end{figure}
+
+Chaque état dans lequel peut être le robot possède sa méthode \texttt{Init} et \texttt{Periodic}. Par exemple, lorsque le robot entre en période autonome, le contenu de la méthode \texttt{autonomousInit} est appelé une fois. Ensuite, la méthode \texttt{autonomousPeriodic} est appelée en boucle (périodiquement, soit environ aux 20 millisecondes) tant que le robot reste dans cet état.  
+
+La seule exception est la méthode \texttt{robotInit} : elle s'exécute une fois, au tout début, lorsque le programme démarre. Habituellement, on y initialise les différentes composantes du robot, ses sous-systèmes, etc.
+
+\section{Faire avancer le robot}
+
+\begin{MyTCB}{Utilisation de DifferentialDrive avec Joystick}
+public class MonPremierRobot extends TimedRobot {
+	
+	private VictorSP moteurGauche, moteurDroit;
+	private DifferentialDrive basePilotable;
+	private Joystick joystick;
+	
+	@Override
+	public void robotInit() {
+		moteurGauche = new VictorSP(0);
+		moteurDroit = new VictorSP(1);
+		basePilotable = new DifferentialDrive(moteurGauche, moteurDroit);
+		joystick = new Joystick(0);
+	}
+	
+	@Override
+	public void autonomousPeriodic() {
+		moteurGauche.set(0.5);
+		moteurDroit.set(-0.5);
+	}
+	
+	
+	@Override
+	public void teleopPeriodic() {
+		basePilotable.arcadeDrive(-1 * joystick.getY(), joystick.getX());
+	}
+
+}
+
+\end{MyTCB}
+
+Dans un premier temps, on déclare comme attributs privés de classe les composantes de notre robot : deux contrôleurs moteur \texttt{VictorSP}, une \text{DifferentialDrive} et un \texttt{Joystick}. On les instancie dans la méthode \texttt{robotInit}.
+
+Ensuite, en période autonome, on met le moteur gauche à 50 \% de sa puissance vers à l'avant, et le moteur droit, à 50 \% vers l'arrière. Le robot tournera donc en rond pendant 15 secondes.
+
+Finalement, en période téléopérée, on utilise la méthode \texttt{arcadeDrive} avec le Joystick pour contrôleur le robot naturellement. 
+
+\subsection{La classe VictorSP}
+Cette classe sert à déclarer des contrôleurs moteur de type VictorSP. Des classes existent pour chaque modèle de contrôleur moteur : Talon, Spark, Jaguar, etc.
+
+Son constructeur reçoit en paramètre un nombre entier (voir lignes 9 et 10). Il s'agit du port PWM du RoboRIO où est branché le contrôleur.
+
+Cette classe possède la méthode \texttt{set(double)}. Elle reçoit un nombre compris entre -1.0 et 1.0, spécifiant la puissance à laquelle le moteur doit aller.
+
+\subsection{La classe \texttt{DifferentialDrive}}
+
+Cette classe fournit plusieurs méthodes utiles pour contrôler la base pilotable. B serait possible de calculer manuellement les valeurs à envoyer à chaque moteur, il est plus pratique et rapide d'utiliser cette classe. Elle est configurée pour les bases pilotables de type « tank ». Les classes \texttt{MecanumDrive} et \texttt{KilloughDrive} (robot à trois roues) sont également disponibles.
+
+Le constructeur reçoit comme arguments les deux contrôleurs moteur : celui de gauche et celui de droite. La \texttt{DifferentialDrive} doit les avoir en référence pour contrôler la base pilotable.
+
+Sa méthode \texttt{arcadeDrive(double, double)} reçoit deux nombres en paramètre : \texttt{forward} et \texttt{rotation}. Le paramètre \texttt{forward} (entre -1.0 et 1.0) représente la vitesse d'avancée en ligne droite. Le paramètre \texttt{rotation} (entre -1.0 et 1.0) représente la vitesse de rotation, où les valeurs positives vont vers la droite (sens horaire). 
 \end{document}
 
 
