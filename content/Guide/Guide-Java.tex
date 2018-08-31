@@ -48,8 +48,6 @@
 
 }
 
-
-
 %Virgule pour nombres français
 %\usepackage{icomma}
 
@@ -83,6 +81,7 @@
 %Nice frames for minted
 \usepackage{tcolorbox}
 \tcbuselibrary{minted, skins, xparse, breakable}
+
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, shapes.geometric}
 
@@ -91,8 +90,8 @@
 \newcommand\emptyaccsupp[1]{\BeginAccSupp{ActualText={}}#1\EndAccSupp{}}
 %default definition is: \def\theFancyVerbLine{\rmfamily\tiny\arabic{FancyVerbLine}}
 \let\theHFancyVerbLine\theFancyVerbLine% don't apply our patch to hyperref's version
-\def\theFancyVerbLine{\rmfamily\tiny\emptyaccsupp{\arabic{FancyVerbLine}}}
-
+%\def\theFancyVerbLine{\rmfamily\tiny\emptyaccsupp{\arabic{FancyVerbLine}}}
+\def\theFancyVerbLine{\BeginAccSupp{ActualText={}}\tiny\arabic{FancyVerbLine}\EndAccSupp{}}
 
 %Frame for commands
 \newcommand{\commande}[1]{%
@@ -232,6 +231,30 @@
 \addcontentsline{toc}{chapter}{Table des figures}
 \newpage
 %
+\chapter*{Les valeurs \textit{FIRST}}
+\addcontentsline{toc}{chapter}{Les valeurs FIRST} 
+
+\subsection*{Découverte}
+Nous explorons de nouvelles idées et habilités.
+
+\subsection*{Innovation}
+Nous sommes créatifs et déterminés à résoudre des problèmes.
+
+\subsection*{Impact}
+Nous nous servons de nos apprentissages pour améliorer notre monde.
+
+\subsection*{Inclusion}
+Nous nous respectons mutuellement et nous sommes ouverts à la diversité.
+
+\subsection*{Travail d'équipe}
+Nous sommes plus forts en travaillant ensemble.
+
+\subsection*{Plaisir}
+Nous apprécions et célébrons nos accomplissements.
+
+\newpage
+
+%
 \linespread{1.5}
 \normalsize
 \pagenumbering{arabic}
@@ -260,7 +283,7 @@
 %----------------------------------------------------
 %
 \section{Les langages de programmation}
-La programmation, en somme, est l'art de formuler ses algorithmes de manière à les faire comprendre à un ordinateur (Ada Lovelace, vers 1840\footnote{On attribue à Ada Lovelace, mathématicienne britannique, la création des premiers programmes informatiques. Ils furent conçus pour être exécutés sur la machine analytique de William Babbage, entièrement mécanique.}). Cependant, à la base, les ordinateurs ne comprennent que le binaire (Alan Turing, 1936\footnote{Alan Turing, mathématicien, cryptologue et logicien britannique, formalisa en 1936 le concept mathématique de \emph{machine de Turing}.}). Pour se simplifier la vie, les informaticiens ont créé des langages intermédiaires qui font le pont entre nous et les ordinateurs (Grace Hopper, 1951\footnote{Grace Hopper, informaticienne et \emph{rear admiral (lower half)} de l'armée américaine, conçut en 1951 \emph{A-0 System}, le premier compilateur pour ordinateur.}). Tous les langages de programmation ont le même but : vous permettre de parler à un ordinateur plus simplement qu'en binaire.
+La programmation, en somme, est l'art de formuler ses algorithmes de manière à les faire comprendre à un ordinateur (Ada Lovelace, vers 1840\footnote{On attribue à Ada Lovelace, mathématicienne britannique, la création des premiers programmes informatiques. Ils furent conçus pour être exécutés sur la machine analytique de William Babbage, entièrement mécanique.}). Cependant, à la base, les ordinateurs ne comprennent que le binaire (Alan Turing, 1936\footnote{Alan Turing, mathématicien, cryptologue et logicien britannique, formalisa en 1936 le concept mathématique de \emph{machine de Turing}, ce qui fait de lui le fondateur de l'informatique moderne. Pendant la Seconde Guerre mondiale, il déchiffra le code de la machine Enigma, ce qui sauva la vie à plus de 14 millions de personnes. Sa carrière prit fin tragiquement en 1954 lorsqu'il se suicida à l'âge de 41 ans, après avoir été condamné pour indécence en raison de son homosexualité.}). Pour se simplifier la vie, les informaticiens ont créé des langages intermédiaires qui font le pont entre nous et les ordinateurs (Grace Hopper, 1951\footnote{Grace Hopper, informaticienne et \emph{rear admiral (lower half)} de l'armée américaine, conçut en 1951 \emph{A-0 System}, le premier compilateur pour ordinateur.}). Tous les langages de programmation ont le même but : vous permettre de parler à un ordinateur plus simplement qu'en binaire.
 %
 %
 % Image - Processus de compilation
@@ -632,7 +655,7 @@ On peut donner n'importe quel nom à une variable, tant qu'il respecte les condi
 	\item si son nom est composé de plusieurs mots, les autres mots peuvent commencer par une majuscule.
 \end{itemize}
 
-Par exemple, les identificateurs \texttt{prix}, \texttt{ageUtilisateur}, \texttt{vitesseMoteurGauche1} et \texttt{estOuvert} respectent cette convention. 
+Par exemple, les identificateurs \texttt{prix}, \texttt{ageUtilisateur}, \texttt{vitessexGauche1} et \texttt{estOuvert} respectent cette convention. 
 
 
 
@@ -1203,6 +1226,209 @@ On accède aux valeurs des axes (de -1.0 à 1.0) avec la méthode \texttt{getRaw
 L'état des boutons est donné par la méthode \texttt{getRawButton(int)}, où l'entier en paramètre est le numéro du bouton (à partir de 1). La méthode renvoie le booléen \texttt{\bfseries true} si le bouton est appuyé, et \texttt{\bfseries false} dans le cas contraire.
 
 
+
+\chapter[Les actionneurs]{Les actionneurs \footnote{Référence : \url{http://wpilib.screenstepslive.com/s/currentCS/m/java/c/88897}}}
+
+Plusieurs définissent un robot comme étant une machine qui possède un système logique, des capteurs et des actionneurs. Le système logique, c'est le programme exécuté par le RoboRIO. Les capteurs seront utilisés au prochain chapitre. Quant aux actionneurs (\textit{actuators} en anglais), ce sont toute partie du robot qui crée un mouvement. Plusieurs choix d'actuateurs s'offrent à nous, selon nos besoins.
+
+\section{Les moteurs}
+Pour un exemple d'utilisation de moteurs (\texttt{VictorSP}, \texttt{DifferentialDrive}), voir le chapitre précédent.
+
+\section{La pneumatique}
+Physiquement, un système pneumatique est composé de plusieurs éléments :
+
+\begin{itemize}
+	\item une bonbonne, pour contenir l'air comprimé;
+	\item un compresseur, pour comprimer de l'air dans la bonbonne;
+	\item un pressostat (\textit{pressure switch} en anglais), pour mesurer la pression dans la bonbonne;
+	\item un PCM (module de contrôle pneumatique : \textit{Pneumatic Control Module}), pour activer le compresseur et l'arrêter lorsque la pression est assez élevée;
+	\item des vérins (pistons, cylindres pneumatiques), pour effectuer les mouvements désirés;
+	\item des solénoïdes, pour laisser passer de l'air dans les vérins.
+\end{itemize}
+
+Au niveau de la programmation, les seuls éléments que nous devons gérer sont les solénoïdes. Ceux-ci agissent comme des « portes » qui laissent passer l'air (ou non) selon le signal qu'on leur envoit. Attention : les solénoïdes ne sont pas branchés au RoboRIO, mais bien au PCM.
+
+
+
+\subsection{Les solénoïdes simples}
+
+Les solénoïdes simples ne comportent qu'une seule valve. Ils peuvent être dans deux états :
+
+\begin{itemize}
+	\item \textbf{false} : la valve est fermée : aucun air n'est envoyé;
+	\item \textbf{true} : la valve est ouverte : de l'air est envoyé.
+\end{itemize}
+
+Lorsqu'un objet \texttt{Solenoid} est instancié, le PCM active automatiquement le compresseur. Cependant, si le programme ne déclare aucun solénoïde, le compresseur ne s'activera tout simplement pas.
+
+\begin{MyTCB}{Utilisation d'un solénoïde simple}
+public class UtilisationSolenoideSimple extends TimedRobot {
+	
+	private Solenoid solenoid;
+	private Joystick joystick;
+	
+	@Override
+	public void robotInit() {
+		// Branché sur le port 2 du PCM
+		solenoid = new Solenoid(2);
+		joystick = new Joystick(0);
+	}
+	
+	@Override
+	public void teleopPeriodic() {
+	
+		if(joystick.getRawButton(1)) {
+		
+			solenoid.set(true);		
+			
+		} else {
+		
+			solenoid.set(false);
+			
+		}
+		
+	}
+
+}
+\end{MyTCB}
+
+Ce code simple ouvre le solénoïde lorsqu'on appuie sur le bouton 1 du Joystick.
+
+
+
+\subsection{Les solénoïdes doubles}
+
+Les solénoïdes doubles comportent deux valves. Ils peuvent donc être dans 3 états différents :
+
+\begin{itemize}
+	\item \texttt{\bfseries DoubleSolenoid.Value.kOff} : les deux valves sont fermées : aucun air n'est envoyé;
+	\item \texttt{\bfseries DoubleSolenoid.Value.kForward} : la valve avant est ouverte : de l'air est envoyé dans l'avant du vérin.
+	\item \texttt{\bfseries DoubleSolenoid.Value.kReverse} : la valve arrière est ouverte : de l'air est envoyé dans l'arrière du vérin.
+\end{itemize}
+
+\begin{MyTCB}{Utilisation d'un solénoïde double}
+
+public class UtilisationSolenoideDouble extends TimedRobot {
+	
+	private DoubleSolenoid solenoid;
+	private Joystick joystick;
+	
+	@Override
+	public void robotInit() {
+		solenoid = new DoubleSolenoid(3, 4); // Ports 3 et 4 du PCM
+		joystick = new Joystick(0);
+	}
+	
+	@Override
+	public void teleopPeriodic() {
+	
+		if(joystick.getRawButton(1))
+			solenoid.set(DoubleSolenoid.Value.kForward);		
+			
+		else if(joystick.getRawButton(2))
+			solenoid.set(DoubleSolenoid.Value.kReverse);
+			
+		else
+			solenoid.set(DoubleSolenoid.Value.kOff);
+
+	}
+
+}
+
+\end{MyTCB}
+
+Ce type de solénoïde est particulièrement utile pour ouvrir \textbf{et} fermer rapidement des mécanismes. Par exemple, pour lancer une balle, la séquence suivante pourrait être exécutée :
+
+\begin{enumerate}
+	\item le solénoïde double est mis en mode \texttt{kForward} : le vérin s'allonge et éjecte la ballel
+	\item une seconde plus tard, le solénoïde est mis en mode \texttt{kReverse} : le vérin se rétracte, prêt à recevoir une autre balle;
+	\item une demi-seconde plus tard, le solénoîde est mis en mode \texttt{kOff} : le solénoïde ferme ses valves, se qui permet au compresseur de remplir la bonbonne.
+\end{enumerate}
+
+Attention! Il est important de toujours fermer les solénoïdes. Sinon, l'air continue de s'échapper et la bonbonne perd de l'air inutilement.
+
+Dans l'exemple précédent, le constructeur d'un \texttt{DoubleSolenoid} reçoit en paramètres deux entiers, car il est branché à deux ports du PCM. Cela permet de contrôler indépendemment les deux valves du solénoïde.
+
+
+\section{Les servomoteurs}
+
+Jusqu'à présent, les moteurs que nous avons abordés se contrôlent en terme de puissance : lorsque le programme envoie 0.5 à un VictorSP, celui-ci fonctionnera à 50 \% de sa capacité. Cependant, il peut être intéressant de contrôler la \textbf{position absolue} d'un moteur. C'est pour répondre à ce problème que les servomoteurs ont été créés. Par exemple, on peut fixer une caméra sur un servomoteur pour la faire tourner précisément de 180 degrés et voir derrière le robot.
+
+\begin{MyTCB}{Utilisation d'un servomoteur}
+
+public class UtilisationServo extends TimedRobot {
+	
+	private Servo servo;
+	private Joystick joystick;
+	
+	@Override
+	public void robotInit() {
+		servo = Servo(8); // Branché sur le port PWM 8 du RoboRIO
+		joystick = new Joystick(0);
+	}
+
+	@Override
+	public void teleopPeriodic() {
+	
+		if(joystick.getRawButton(1))
+			servo.setAngle(0.0);		
+		
+		else if(joystick.getRawButton(3))
+			solenoid.setAngle(90.0);
+
+	}
+
+}
+
+\end{MyTCB}
+
+Ce programme met le servomoteur à son angle minimum (0.0) au début de la période téléopérée, puis permet de le faire tourner à 3 positions différentes : 0°, 45° et 90°.
+
+La méthode \texttt{setAngle(double)} reçoit en paramètre un nombre entre 0.0 et 180.0, car elle est configurée pour fonctionner avec le servomoteur Hitec HS-322HD, qui a une portée de 180°. Il se peut donc que les valeurs données ne soient pas tout à fait exactes lors de l'utilisation d'autres modèles de servos. Il suffit de faire quelques tests pour déterminer les bons angles.
+
+
+
+
+
+\chapter[Les capteurs]{Les capteurs \footnote{\url{http://wpilib.screenstepslive.com/s/currentCS/m/java/c/88895}}}
+
+Les capteurs, contrairement aux actionneurs, ne créent aucun mouvement. Ils fournissent au robot des informations sur son environnement et ses déplacements.
+
+
+\section{Les interrupteurs de fin de course}
+
+Un interrupteur de fin de course (communément appelé \textit{limit switch}) est le plus simple des capteurs mis à notre disposition. Ce capteur agit comme un bouton : il nous dit s'il est appuyé (\texttt{true}) ou non (\texttt{false}). Par exemple, on s'en sert pour déterminer si un bras motorisé a atteint sa position maximale, ou encore pour détecter lorsqu'un ballon a été attrapé.
+
+\begin{MyTCB}{Utilisation d'un interrupteur de fin de course (limit switch)}
+
+public class UtilisationSwitch extends TimedRobot {
+	
+	private DigitalInput switch;
+	private VictorSP ramasseBallons;
+	
+	@Override
+	public void robotInit() {
+		switch = DigitalInput(2); // Port digital 2
+		ramasseBallons = new VictorSP(1); // Port PWM 1
+	}
+
+	@Override
+	public void autonomousPeriodic() {
+	
+		if(switch.get())
+			ramasseBallons.set(0.0);
+			
+		else
+			ramasseBallons.set(1.0).
+
+	}
+
+}	
+	
+\end{MyTCB}
+
+Le programme précédent comporte un mode autonome qui met le moteur à zéro lorsque l'interrupteur retourne une valeur \texttt{true}, c'est-à-dire lorsque l'interrupteur est appuyé. Cela veut donc dire qu'il y a un ballon sur l'interrupteur. Sinon, on active le moteur jusqu'à obtenir un ballon.
+
+La valeur d'une \textit{limit switch} peut être inversée. Il faut alors l'inverser à nouveau avec un «\texttt{!}» : \texttt{!switch.get()}.
+
 \end{document}
-
-

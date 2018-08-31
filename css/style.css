@@ -5,6 +5,25 @@
     width: 2em;
 }*/
 
+html {
+	--accent-color: rgb(230, 39, 57);
+}
+
+::selection {
+	color: white;
+	background: var(--accent-color);
+}
+
+::-moz-selection {
+	color: white;
+	background: var(--accent-color);
+}
+
+::-webkit-selection {
+	color: white;
+	background: var(--accent-color);
+}
+
 body {
     position: absolute;
 
@@ -46,14 +65,11 @@ p, ul {
 }
 
 a {
-    transition: border-bottom 0.3s;
-    color: rgb(230, 39, 57);
+    color: var(--accent-color);
     text-decoration: none;
-    border-bottom: 0.1em solid transparent;
-    padding-bottom: 0px;
 }
 
 a:hover {
-    border-bottom: 0.1em solid rgb(230, 39, 57);
+    text-decoration: underline;
 }
 
