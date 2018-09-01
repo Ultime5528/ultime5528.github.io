@@ -39,6 +39,10 @@
 %Afficher des images avec includegraphics
 \usepackage{graphicx}
 
+% Afficher des SVG
+% Convertir un SVG en pdf_tex : inkscape -D -z --file=<NOM DU FICHIER.svg> --export-pdf=<OUTPUT.pdf> --export-latex
+\usepackage{svg}
+
 % Tableaux extensibles
 \usepackage{tabularx}
 \usepackage{booktabs}
@@ -1342,7 +1346,7 @@ Ce type de solénoïde est particulièrement utile pour ouvrir \textbf{et} ferme
 \begin{enumerate}
 	\item le solénoïde double est mis en mode \texttt{kForward} : le vérin s'allonge et éjecte la ballel
 	\item une seconde plus tard, le solénoïde est mis en mode \texttt{kReverse} : le vérin se rétracte, prêt à recevoir une autre balle;
-	\item une demi-seconde plus tard, le solénoîde est mis en mode \texttt{kOff} : le solénoïde ferme ses valves, se qui permet au compresseur de remplir la bonbonne.
+	\item une demi-seconde plus tard, le solénoïde est mis en mode \texttt{kOff} : le solénoïde ferme ses valves, se qui permet au compresseur de remplir la bonbonne.
 \end{enumerate}
 
 Attention! Il est important de toujours fermer les solénoïdes. Sinon, l'air continue de s'échapper et la bonbonne perd de l'air inutilement.
@@ -1403,19 +1407,19 @@ Un interrupteur de fin de course (communément appelé \textit{limit switch}) es
 
 public class UtilisationSwitch extends TimedRobot {
 	
-	private DigitalInput switch;
+	private DigitalInput limitSwitch;
 	private VictorSP ramasseBallons;
 	
 	@Override
 	public void robotInit() {
-		switch = DigitalInput(2); // Port digital 2
+		limitSwitch = DigitalInput(2); // Port digital 2
 		ramasseBallons = new VictorSP(1); // Port PWM 1
 	}
 
 	@Override
 	public void autonomousPeriodic() {
 	
-		if(switch.get())
+		if(limitSwitch.get())
 			ramasseBallons.set(0.0);
 			
 		else
@@ -1429,6 +1433,190 @@ public class UtilisationSwitch extends TimedRobot {
 
 Le programme précédent comporte un mode autonome qui met le moteur à zéro lorsque l'interrupteur retourne une valeur \texttt{true}, c'est-à-dire lorsque l'interrupteur est appuyé. Cela veut donc dire qu'il y a un ballon sur l'interrupteur. Sinon, on active le moteur jusqu'à obtenir un ballon.
 
-La valeur d'une \textit{limit switch} peut être inversée. Il faut alors l'inverser à nouveau avec un «\texttt{!}» : \texttt{!switch.get()}.
+Ce type de capteur se branche dans un des ports digitaux du RoboRIO, et non dans un port PWM.
+
+Attention! La valeur d'une \textit{limit switch} peut être inversée. Il faut alors l'inverser à nouveau avec un «\texttt{!}» : \texttt{!switch.get()}.
+
+
+\section{Les potentiomètres}
+
+Les potentiomètres sont des capteurs qui mesurent la position absolue (en rotation ou en translation) de composantes du robot. On parle de \textbf{position absolue} parce que les potentiomètres \textbf{ne se réinitialisent pas} lorsque l'on éteint le robot. Par contre, les potentiomètres ont une portée limitée. Ils ne sont donc pas adaptés pour mesurer la rotation des roues de la base pilotable, par exemple. Cependant, on pourrait les utiliser pour déterminer la hauteur d'un élévateur ou l'angle d'un bras motorisé.
+
+\begin{MyTCB}{Utilisation d'un potentiomètre}
+
+public class UtilisationPotentiometre extends TimedRobot {
+
+	private final static double HAUTEUR_MIN = 0.2;
+	private final static double HAUTEUR_MAX = 1.8;
+
+	private AnalogPotentiometer pot;
+	private VictorSP elevateur;
+	private Joystick joystick;
+	
+	@Override
+	public void robotInit() {
+		pot = new AnalogPotentiometer(0); // Port analogue 0
+		elevateur = new VictorSP(0); // Port PWM 0
+		joystick = new Joystick(0); // Premier joystick branché
+	}
+	
+	@Override
+	public void teleopPeriodic() {
+
+		double hauteur = pot.get();
+		double puissance = 0.0;
+		
+		if(hauteur > HAUTEUR_MIN && hauteur < HAUTEUR_MAX) {
+
+			if(joystick.getRawButton(1))
+				puissance = 0.5;
+				
+			else if(joystick.getRawButton(2))
+				puissance = -0.5;			
+			
+		}	
+		
+		elevateur.set(puissance);
+		
+	}
+
+}
+
+\end{MyTCB}
+
+Dans cet exemple, le robot comporte un élévateur et un potentiomètre. Si la valeur du potentiomètre (la hauteur) est comprise entre les bornes 0.2 et 1.8, on permet au joystick de faire monter ou descendre l'élévateur. Autrement, la valeur envoyée au moteur (la variable \texttt{puissance}) reste à zéro, ce qui arrête le moteur.
+
+
+
+\section{Les gyroscopes}
+
+Les gyroscopes mesurent la rotation (en degrés) effectuée par le robot. Certains sont analogues et ne mesurent la rotation qu'autour d'un seul axe. Il est donc important de les fixer perpendiculairement au sol.
+
+\begin{code}
+AnalogGyro gyro = new AnalogGyro(0); // Port analogue 0
+double angle = gyro.getAngle(); // Retourne la rotation angulaire (en °)
+\end{code}
+
+Les gyroscopes mesurent un déplacement \textbf{relatif} : ils se réinitialisent à zéro lorsque l'on éteint le robot ou lorsqu'on appelle leur méthode \texttt{reset()}. Leur sensibilité peut également être réglée avec la méthode \texttt{setSensitivity(double)}\footnote{La sensibilité est indiquée dans les spécifications du gyro : \url{http://wpilib.screenstepslive.com/s/currentCS/m/java/l/599713-gyros-measuring-rotation-and-controlling-robot-driving-direction}}.
+
+Certains gyros ne sont pas analogues : c'est le cas du modèle \texttt{ADXRS450\_Gyro}, qui se branche dans le port SPI du RoboRIO.
+
+\begin{code}
+ADXRS450_Gyro gyro = new ADXRS450_Gyro(); // Port SPI
+double angle = gyro.getAngle(); // Retourne la rotation angulaire (en °)
+\end{code}
+
+De plus, certains gyros plus complexes mesurent la rotation autour de 3 axes différents.
+
+\begin{figure}[!htbp]
+  \centering
+  %\includesvg[width=0.9\textwidth]{axes}
+  \def\svgwidth{0.5\textwidth}
+  \input{axes.pdf_tex}
+  \caption[Les angles mesurés par un gyroscope à 3 axes (X, Y et Z)]{Les angles mesurés par un gyroscope à 3 axes (X, Y et Z) \footnotemark{}}
+\end{figure}
+\footnotetext{By Yaw\_Axis.svg: Auawisederivative work: Jrvz (Yaw\_Axis.svg) [CC BY-SA 3.0 (\url{https://creativecommons.org/licenses/by-sa/3.0})], via Wikimedia Commons}
+
+Habituellement, l'angle qui nous intéresse et celui représenté par l'axe \textit{yaw}. Il faut donc faire quelques tests pour déterminer s'il s'agit de l'axe des X, des Y ou des Z de notre gyro.
+
+Un des ces gyros est l'\texttt{ADIS16448\_IMU}\footnote{En réalité, ce capteur est bien plus qu'un gyro : c'est un IMU (\textit{Inertial Measurement Unit}). Voir \ref{adis16448}.}. Cette classe n'est pas incluse dans WPILib : elle peut être \href{https://github.com/juchong/ADIS16448-RoboRIO-Driver/blob/master/Java/src/main/java/com/analog/adis16448/frc/ADIS16448_IMU.java}{télécharger ici}.
+
+\begin{code}
+ADIS16448_IMU adis = new ADIS16448_IMU();
+// Il faut tester pour savoir lesquels correspondent à X, Y et Z.
+double angleX = adis.getRoll();
+double angleY = adis.getPitch();
+double angleZ = adis.getYaw();
+\end{code}
+
+\begin{MyTCB}{Utilisation d'un gyro}
+
+public class UtilisationGyro extends TimedRobot {
+
+	private ADXRS450_Gyro gyro;
+	private VictorSP moteurGauche, moteurDroit;
+	private DifferentialDrive drive;
+	
+	@Override
+	public void robotInit() {
+	
+		gyro = new ADXRS450_Gyro(); // Port SPI
+		gyro.calibrate();
+
+		moteurGauche = new VictorSP(0); // Port PWM 0
+		moteurDroit = new VictorSP(1); // Port PWM 1
+		drive = new DifferentialDrive(moteurGauche, moteurDroit);
+
+	}
+	
+	@Override
+	public void autonomousInit() {
+		gyro.reset();
+	}
+	
+	@Override
+	public void autonomousPeriodic() {
+
+		if(gyro.getAngle() <= 90.0)
+			drive.arcadeDrive(0.0, 0.75); // avancer 0.0, tourner 0.75
+			
+		else
+			drive.setMotors(0.0, 0.0);		
+		
+	}
+
+}
+
+\end{MyTCB}
+
+Dans le programme précédent, le mode autonome fait effectuer au robot une rotation (puissance à 75 \%) jusqu'à ce que le robot atteigne 90°. Il est important d'appeler la méthode \texttt{calibrate()} lorsque le robot est immobile pour bien calibrer le gyro. De plus, on appelle la méthode \texttt{reset()} dans \texttt{autonomousInit} pour s'assurer que l'angle mesuré est à zéro au début du mode autonome, car il est possible que le robot ait été déplacé entre le moment où il a été allumé et le début du match.
+
+\begin{MyTCB}{Aller en ligne droite avec un gyro}
+
+public class LigneDroiteGyro extends TimedRobot {
+
+	// Constante de correction
+	private static final double K_ANGLE = -0.03; 
+
+	private ADXRS450_Gyro gyro;
+	private VictorSP moteurGauche, moteurDroit;
+	private DifferentialDrive drive;
+	
+	@Override
+	public void robotInit() {
+	
+		gyro = new ADXRS450_Gyro(); // Port SPI
+		gyro.calibrate();
+
+		moteurGauche = new VictorSP(0); // Port PWM 0
+		moteurDroit = new VictorSP(1); // Port PWM 1
+		drive = new DifferentialDrive(moteurGauche, moteurDroit);
+
+	}
+	
+	@Override
+	public void autonomousInit() {
+		gyro.reset();
+	}
+	
+	@Override
+	public void autonomousPeriodic() {
+		drive.arcadeDrive(0.5, K_ANGLE * gyro.getAngle());
+	}
+
+}
+\end{MyTCB}
+
+
+\section{Les encodeurs}
+
+\section{Les autres capteurs}
+
+\subsection{Les accéléromètres}
+
+\subsection{Les capteurs ultrasons}
+
+\subsection{ADIS16448\_IMU}\label{adis16448}
+
 
 \end{document}
