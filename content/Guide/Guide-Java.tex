@@ -77,7 +77,7 @@
 %Nice code snippets
 \usepackage[chapter]{minted}
 \setminted[java]{%
-	linenos,
+	%linenos,
 	autogobble
 }
 
@@ -117,7 +117,7 @@
 	listing only,
 	list text={#2},
 	minted language=java,
-	minted options={obeytabs, linenos, autogobble, baselinestretch=1, tabsize=4, breaklines=true}, #1}
+	minted options={obeytabs, autogobble, baselinestretch=1, tabsize=4, breaklines=true}, #1} % linenos
 
 %Frame for minted listings
 \newtcblisting{code}[1][\linewidth]{%
@@ -613,11 +613,11 @@ public class AffichageNom {
 		
 		String nom = "Étienne"; // Nom de l'utilisateur
 		
-		System.out.println("Je m'appelle " + nom + "!"); //Affichage
+		System.out.println("Je m'appelle " + nom + "!"); // Affichage
 		
-		nom = "Alexandre"; //Nouvelle valeur
+		nom = "Alexandre"; // Nouvelle valeur
 		
-		System.out.println("Je m'appelle maintenant " + nom + "!"); //Affichage de la nouvelle valeur
+		System.out.println("Je m'appelle maintenant " + nom + "!"); // Affichage de la nouvelle valeur
 		
 	}
 
@@ -1066,7 +1066,7 @@ Les six premiers sont appelés les \textbf{opérateurs de comparaison}. On les u
 
 
 \begin{MyTCB}{Validation d'une année de naissance}
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.Scanner;
 /**
  * Validation d'une année de naissance.
@@ -1079,7 +1079,7 @@ public class ValidationNaissance {
 		
 		int annee;
 		final int ANNEE_MINIMALE = 1900;
-		final int ANNEE_COURANTE = Calendar.getInstance().get(Calendar.YEAR); //2017
+		final int ANNEE_COURANTE = LocalDate.now().getYear();
 		Scanner scanner = new Scanner(System.in);
 		
 		
@@ -1769,9 +1769,9 @@ Référez-vous à la section \ref{creationProjetRobot}. À l'option \commande{Se
 	\item Saisissez le nom de votre sous-système. Il doit commencer par une majuscule et être sans espace.
 \end{enumerate}
 
-Comme on le faisait dans la classe \texttt{Robot}, on doit ajouter les composantes de notre sous-système dans le haut de la classe. Voici un exemple avec un sous-système nommé \texttt{BasePilotable}.
+Comme on le faisait dans la classe \texttt{Robot}, on doit ajouter les composantes de notre sous-système dans le haut de la classe. Voici un exemple avec un sous-système nommé \texttt{Intake}, dont le rôle est de prendre et lancer un ballon.
 
-\begin{MyTCB}{Les attributs et le constructeur d'un sous-système}
+\begin{MyTCB}[breakable]{Les attributs et le constructeur d'un sous-système}
 /**
  * Sous-système de l'intake.
  * Son rôle est de prendre et relâcher un ballon.
@@ -1786,8 +1786,6 @@ public class Intake extends Subsystem {
   private DigitalInput limitSwitch;
 
   public Intake() {
-
-    super("Intake");
 
     moteur = new VictorSP(3);
     addChild("Moteur", moteur);
@@ -1805,6 +1803,27 @@ public class Intake extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+  
+  public void prendreBallon() {
+    moteur.set(0.5);
+  }
+  
+  public void lancerBallon() {
+  	moteur.set(-0.5);
+  }
+  
+  public void arreterMoteur() {
+  	moteur.set(0.0);
+  }
+  
+  public boolean aUnBallon() {
+    return limitSwitch.get();
+  }
+  
+  public double getVitesse() {
+  	return encoder.getRate();
+  }
+  
 }
 \end{MyTCB}
 
@@ -1812,33 +1831,340 @@ public class Intake extends Subsystem {
 
 Après avoir déclaré les trois attributs dans le haut de notre classe, nous les instancions (avec \texttt{new}) dans ce qu'on appelle le \textbf{constructeur} de notre classe. Il s'agit d'une méthode publique, sans type de retour, et dont le nom est le même que la classe. Comme son nom l'indique, le constructeur est appelé lorsque notre intake sera construit dans la mémoire du RoboRIO. C'est un peu l'équivalent de \texttt{robotInit}, mais pour un sous-système. 
 
-Dans le constructeur, la première chose à faire est d'appeler la méthode \texttt{super(String)} (le super constructeur). Cette méthode reçoit une chaîne de caractères représentant le nom de notre sous-système. Ce \texttt{String} est en quelque sorte une étiquette qui est attribué à notre sous-système pour mieux le repérer lorsque nous aurons à faire du débogage. 
+\begin{code}
+// Le constructeur d'un sous-système
+public Intake() {
+	// ...
+}
+\end{code}
 
-Par la suite, on instancie les attributs de notre sous-système. Remarquez que pour chaque composante, on appelle également la méthode \texttt{addChild}. Son rôle est d'associer une étiquette à notre composante et de spécifier que c'est un « enfant » (\textit{child}) de notre sous-système. Cela rendra également la structure de notre robot plus claire lors du débogage.
+% Dans le constructeur, la première chose à faire est d'appeler la méthode \texttt{super(String)} (le super constructeur). Cette méthode reçoit une chaîne de caractères représentant le nom de notre sous-système. Ce \texttt{String} est en quelque sorte une étiquette qui est attribué à notre sous-système pour mieux le repérer lorsque nous aurons à faire du débogage. 
+
+Dans le constructeur, on instancie les attributs de notre sous-système. Remarquez que pour chaque composante, on appelle également la méthode \texttt{addChild}. Son rôle est d'associer une étiquette à notre composante et de spécifier que c'est un « enfant » (\textit{child}) de notre sous-système. Cela rendra la structure de notre robot plus claire lors du débogage.
+
+\begin{code}
+// Le constructeur d'un sous-système
+public Intake() {
+	
+	moteur = new VictorSP(3);
+	addChild("Moteur", moteur);	
+	// ...
+}
+\end{code}
 
 \subsection{Ajouter une commande par défaut}
 Lorsqu'aucune commande en cours d'exécution n'utilise un sous-système, celui-ci peut démarrer une commande automatiquement. On appelle cette commande la \textbf{commande par défaut du sous-système}. Par exemple, la commande \texttt{Piloter} est habituellement la commande par défaut du sous-système \texttt{BasePilotable}. Cependant, plusieurs sous-systèmes n'en ont pas besoin.
 
-Pour ajouter une commande par défaut à un sous-système, il suffit d'utiliser \texttt{setDefaultCommand} dans la méthode \texttt{initDefaultCommand} (voir l'exemple précédent).
+Pour ajouter une commande par défaut à un sous-système, il suffit d'utiliser \texttt{setDefaultCommand} dans la méthode \texttt{initDefaultCommand}.
+
+\begin{code}
+public class BasePilotable extends Subsystem {
+  // ...
+  @Override
+  public void initDefaultCommand() {
+    setDefaultCommand(new Piloter());
+  }
+}
+\end{code}
 
 \subsection{Ajouter des méthodes à un sous-système}
-Un sous-système n'est pas complet tant qu'on ne lui ajoute pas de méthodes. 
+Un sous-système n'est pas complet tant qu'on ne lui ajoute pas de méthodes. Les méthodes d'un sous-système sont habituellement publiques et ont la forme suivante.
 
+\begin{tcolorbox}[enhanced,colframe=ultRed,
+	title={La déclaration d'une méthode dans un sous-système},
+	sharp corners=south,
+	boxsep = 1.5mm]
+\texttt{{\color{ultRed}public}} {\color[RGB]{255, 34, 12} typeRetour} {\color[RGB]{12, 190, 12} nomMéthode} \texttt{() \{}\\[2pt]
+	\hspace*{0.5cm} {\color[RGB]{63, 136, 197} instruction1};\\[7pt]
+	\hspace*{0.5cm} ... \texttt{// Autres instructions ou calculs}\\[7pt]
+	\hspace*{0.5cm} \texttt{{\color{ultRed}return}} {\color[RGB]{255, 34, 12}valeur}\texttt{;} \texttt{// Facultatif, dépend du type de retour}\\[2pt]
+	\texttt{\}}
+%
+\end{tcolorbox}
 
+Un sous-système a habituellement deux types de méthodes : celles qui effectuent des actions, et celles qui retournent une information. 
+
+La majorité des méthodes qui effectuent des actions ne retournent pas d'information. Leur type de retour est donc \texttt{void}, pour indiquer qu'elles ne retournent rien.
+
+Par exemple, on veut que notre sous-système ait comme fonctionnalité de prendre un ballon. On lui ajoute la méthode \texttt{prendreBallon()}. Pour prendre un ballon, on doit activer son moteur. Cette méthode effectue une action pure : elle n'a pas a retourner d'information. C'est pourquoi son type de retour est \texttt{void}. 
+
+\begin{code}
+public void prendreBallon() {
+  moteur.set(0.5);
+}
+\end{code}
+
+On veut également que notre sous-système puisse nous dire lorsqu'il a un ballon ou non. Cette méthode n'effectuera pas d'action : son rôle est uniquement de nous donner une information. Comme l'information qui nous intéresse est de type booléen, ce sera le type de retour de notre méthode. 
+
+\begin{code}
+public boolean aUnBallon() {
+  return limitSwitch.get();
+}
+\end{code}
+
+Pour savoir si l'intake a un ballon, il suffit de retourner l'état de notre \texttt{limit switch}.
 
 \section{Créer une commande}
 
+\begin{enumerate}
+	\item Dans le dossier \commande{src}, cliquez à droite sur le dossier \commande{commands}, puis sélectionnez\\ \commande{Create a new class/command}.
+	\item Dans le menu affiché, sélectionnez \commande{Command}.
+	\item Saisissez le nom de votre sous-système. Il doit commencer par une majuscule et être sans espace.
+\end{enumerate}
+
+Votre classe sera créée avec plusieurs méthodes vides. Voici un exemple utilisant le sous-système que nous avons créé précédemment.
+
+\begin{MyTCB}[breakable]{Création d'une commande}
+public class LancerBallon extends Command {
+  public LancerBallon() {
+    // Use requires() here to declare subsystem dependencies
+    requires(Robot.intake);
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+  }
+
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    Robot.intake.lancerBallon();
+  }
+
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return Robot.intake.aUnBallon();
+  }
+
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+    Robot.intake.arreterMoteur();
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+    end();
+  }
+}
+\end{MyTCB}
+
+
+
 \subsection{Le constructeur}
+Dans le constructeur, on doit spécifier les sous-systèmes que la commande utilise. Pour ce faire, on appelle la méthode \texttt{requires} pour chaque sous-système utilisé.
 
-\subsubsection{La méthode \texttt{initialise()}}
-\subsubsection{La méthode \texttt{execute()}}
-\subsubsection{La méthode \texttt{isFinished()}}
-\subsubsection{La méthode \texttt{end()}}
-\subsubsection{La méthode \texttt{interrupted()}}
+\begin{code}
+public LancerBallon() {
+	requires(Robot.intake);
+	// Autres sous-systèmes, si nécessaire
+	// requires(Robot.basePilotable);
+	// ...
+}
+\end{code}
 
-\subsubsection{Ajouter un délai avec \texttt{setTimeout(double)}}
+\subsection{Cycle de vie d'une commande}
+Le cycle de vie d'une commande est entièrement géré par le \texttt{Scheduler}. C'est lui qui décide quand les commandes sont démarrées et arrêtées. 
+\begin{figure}[H]
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+action/.style={rectangle, draw=green!60, fill=green!5, very thick, minimum size=7mm, text width=6cm, inner sep=0.25cm, rounded corners, align=center},
+question/.style={rectangle, draw=blue!60, fill=blue!5, very thick, minimum size=7mm, text width=6cm, inner sep=0.25cm, rounded corners, align=center}
+]
+	\node[question] (n1)	at (0,0) {La commande est démarrée.};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n2) at (n1.south)	{\texttt{initialize()}};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n3) at (n2.south)	{\texttt{execute()}};
+	\node[question, anchor=north, shift={(0mm,-5mm)}] (n4) at (n3.south)	{\texttt{isFinished()}};
+	\node[question, anchor=north, shift={(0mm,-15mm)}] (n5) at (n4.south)	{Une nouvelle commande a-t-elle besoin d'un sous-système utilisé par cette commande?};
+	\node[action, anchor=west, shift={(20mm,0mm)}] (n6) at (n4.east)	{\texttt{end()}};
+	\node[action, anchor=west, shift={(20mm,0mm)}] (n7) at (n5.east)	{\texttt{interrupted()}};
+	
+	\draw[->] (n1) -- (n2);
+	\draw[->] (n2) -- (n3);
+	\draw[->] (n3) -- (n4);
+	\draw[->] (n4) -- node[right] {\texttt{false}} (n5);
+	\draw[->] (n5.west) .. controls +(left:1.5cm) and +(left:1.5cm) .. node[left] {Non} (n3.west);	
+	\draw[->] (n4) -- node[above] {\texttt{true}} (n6);
+	\draw[->] (n6.north) .. controls +(up:3cm) and +(right:3cm) .. ([yshift=-0.15cm]n1.east);	
+	\draw[->] (n5) -- node[above] {Oui} (n7);
+	\draw[->] (n7.east) .. controls +(right:2cm) and +(right:12cm) .. ([yshift=0.15cm]n1.east);	
+\end{tikzpicture}}
+ \caption{Le cycle de vie d'une commande.}
+\end{figure}
+
+\subsection{La méthode \texttt{initialize()}}
+La méthode \texttt{initialize()} est appelé une seule fois, lorsque la commande est démarrée. C'est le bon endroit pour remettre à zéro des capteurs comme des encodeurs ou un gyro.
+
+\begin{code}
+\Override
+public void initialize() {
+	// On réinitialise le gyro au début de la commande
+	Robot.basePilotable.resetGyro();
+}
+\end{code}
+
+\subsection{La méthode \texttt{execute()}}
+La méthode \texttt{execute()} est le coeur de la commande. Elle sera exécutée en boucle, tant que la commande est exécutée.
+
+\begin{code}
+\Override
+public void execute() {
+	// Tant que la commande s'exécute, on active le moteur pour prendre un ballon
+	Robot.intake.prendreBallon();
+}
+\end{code}
+
+\subsection{La méthode \texttt{isFinished()}}
+Contrairement aux autres, la méthode \texttt{isFinished()} retourne un booléen. Le système s'en sert pour déterminer si une commande est terminée. Si la méthode retourne \texttt{true}, alors la commande s'arrêtera par elle-même. Sinon, elle continue, et \texttt{execute()} sera appelée une nouvelle fois. Dans notre exemple, on veut que la commande s'arrête dès que l'intake a attrapé un ballon.
+
+\begin{code}
+@Override
+public boolean isFinished() {
+  return Robot.intake.aUnBallon();
+}
+\end{code}
+
+Dans certains cas, on veut que la commande ne se termine jamais par elle-même. C'est le cas de la commande de pilotage. Dans ce cas, on retourne toujours \texttt{false}.
+
+\begin{code}
+@Override
+public boolean isFinished() {
+  return false;
+}
+\end{code}
+
+Si on veut que la commande se termine instantanément, il suffit de retourner \texttt{true}.
+
+\subsection{La méthode \texttt{end()}}
+La méthode \texttt{end()} est appelée lorsque la commande s'est terminée par elle-même. Par exemple, on peut donc y arrêter les moteurs qui étaient en cours d'utilisation.
+
+\begin{code}
+@Override
+public void end() {
+  Robot.intake.arreterMoteur();
+}
+\end{code}
+
+\subsection{La méthode \texttt{interrupted()}}
+La méthode \texttt{interrupted()} est appelée lorsque la commande est interrompue par une autre commande et qu'elle doit s'arrêter abruptement. Elle est souvent similaire à \texttt{end()}. On peut donc la réutiliser.
+
+\begin{code}
+@Override
+public void interrupted() {
+  end();
+}
+\end{code}
+
+\subsection{Ajouter un délai avec \texttt{setTimeout(double) et \texttt{isTimedOut()}}}
+Il est souvent utile de spécifier un délai à une commande. Par exemple, en mode autonome, on pourrait avoir besoin d'une commande qui fait avancer le robot en ligne droite pendant 3 secondes.
+
+\begin{MyTCB}{Commande avec délai}
+public class AvancerLigneDroite extends Command {
+  
+  public AvancerLigneDroite() {
+    requires(Robot.basePilotable);
+    setTimeout(3);
+  }
+
+  @Override
+  protected void initialize() {
+  }
+
+  @Override
+  protected void execute() {
+    Robot.basePilotable.avancer();
+  }
+
+  @Override
+  protected boolean isFinished() {
+    return isTimedOut();
+  }
+
+  @Override
+  protected void end() {
+    Robot.basePilotable.arreterMoteurs();
+  }
+
+  @Override
+  protected void interrupted() {
+    end();
+  }
+}
+\end{MyTCB}
+
+On spécifie le délai dans le constructeur avec la méthode \texttt{setTimeout(double)}. Le nombre passé en paramètres correspond au délai, en secondes. La commande se terminera donc après 3 secondes.
+
+\begin{code}
+	setTimeout(3.0);
+\end{code}
+
+Il faut également vérifier si le délai a été dépassé dans la méthode \texttt{isFinished()}.
+
+\begin{code}
+@Override
+protected boolean isFinished() {
+  return isTimedOut();
+}
+\end{code}
+
+On peut combiner un délai à une autre condition. Dans l'exemple suivant, la commande se termine si on dépasse le délai ou si on attrape un ballon.
+
+\begin{code}
+@Override
+protected boolean isFinished() {
+  return isTimedOut() || Robot.intake.aUnBallon();
+}
+\end{code}
+
 
 \subsection{Lier un bouton à une commande dans la classe \texttt{OI}}
+Par convention, les boutons sont liés aux commandes dans la classe \texttt{OI} (l'interface opérateur, \textit{operator interface} en anglais). 
+
+\begin{MyTCB}{L'interface opérateur}
+public class OI {
+
+  private Joystick joystick;
+  private JoystickButton button1;
+  private JoystickButton button2;
+
+  public OI() {
+
+    joystick = new Joystick(0);
+
+    button1 = new JoystickButton(joystick, 1);
+    button1.whileHeld(new PrendreBallon());
+
+    button2 = new JoystickButton(joystick, 2);
+    button2.whenPressed(new LancerBallon());
+
+  }
+
+}
+\end{MyTCB}
+
+Dans un premier temps, on déclare les joysticks et les boutons comme attributs privés au haut de notre classe. Ensuite, dans le constructeur, on les intancie. Le constructeur d'un \texttt{JoystickButton} reçoit en paramètres le \texttt{Joystick} auquel il est lié et son numéro.
+
+Pour démarrer une commande au moment où un bouton est appuyé, on utilise la méthode \texttt{whenPressed}.
+
+\begin{code}
+button2.whenPressed(new LancerBallon());
+\end{code}
+
+Dans certains cas, on veut qu'une commande soit exécutée tant qu'on maintient le bouton appuyé. On utilise alors la méthode \texttt{whileHeld}.
+
+\begin{code}
+button1.whileHeld(new PrendreBallon());
+\end{code}
+
+De plus, il est possible de démarrer une commande en appuyant sur un bouton, puis de l'annuler en réappuyant sur le même bouton. Le bouton agit alors comme un interrupteur. La méthode \texttt{toggleWhenPressed} a été créé pour répondre à ce besoin.
+
+\begin{code}
+button1.toggleWhenPressed(new PrendreBallon());
+\end{code}
 
 \section{Les groupes de commandes}
 
@@ -1848,7 +2174,9 @@ Waitcommand, WaitForchildren
 
 Créer des sous-groupes de commandes
 
-\subsection{Le processus de création d'une commande}
+\section{Le processus de création d'une commande}
+
+Contrairement à ce qui a été présenté jusqu'à présent, il est rare que l'on sait exactement les méthodes dont un sous-système aura besoin avant de créer une commande. 
 
 \resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[
@@ -1856,12 +2184,12 @@ action/.style={rectangle, draw=green!60, fill=green!5, very thick, minimum size=
 question/.style={rectangle, draw=blue!60, fill=blue!5, very thick, minimum size=7mm, text width=6cm, inner sep=0.25cm, rounded corners}
 ]
 	\node[action] (n1)	at (0,0)	{Créer un fichier pour la commande.};
-	\node[action, anchor=north, shift={(0mm,-5mm)}] (n2) at (n1.south)	{Appeler \texttt{super("...")} dans le constructeur pour donner un nom à la commande.};
-	\node[question, anchor=north, shift={(0mm,-5mm)}] (n3)  at (n2.south)	{Déterminer les sous-systèmes que la commande va utiliser. Est-ce que je dois en ajouter un nouveau?};
+	%\node[action, anchor=north, shift={(0mm,-5mm)}] (n2) at (n1.south)	{Appeler \texttt{super("...")} dans le constructeur pour donner un nom à la commande.};
+	\node[question, anchor=north, shift={(0mm,-5mm)}] (n3)  at (n1.south)	{Déterminer les sous-systèmes que la commande va utiliser. Est-ce que je dois en ajouter un nouveau?};
 	\node[action, anchor=west, shift={(20mm,0mm)}] (n4) at (n3.east)	{Créer un fichier pour le sous-système.};
-	\node[action, anchor=north, shift={(0mm,-5mm)}] (n5) at (n4.south)	{Appeler \texttt{super("...")} dans le constructeur pour donner un nom au sous-système.};
-	\node[action, anchor=north, shift={(0mm,-5mm)}] (n6) at (n5.south)	{Ajouter les composantes du sous-système comme attributs privés (\texttt{private}).};
-	\node[action, anchor=north, shift={(0mm,-5mm)}] (n7) at (n6.south)	{Instancier (\texttt{new}) ces composantes dans les constructeurs et ajouter les ports nécessaires à la classe \texttt{K}.};
+	% \node[action, anchor=north, shift={(0mm,-5mm)}] (n5) at (n4.south)	{Appeler \texttt{super("...")} dans le constructeur pour donner un nom au sous-système.};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n6) at (n4.south)	{Ajouter les composantes du sous-système comme attributs privés (\texttt{private}).};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n7) at (n6.south)	{Instancier (\texttt{new} et \texttt{addChild}) les composantes dans le constructeur et ajouter les ports nécessaires à la classe \texttt{K}.};
 	\node[action, anchor=north, shift={(0mm,-5mm)}] (n8) at (n7.south)	{Ajouter le sous-système dans le haut de classe Robot comme attribut public statique final.};
 	\node[action, anchor=north, shift={(0mm,-10mm)}] (n9)  at (n3.south)	{Appeler la méthode \texttt{require(subsystem)} pour chaque sous-système dans le constructeur de la commande.};
 	\node[question, anchor=north, shift={(0mm,-5mm)}] (n10)  at (n9.south)	{Déterminer les sous-actions que la commande va faire et les informations dont elle aura besoin. Vérifier si les sous-systèmes ont des méthodes qui correspondent à ces besoins. Est-ce que je dois créer une nouvelle méthode?};
@@ -1870,11 +2198,11 @@ question/.style={rectangle, draw=blue!60, fill=blue!5, very thick, minimum size=
 	\node[action, anchor=north, shift={(0mm,-5mm)}] (n13) at (n12.south) {Tester!};
 	\node[action, anchor=east, shift={(-20mm,0mm)}] (n14) at (n10.west)	{Aller dans le fichier du sous-système correspondant.};
 	\node[action, anchor=north, shift={(0mm,-5mm)}] (n15) at (n14.south)	{Créer une méthode publique dans la classe. Si la commande a besoin d'une information, le type de retour doit être le même que l'information (par exemple, \texttt{double} si hauteur, \texttt{boolean} si état d'une \textit{switch}). Si la méthode effectue une action pure, la méthode ne retourne rien et est de type \texttt{void}. N'oubliez d'effectuer des vérifications, si nécessaire, et d'ajouter des constantes dans la classe \texttt{K}.};
-	\draw[->] (n1) -- (n2);
-	\draw[->] (n2) -- (n3);
+	% \draw[->] (n1) -- (n2);
+	\draw[->] (n1) -- (n3);
 	\draw[->] (n3) -- node[above] {Oui} (n4);
-	\draw[->] (n4) -- (n5);
-	\draw[->] (n5) -- (n6);
+	% \draw[->] (n4) -- (n5);
+	\draw[->] (n4) -- (n6);
 	\draw[->] (n6) -- (n7);
 	\draw[->] (n7) -- (n8);
 	\draw[->] (n8.west) .. controls +(left:2cm) and +(right:2cm) .. ([yshift=-0.35cm]n3.east);
