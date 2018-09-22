@@ -1,10 +1,9 @@
 %-----------------------------------------------------------
-%-----------------------------------------------------------
+%
 %	Guide d'introduction à Java et WPILib
 %	Par Étienne Beaulac
 %	Ultime 5528
-%	Mai 2017
-%-----------------------------------------------------------
+%
 %-----------------------------------------------------------
 
 
@@ -87,7 +86,7 @@
 \tcbuselibrary{minted, skins, xparse, breakable}
 
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, shapes.geometric}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning}
 
 % Ne pas copier les numéros de lignes de code
 \usepackage{accsupp}
@@ -174,6 +173,8 @@
 %Espace entre les notes de bas de page
 \setlength{\footnotesep}{0.95\baselineskip}
 
+% commande pour subsubsubsection
+\newcommand{\subsubsubsection}[1]{\paragraph{#1}\mbox{}\\}
 
 
 %----------------------------------------------------
@@ -1104,14 +1105,11 @@ public class ValidationNaissance {
 \section{Les \textit{else if} multiples}
 
 
-\part{La programmation orientée objet}
-
-
 \part{La librairie WPILib}
 
 \chapter{La classe \texttt{TimedRobot}}
 
-\section{Création d'un projet}
+\section{Création d'un projet}\label{creationProjetRobot}
 Jusqu'à présent, le coeur de vos programmes se trouvait dans la méthode \texttt{main}. Cependant, le comportement d'un robot est plus complexe qu'une simple méthode. Vos prochains programmes auront comme base la classe \texttt{Robot}, héritant de \texttt{TimedRobot}.
 
 \begin{enumerate}
@@ -1515,19 +1513,11 @@ De plus, certains gyros plus complexes mesurent la rotation autour de 3 axes dif
   \input{axes.pdf_tex}
   \caption[Les angles mesurés par un gyroscope à 3 axes (X, Y et Z)]{Les angles mesurés par un gyroscope à 3 axes (X, Y et Z) \footnotemark{}}
 \end{figure}
-\footnotetext{By Yaw\_Axis.svg: Auawisederivative work: Jrvz (Yaw\_Axis.svg) [CC BY-SA 3.0 (\url{https://creativecommons.org/licenses/by-sa/3.0})], via Wikimedia Commons}
+\footnotetext{By Yaw\_Axis.svg: Auawisederivative work: Jrvz (Yaw\_Axis.svg) [CC BY-SA 3.0 (\url{https://creativecommons.org/licenses/by-sa/3.0})], via Wikimedia Commons.}
 
 Habituellement, l'angle qui nous intéresse et celui représenté par l'axe \textit{yaw}. Il faut donc faire quelques tests pour déterminer s'il s'agit de l'axe des X, des Y ou des Z de notre gyro.
 
-Un des ces gyros est l'\texttt{ADIS16448\_IMU}\footnote{En réalité, ce capteur est bien plus qu'un gyro : c'est un IMU (\textit{Inertial Measurement Unit}). Voir \ref{adis16448}.}. Cette classe n'est pas incluse dans WPILib : elle peut être \href{https://github.com/juchong/ADIS16448-RoboRIO-Driver/blob/master/Java/src/main/java/com/analog/adis16448/frc/ADIS16448_IMU.java}{télécharger ici}.
-
-\begin{code}
-ADIS16448_IMU adis = new ADIS16448_IMU();
-// Il faut tester pour savoir lesquels correspondent à X, Y et Z.
-double angleX = adis.getRoll();
-double angleY = adis.getPitch();
-double angleZ = adis.getYaw();
-\end{code}
+Un des ces capteurs est l'\texttt{ADIS16448\_IMU}. Voir \ref{adis16448}.
 
 \begin{MyTCB}{Utilisation d'un gyro}
 
@@ -1576,7 +1566,7 @@ Dans le programme précédent, le mode autonome fait effectuer au robot une rota
 public class LigneDroiteGyro extends TimedRobot {
 
 	// Constante de correction
-	private static final double K_ANGLE = -0.03; 
+	private static final double K_ANGLE = -0.1; 
 
 	private ADXRS450_Gyro gyro;
 	private VictorSP moteurGauche, moteurDroit;
@@ -1607,16 +1597,297 @@ public class LigneDroiteGyro extends TimedRobot {
 }
 \end{MyTCB}
 
+Ce programme fait avancer le robot en ligne droite pendant tout le mode autonome. On pourrait penser que l'instruction \texttt{drive.arcadeDrive(0.5, 0.0)} (50 \% de puissance vers l'avant, et 0 \% de rotation) est suffisante pour faire avancer le robot. Cependant, le robot va dévier dès que les forces de chaque moteur ne sont pas tout à fait les mêmes ou que le poids du robot n'est pas réparti parfaitement.
+
+Pour corriger la rotation, on envoit comme paramètre une valeur qui dépend de l'angle mesuré par le gyro.
+
+\begin{center}
+\begin{tabularx}{0.75\linewidth}{X X}\toprule
+\textbf{Angle du gyro} & \textbf{Valeur de rotation envoyée} \\ \midrule
+-3° & 0.3 \\
+-2° & 0.2 \\
+-1° & 0.1 \\
+0° & 0 \\
+1° & -0.1 \\
+2° & -0.2 \\
+etc. \\ \bottomrule
+\end{tabularx}
+\end{center}
+
+Si l'angle est de zéro (le robot est droit), alors $K\_ANGLE \times 0 = -0.1 \times 0 = 0$. Si l'angle est de 1°, alors la valeur -0.1 sera envoyé, etc. La constante \texttt{K\_ANGLE} fait varier la rapidité de la correction : il faut l'ajuster selon la réaction de notre robot.
+
 
 \section{Les encodeurs}
 
+Les encodeurs sont des capteurs qui mesurent la rotation \textbf{relative} de composantes du robot. Contrairement aux potentiomètres, les encodeurs se réinitialisent lorsque l'on éteint le robot. Par contre, ils n'ont aucune limite de rotation : c'est pourquoi on les utilise, par exemple, pour mesurer la distance parcourue (nombre de tours) par les roues de la base pilotable.
+
+\begin{MyTCB}{Utilisation d'un encodeur}
+
+public class UtilisationEncodeur extends TimedRobot {
+
+	private Encoder encoder;
+	private VictorSP moteurGauche, moteurDroit;
+	private DifferentialDrive drive;
+	
+	@Override
+	public void robotInit() {
+	
+		encoder = Encoder(2, 3); // Ports digitaux 2 et 3
+		encoder.setDistancePerPulse(0.0002262);
+
+		moteurGauche = new VictorSP(0); // Port PWM 0
+		moteurDroit = new VictorSP(1); // Port PWM 1
+		drive = new DifferentialDrive(moteurGauche, moteurDroit);
+
+	}
+	
+	@Override
+	public void autonomousInit() {
+		encoder.reset();
+	}
+	
+	@Override
+	public void autonomousPeriodic() {
+
+		if(encoder.getDistance() <= 2.0)
+			drive.arcadeDrive(0.5, 0.0); // avancer 50%, tourner 0.0
+			
+		else
+			drive.setMotors(0.0, 0.0);		
+		
+	}
+
+}
+
+\end{MyTCB}
+
+Dans ce programme autonome, le robot avance de 2 mètres, puis s'immobilise. Comme avec le gyro, on appelle la méthode \texttt{reset()} dans \texttt{autonomousInit()} pour réinitialiser l'encodeur. 
+
+En réalité, un encodeur ne calcule pas de distance ; il envoie au RoboRIO un signal (un \textit{pulse}) à chaque fois qu'il tourne de quelques degrés. Pour transformer ces \textit{pulses} en distance réelle (par exemple, en mètres), on utilise la méthode \texttt{setDistancePerPulse(double)}. La valeur donnée en paramètre doit être calculée selon les spécifications de l'encodeur et le diamètre de nos roues. C'est pourquoi la méthode \textit{getDistance()} retourne une distance en mètres.
+
+\section{ADIS16448\_IMU}\label{adis16448}
+
+Ce capteur est bien plus qu'un gyro : c'est un IMU (\textit{Inertial Measurement Unit}), c'est-à-dire qu'il mesure différentes  Cette classe n'est pas incluse dans WPILib : elle peut être \href{https://github.com/juchong/ADIS16448-RoboRIO-Driver/blob/master/Java/src/main/java/com/analog/adis16448/frc/ADIS16448_IMU.java}{télécharger ici}.
+
+\begin{code}
+ADIS16448_IMU adis = new ADIS16448_IMU();
+// Il faut tester pour savoir lesquels correspondent à X, Y et Z.
+double angleX = adis.getRoll();
+double angleY = adis.getPitch();
+double angleZ = adis.getYaw();
+
+double accelX = adis.getAccelX();
+double accelY = adis.getAccelY();
+double accelZ = adis.getAccelZ();
+\end{code}
+
+Ce capteur peut également mesurer le champ magnétique dans les trois axes, la pression barométrique et la température.
+
 \section{Les autres capteurs}
+
+Les capteurs utilisés en FRC sont multiples : de nouveaux modèles sont créés chaque année et il est de notre responsabilité de s'informer de ce qui nous est offert. La documentation de WPILib est également l'endroit tout désigné pour en apprendre davantage. En voici quelques-uns que nous utilisons plus rarement.
 
 \subsection{Les accéléromètres}
 
+Un accéléromètre, comme son nom l'indique, mesure l'accélération. Comme les gyros, il la mesure habituellement dans trois différents axes (X, Y et Z). Par exemple, on peut l'utiliser pour détecter si le robot fonce dans un obstacle (décélération vers l'arrière). Le RoboRIO est équipé d'un accéléromètre de base : on y accède avec la classe \texttt{BuiltInAccelerometer}.
+
+\begin{code}
+BuiltInAccelerometer accel = new BuiltInAccelerometer();
+
+double accelX = accel.getX();
+double accelY = accel.getY();
+double accelZ = accel.getZ();
+\end{code}
+
+
 \subsection{Les capteurs ultrasons}
 
-\subsection{ADIS16448\_IMU}\label{adis16448}
+Un capteur ultrason mesure la distance entre lui et un obstacle. Ils ont une portée limitée. Certains sont branchés à deux ports digitaux (DIO).
 
+\begin{code}
+Ultrasonic ultra = new Ultrasonic(8, 9); // Ports DIO 8 et 9
+ultra.setAutomaticMode(true); // Démarre l'envoi d'ultrasons
+double dist = ultra.getRangeInches();
+\end{code}
+
+D'autres modèles sont analogues : ils retournent donc un voltage.
+
+\begin{code}
+AnalogInput ultra = new AnalogInput(3); // Port analogue 3
+double distance = VOLT_VERS_CM * ultra.getAverageVoltage();
+\end{code}
+
+Dans cet exemple, on multiple le voltage mesuré par une constante (différente pour chaque modèle) afin de convertir les volts en centimètres.
+
+
+\chapter{Commandes et sous-systèmes}
+
+Jusqu'à présent, tous vos programmes étaient contenus dans une seule classe : la classe \texttt{Robot}. Bien que ce soit adéquat pour des projets simples, un vrai robot est beaucoup plus complexe. Il serait d'ailleurs assez difficile de travailler en équipe sur un seul fichier. C'est pourquoi nous aborderons la création de commandes (\textit{command based programming}).
+
+\section{Une nouvelle façon d'organiser nos idées}
+
+Cette manière de programmer est basée deux concepts principaux : les commandes et les sous-systèmes. 
+
+Un \textbf{sous-système} est un regroupement logique de différentes composantes du robot. Par exemple :
+
+\begin{itemize}
+	\item les deux moteurs qui font rouler le robot peuvent former le sous-système \texttt{BasePilotable};
+	\item le moteur relié au shooter et l'encodeur qui mesure sa vitesse peuvent former le sous-système \texttt{Shooter};
+	\item les moteurs qui servent à prendre un ballon et la \textit{limit switch} qui détecte si le robot en possède un peuvent former le sous-système \texttt{Intake}.
+\end{itemize}
+
+Chaque composante du robot doit être contenu par un seul sous-système. C'est le rôle du programmeur de bien les répartir. Cette tâche délicate peut avoir de graves conséquences sur le programme : nous aborderons pourquoi plus bas. 
+
+Une  \textbf{commande} est une action que peut effectuer le robot à l'aide d'un ou plusieurs sous-systèmes. Par exemple :
+
+\begin{itemize}
+	\item \texttt{AvancerLigneDroite} est une commande qui utilise le sous-système \texttt{BasePilotable}; 
+	\item \texttt{LancerBalles} est une commande qui utilise le sous-système \texttt{Shooter};
+	\item \texttt{PrendreBallon} est une commande qui utilise le sous-système \texttt{Intake};
+	\item \texttt{AvancerEtLancerBalles} est une commande qui utilise les sous-systèmes \texttt{BasePilotable} et \texttt{Shooter}.
+\end{itemize}
+
+Chaque commande peut, par exemple, être lié à un bouton, qui activera la commande lorsqu'il est appuyé.
+
+Attention! Un sous-système peut être utilisé par une seule commande à la fois, ce qui est tout à fait logique. Par exemple, on ne veut pas que les commandes \texttt{PrendreBallon} et \texttt{LancerBallon} puissent s'exécuter en même temps, car elles utilisent toutes les deux le sous-système \texttt{Intake}. Il s'agit de la principale contrainte qu'on doit garder en tête lorsque l'on modélise les sous-systèmes de notre robot.
+
+\section{Créer un projet à base de commandes}
+
+Référez-vous à la section \ref{creationProjetRobot}. À l'option \commande{Select a project base}, choisissez \commande{Command robot}.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.9\textwidth]{creation-command-robot.png}
+  \caption{La hiérarchie d'un nouveau projet \textit{Command robot}.}
+\end{figure}
+
+\section{Créer un sous-système}
+
+\begin{enumerate}
+	\item Dans le dossier \commande{src}, cliquez à droite sur le dossier \commande{subsystems}, puis sélectionnez\\ \commande{Create a new class/command}.
+	\item Dans le menu affiché, sélectionnez \commande{Subsystem}.
+	\item Saisissez le nom de votre sous-système. Il doit commencer par une majuscule et être sans espace.
+\end{enumerate}
+
+Comme on le faisait dans la classe \texttt{Robot}, on doit ajouter les composantes de notre sous-système dans le haut de la classe. Voici un exemple avec un sous-système nommé \texttt{BasePilotable}.
+
+\begin{MyTCB}{Les attributs et le constructeur d'un sous-système}
+/**
+ * Sous-système de l'intake.
+ * Son rôle est de prendre et relâcher un ballon.
+ * Il comprend un moteur, un encodeur (pour calculer la vitesse de
+ * rotation du moteur) et une limit switch, pour savoir
+ * lorsqu'un ballon a été attrapé.
+ */
+public class Intake extends Subsystem {
+  
+  private VictorSP moteur;
+  private Encoder encoder;
+  private DigitalInput limitSwitch;
+
+  public Intake() {
+
+    super("Intake");
+
+    moteur = new VictorSP(3);
+    addChild("Moteur", moteur);
+
+    encoder = new Encoder(0, 1);
+    addChild("Encoder", encoder);
+
+    limitSwitch = new DigitalInput(2);
+    addChild("Limit switch", limitSwitch);
+
+  }
+
+  @Override
+  public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
+  }
+}
+\end{MyTCB}
+
+\subsection{Le constructeur}
+
+Après avoir déclaré les trois attributs dans le haut de notre classe, nous les instancions (avec \texttt{new}) dans ce qu'on appelle le \textbf{constructeur} de notre classe. Il s'agit d'une méthode publique, sans type de retour, et dont le nom est le même que la classe. Comme son nom l'indique, le constructeur est appelé lorsque notre intake sera construit dans la mémoire du RoboRIO. C'est un peu l'équivalent de \texttt{robotInit}, mais pour un sous-système. 
+
+Dans le constructeur, la première chose à faire est d'appeler la méthode \texttt{super(String)} (le super constructeur). Cette méthode reçoit une chaîne de caractères représentant le nom de notre sous-système. Ce \texttt{String} est en quelque sorte une étiquette qui est attribué à notre sous-système pour mieux le repérer lorsque nous aurons à faire du débogage. 
+
+Par la suite, on instancie les attributs de notre sous-système. Remarquez que pour chaque composante, on appelle également la méthode \texttt{addChild}. Son rôle est d'associer une étiquette à notre composante et de spécifier que c'est un « enfant » (\textit{child}) de notre sous-système. Cela rendra également la structure de notre robot plus claire lors du débogage.
+
+\subsection{Ajouter une commande par défaut}
+Lorsqu'aucune commande en cours d'exécution n'utilise un sous-système, celui-ci peut démarrer une commande automatiquement. On appelle cette commande la \textbf{commande par défaut du sous-système}. Par exemple, la commande \texttt{Piloter} est habituellement la commande par défaut du sous-système \texttt{BasePilotable}. Cependant, plusieurs sous-systèmes n'en ont pas besoin.
+
+Pour ajouter une commande par défaut à un sous-système, il suffit d'utiliser \texttt{setDefaultCommand} dans la méthode \texttt{initDefaultCommand} (voir l'exemple précédent).
+
+\subsection{Ajouter des méthodes à un sous-système}
+Un sous-système n'est pas complet tant qu'on ne lui ajoute pas de méthodes. 
+
+
+
+\section{Créer une commande}
+
+\subsection{Le constructeur}
+
+\subsubsection{La méthode \texttt{initialise()}}
+\subsubsection{La méthode \texttt{execute()}}
+\subsubsection{La méthode \texttt{isFinished()}}
+\subsubsection{La méthode \texttt{end()}}
+\subsubsection{La méthode \texttt{interrupted()}}
+
+\subsubsection{Ajouter un délai avec \texttt{setTimeout(double)}}
+
+\subsection{Lier un bouton à une commande dans la classe \texttt{OI}}
+
+\section{Les groupes de commandes}
+
+addsequential, addparallel
+
+Waitcommand, WaitForchildren
+
+Créer des sous-groupes de commandes
+
+\subsection{Le processus de création d'une commande}
+
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+action/.style={rectangle, draw=green!60, fill=green!5, very thick, minimum size=7mm, text width=6cm, inner sep=0.25cm, rounded corners},
+question/.style={rectangle, draw=blue!60, fill=blue!5, very thick, minimum size=7mm, text width=6cm, inner sep=0.25cm, rounded corners}
+]
+	\node[action] (n1)	at (0,0)	{Créer un fichier pour la commande.};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n2) at (n1.south)	{Appeler \texttt{super("...")} dans le constructeur pour donner un nom à la commande.};
+	\node[question, anchor=north, shift={(0mm,-5mm)}] (n3)  at (n2.south)	{Déterminer les sous-systèmes que la commande va utiliser. Est-ce que je dois en ajouter un nouveau?};
+	\node[action, anchor=west, shift={(20mm,0mm)}] (n4) at (n3.east)	{Créer un fichier pour le sous-système.};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n5) at (n4.south)	{Appeler \texttt{super("...")} dans le constructeur pour donner un nom au sous-système.};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n6) at (n5.south)	{Ajouter les composantes du sous-système comme attributs privés (\texttt{private}).};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n7) at (n6.south)	{Instancier (\texttt{new}) ces composantes dans les constructeurs et ajouter les ports nécessaires à la classe \texttt{K}.};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n8) at (n7.south)	{Ajouter le sous-système dans le haut de classe Robot comme attribut public statique final.};
+	\node[action, anchor=north, shift={(0mm,-10mm)}] (n9)  at (n3.south)	{Appeler la méthode \texttt{require(subsystem)} pour chaque sous-système dans le constructeur de la commande.};
+	\node[question, anchor=north, shift={(0mm,-5mm)}] (n10)  at (n9.south)	{Déterminer les sous-actions que la commande va faire et les informations dont elle aura besoin. Vérifier si les sous-systèmes ont des méthodes qui correspondent à ces besoins. Est-ce que je dois créer une nouvelle méthode?};
+	\node[action, anchor=north, shift={(0mm,-10mm)}] (n11) at (n10.south) {Compléter la commande en utilisant les méthodes des sous-systèmes requis. Utiliser \texttt{setTimeout(double)} et \texttt{isTimedOut()} si nécessaire.};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n12) at (n11.south) {Ajouter votre commande dans l'\texttt{OI} (par exemple, à un bouton ou sur le SmartDashboard).};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n13) at (n12.south) {Tester!};
+	\node[action, anchor=east, shift={(-20mm,0mm)}] (n14) at (n10.west)	{Aller dans le fichier du sous-système correspondant.};
+	\node[action, anchor=north, shift={(0mm,-5mm)}] (n15) at (n14.south)	{Créer une méthode publique dans la classe. Si la commande a besoin d'une information, le type de retour doit être le même que l'information (par exemple, \texttt{double} si hauteur, \texttt{boolean} si état d'une \textit{switch}). Si la méthode effectue une action pure, la méthode ne retourne rien et est de type \texttt{void}. N'oubliez d'effectuer des vérifications, si nécessaire, et d'ajouter des constantes dans la classe \texttt{K}.};
+	\draw[->] (n1) -- (n2);
+	\draw[->] (n2) -- (n3);
+	\draw[->] (n3) -- node[above] {Oui} (n4);
+	\draw[->] (n4) -- (n5);
+	\draw[->] (n5) -- (n6);
+	\draw[->] (n6) -- (n7);
+	\draw[->] (n7) -- (n8);
+	\draw[->] (n8.west) .. controls +(left:2cm) and +(right:2cm) .. ([yshift=-0.35cm]n3.east);
+	\draw[->] (n3) -- node[right] {Non} (n9);
+	\draw[->] (n9) -- (n10);
+	\draw[->] (n10) -- node[right] {Non} (n11);
+	\draw[->] (n11) -- (n12);
+	\draw[->] (n12) -- (n13);
+	\draw[->] (n10) -- node[above] {Oui} (n14);
+	\draw[->] (n14) -- (n15);
+	\draw[->] (n15.east) .. controls +(right:2cm) and +(left:2cm) .. ([yshift=-0.8cm]n10.west);
+\end{tikzpicture}}
+
+\part{Git et les logiciels de gestion de versions}
 
 \end{document}
