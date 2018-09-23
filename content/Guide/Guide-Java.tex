@@ -331,35 +331,35 @@ Le Java compte un nombre impressionnant d'utilisateurs. Une de ses forces est d'
 %--------------------------------------------------------
 % Section - Les environnements de développement intégré 
 %--------------------------------------------------------
-% TODO : Annexe A - Eclipse
+% 
 %
-\section{L'IDE Eclipse}
+\section{L'IDE Visual Studio Code}
 %
-Pour programmer, il est préférable d'utiliser un bon environnement de développement (\textbf{IDE}, ou \emph{Integrated Development Environment}). De tels logiciels comprennent un \textbf{éditeur de texte}, un \textbf{compilateur} et un \textbf{débogueur}. Nous utiliserons l'IDE Eclipse\footnote{Pour plus d'information concernant Eclipse, consultez ...} avec l'extension WPILib fournie par FIRST.
+Pour programmer, il est préférable d'utiliser un bon environnement de développement (\textbf{IDE}, ou \emph{Integrated Development Environment}). De tels logiciels comprennent un \textbf{éditeur de texte}, un \textbf{compilateur} et un \textbf{débogueur}. Nous utiliserons l'IDE Visual Studio Code\footnote{Pour plus d'informations concernant Visual Studio Code, consultez \href{https://code.visualstudio.com/docs}{code.visualstudio.com/docs}.} avec l'extension WPILib fournie par FIRST.
 
-Eclipse est disponible gratuitement sur \href{https://www.eclipse.org}{eclipse.org}. Vous devrez également vous assurer d'avoir installé une version récente du \href{http://www.oracle.com/technetwork/java/javase/downloads/index.html}{JDK} (\emph{Java Development Kit}). Les étapes d'installation sont également détaillées \href{http://wpilib.screenstepslive.com/s/4485/m/13809/l/599681-installing-eclipse-c-java}{ici}.
+Visual Studio Code est disponible gratuitement sur \href{https://code.visualstudio.com/}{code.visualstudio.com/}. Vous devrez également vous assurer d'avoir installé une version récente du \href{http://www.oracle.com/technetwork/java/javase/downloads/index.html}{JDK 8} (\emph{Java Development Kit}). Les étapes d'installation sont également détaillées \href{http://wpilib.screenstepslive.com/s/currentCS/m/79833/l/932382-installing-vs-code}{ici}.
 
 % Image - Interface principale de Eclipse
 %
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=\textwidth]{interface-eclipse.png}
-  \caption{L'interface principale de Eclipse.}
+  \includegraphics[width=\textwidth]{vs-code-interface.png}
+  \caption{L'interface principale de Visual Studio Code.}
 \end{figure}
 %
-Eclipse est un logiciel ayant plusieurs fonctionnalités. On peut d'ailleurs lui en ajouter à l'aide d'extensions (\emph{plugins}), comme celle que nous utiliserons pour développer sur le roboRIO. Voici les fenêtres qui nous intéresserons le plus :
+Visual Studio Code est un logiciel ayant plusieurs fonctionnalités. On peut d'ailleurs lui en ajouter à l'aide d'extensions (\emph{plugins}), comme celle que nous utiliserons pour développer sur le roboRIO. Voici les fenêtres qui nous intéresserons le plus :
 
 \begin{labeling}{\ Package Explorer\ }
 %
-\item[\colorbox{ec-red}{\emph{Package Explorer}}] Cette fenêtre regroupe tous vos projets, subdivisés en dossiers et paquetages (\emph{packages}), jusqu'aux fichiers Java.
+\item[\colorbox{ec-red}{\emph{Explorer}}] Cette fenêtre regroupe les fichiers de votre projet, subdivisés en dossiers et paquetages (\emph{packages}), jusqu'aux fichiers Java.
 %
 \item[\colorbox{ec-orange}{Fenêtre d'édition}] Cette fenêtre affiche tous les fichiers que vous êtes en train d'éditer, vous permettant facilement de naviguer entre différents documents.
 %
-\item[\colorbox{ec-yellow}{\emph{Problems}}] Comme son nom l'indique, on y retrouve une liste de tous les avertissements et erreurs concernant votre code. Chaque item précise la nature de l'erreur et où elle se trouve.
+\item[\colorbox{ec-yellow}{\emph{Structure}}] Cette section affiche la structure du fichier en cours d'édition.
 %
-\item[\colorbox{ec-green}{Console}] La console est un outil essentiel, c'est le premier lien entre vous et l'exécution de votre programme. Vous pourrez y afficher du texte et en insérer.
+\item[\colorbox{ec-green}{\emph{Problèmes}}] Comme son nom l'indique, on y retrouve une liste de tous les avertissements et erreurs concernant votre projet. Chaque item précise la nature de l'erreur et où elle se trouve.
 %
-\item[\colorbox{ec-purple}{Javadoc}] Java a l'avantage de fournir son propre outil de documentation. Il suffit de cliquer sur un mot (classe, variable, méthode, etc.) et sa description y apparaîtra. Nous verrons plus loin comme créer ses propres entrées pour Javadoc.
+\item[\colorbox{ec-purple}{Débogage}] La console est un outil essentiel, c'est le premier lien entre vous et l'exécution de votre programme. Vous pourrez y afficher du texte et en insérer.
 \end{labeling}
 
 Évidemment, toute l'interface est entièrement personnalisable. À vous de l'adapter comme il vous plaira!
