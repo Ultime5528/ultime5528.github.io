@@ -37,6 +37,7 @@
 
 %Afficher des images avec includegraphics
 \usepackage{graphicx}
+\usepackage{adjustbox}
 
 % Afficher des SVG
 % Convertir un SVG en pdf_tex : inkscape -D -z --file=<NOM DU FICHIER.svg> --export-pdf=<OUTPUT.pdf> --export-latex
@@ -339,7 +340,7 @@ Pour programmer, il est préférable d'utiliser un bon environnement de dévelop
 
 Visual Studio Code est disponible gratuitement sur \href{https://code.visualstudio.com/}{code.visualstudio.com/}. Vous devrez également vous assurer d'avoir installé une version récente du \href{http://www.oracle.com/technetwork/java/javase/downloads/index.html}{JDK 8} (\emph{Java Development Kit}). Les étapes d'installation sont également détaillées \href{http://wpilib.screenstepslive.com/s/currentCS/m/79833/l/932382-installing-vs-code}{ici}.
 
-% Image - Interface principale de Eclipse
+% Image - Interface principale de VS Code
 %
 \begin{figure}[!htb]
   \centering
@@ -351,18 +352,18 @@ Visual Studio Code est un logiciel ayant plusieurs fonctionnalités. On peut d'a
 
 \begin{labeling}{\ Package Explorer\ }
 %
-\item[\colorbox{ec-red}{\emph{Explorer}}] Cette fenêtre regroupe les fichiers de votre projet, subdivisés en dossiers et paquetages (\emph{packages}), jusqu'aux fichiers Java.
+\item[\colorbox{ec-red}{Explorateur}] Cette fenêtre regroupe les fichiers de votre projet, subdivisés en dossiers et paquetages (\emph{packages}), jusqu'aux fichiers Java.
 %
 \item[\colorbox{ec-orange}{Fenêtre d'édition}] Cette fenêtre affiche tous les fichiers que vous êtes en train d'éditer, vous permettant facilement de naviguer entre différents documents.
 %
-\item[\colorbox{ec-yellow}{\emph{Structure}}] Cette section affiche la structure du fichier en cours d'édition.
+\item[\colorbox{ec-yellow}{Structure}] Cette section affiche la structure du fichier en cours d'édition.
 %
-\item[\colorbox{ec-green}{\emph{Problèmes}}] Comme son nom l'indique, on y retrouve une liste de tous les avertissements et erreurs concernant votre projet. Chaque item précise la nature de l'erreur et où elle se trouve.
+\item[\colorbox{ec-green}{Problèmes}] Comme son nom l'indique, on y retrouve une liste de tous les avertissements et erreurs concernant votre projet. Chaque item précise la nature de l'erreur et où elle se trouve.
 %
 \item[\colorbox{ec-purple}{Débogage}] La console est un outil essentiel, c'est le premier lien entre vous et l'exécution de votre programme. Vous pourrez y afficher du texte et en insérer.
 \end{labeling}
 
-Évidemment, toute l'interface est entièrement personnalisable. À vous de l'adapter comme il vous plaira!
+L'interface est personnalisable, à vous de l'adapter comme il vous plaira!
 
 
 
@@ -373,20 +374,30 @@ Visual Studio Code est un logiciel ayant plusieurs fonctionnalités. On peut d'a
 % Section - Création du projet 
 %--------------------------------------------------------
 %
-\section{Création du projet}
+\section{Création d'un programme Java}
 %
 \begin{enumerate}
-\item Dans Eclipse, créez un nouveau projet avec \commande{File > New > Java Project}. Donnez un nom à votre projet, puis cliquez sur \commande{Finish}.
+\item Dans VS Code, créez un nouveau fichier avec \commande{Fichier > Nouveau fichier}. Un fichier vide sera créé.
 
-\item Ajoutez une classe à votre projet : \commande{Clic droit sur votre projet > New > Class}. Donnez un nom à votre classe, cochez l'ajout de la méthode \commande{main}, puis cliquez sur \commande{Finish}.
+\item \begin{minipage}[t]{\linewidth}
+          %\raggedright
+          \begin{center}
+          \adjustbox{valign=t}{%
+            \includegraphics[width=.9\linewidth]{vs-code-save.png}%
+          }
+          \end{center}
+          
+          \medskip
+          Enregistrez votre fichier avec \commande{Fichier > Enregistrer sous...}, ou \commande{Ctrl + S}. Donnez un nom à votre programme (sans espace débutant par une majuscule) et sélectionner \commande{Java} comme type de fichier. Cliquez sur \commande{Enregister}.
+       \end{minipage}
 
-\item Complétez le corps de la méthode avec l'exemple suivant, puis compilez et exécutez votre programme.
+\item Complétez votre fichier avec l'exemple suivant.
 \end{enumerate}
 %
 % Code - Programme de base
 %
 \begin{MyTCB}{Programme de base}
-public class MonPremierProgramme {
+public class Exercice1 {
 
 	public static void main(String[] args) {
 	
@@ -398,22 +409,28 @@ public class MonPremierProgramme {
 \end{MyTCB}
 %
 %
-% Image - Compiler/Exécuter avec Eclipe
-\begin{figure}[!htb]
+% Image - Compiler/Exécuter avec VS Code
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{compilation-eclipse.png}
-	\caption{Compiler, exécuter et déboguer un programme avec Eclipse.}
+	\includegraphics[width=\textwidth]{vs-code-premier-programme.png}
+	\caption{Compiler, exécuter et déboguer un programme avec VS Code.}
 \end{figure}
 %
-Le bouton \inlinepic{debug-btn-eclipse.png} vous permet de lancer votre programme en mode débogage. La flèche verte \inlinepic{execute-btn-eclipse.png}, quant à elle, compile et exécute. Après avoir cliqué dessus, vous devriez voir apparaître du texte dans votre console.
+Attention! Il est très important que le \colorbox{ec-red}{nom de votre classe} (à côté du mot \texttt{class}) soit le même que le \colorbox{ec-red}{nom de votre fichier} (par exemple, \textit{Exercice1}).
+
+En \colorbox{ec-orange}{orange}, le bouton \commande{Run} vous permet de compiler et d'exécuter votre programme, tandis que \commande{Debug} lance votre programme en mode débogage. En appuyant sur l'un ou l'autre, vous devriez voir du texte apparaître dans votre console.
 %
 % Image - Écriture console
 %
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[scale=1]{ecriture-console.png}
+	\includegraphics[scale=1]{vs-code-console.png}
 	\caption{Écriture dans la console.}
 \end{figure}
+
+Si la console n'est pas déjà affichée, il suffit de cliquer sur \commande{Afficher > Console de débogage}, ou \commande{Ctrl + Shift + Y}.
+
+Il est également possible d'ouvrir automatiquement la console lorsque vous démarrez un programme. Cliquez sur \commande{Fichier > Préférences > Paramètres}, ou \commande{Ctrl + ,}. Dans la barre de recherche, saisissez \commande{open console}. À l'option \textit{Contrôle le moment où la console de débogage interne doit s’ouvrir}, choisissez \commande{openOnSessionStart}.
 
 Félicitations, vous venez d'exécuter votre premier programme! Analysons en détail ce qu'il se passe à l'intérieur.
 
@@ -471,7 +488,7 @@ En Java, une \textbf{méthode} est une instruction qui réalise une opération p
 %
 \section{L'indentation}
 %
-Dans l'exemple précédent, vous pouvez constater qu'à chaque fois que des accolades (\{...\}) sont ouvertes, on ajoute de l'espace au code qui se situe à l'intérieur. C'est ce que l'on appelle l'\textbf{indentation} du code. C'est essentiel pour rendre le code clair et facile à modifier. Pour indenter son code, on ajoute une tabulation (touche \commande{Tab $\rightleftarrows$}) pour chaque paire ouverte d'accolades. Eclipse s'en occupe automatiquement la plupart du temps.
+Dans l'exemple précédent, vous pouvez constater qu'à chaque fois que des accolades (\{...\}) sont ouvertes, on ajoute de l'espace au code qui se situe à l'intérieur. C'est ce que l'on appelle l'\textbf{indentation} du code. C'est essentiel pour rendre le code clair et facile à modifier. Pour indenter son code, on ajoute une tabulation (touche \commande{Tab $\rightleftarrows$}) pour chaque paire ouverte d'accolades. VS Code s'en occupe automatiquement la plupart du temps. Dans votre fichier, vous pouvez également faire \commande{Clic droit > Mettre en forme le document} pour corriger l'espacement et l'indentation.
 
 
 
@@ -538,7 +555,9 @@ age += 1; // Ajout de 1 à la variable age.
 \subsection{Les commentaires Javadoc}
 %
 %
-Ces commentaires spéciaux sont propres au Java. Ils permettent de créer une documentation accessible pour votre projet. Ils sont très semblables aux commentaires en blocs : il suffit de les faire débuter avec deux étoiles \commande{/**}. Vous aurez donc accès au contenu de votre commentaire partout dans votre projet, sans devoir ouvrir à nouveau le fichier d'origine!
+Ces commentaires spéciaux sont propres au Java. Ils permettent de créer une documentation accessible pour votre projet. Ils sont très semblables aux commentaires en blocs : il suffit de les faire débuter avec deux étoiles \commande{/**}. Vous aurez donc accès au contenu de votre commentaire partout dans votre projet, sans devoir ouvrir à nouveau le fichier d'origine! 
+
+Pour afficher la Javadoc d'un élément, il suffit de laisser son curseur au-dessus de lui pendant quelques instants.
 %
 % Code : Commentaire Javadoc
 %
@@ -554,8 +573,8 @@ public class MonPremierProgramme { ... }
 %
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[scale=1]{javadoc-eclipse.png}
-	\caption{Visualisation de la Javadoc dans Eclipse}
+	\includegraphics[scale=1]{vs-code-javadoc.png}
+	\caption{Visualisation de la Javadoc dans VS Code}
 \end{figure}
 %
 %
@@ -1112,22 +1131,34 @@ public class ValidationNaissance {
 \section{Création d'un projet}\label{creationProjetRobot}
 Jusqu'à présent, le coeur de vos programmes se trouvait dans la méthode \texttt{main}. Cependant, le comportement d'un robot est plus complexe qu'une simple méthode. Vos prochains programmes auront comme base la classe \texttt{Robot}, héritant de \texttt{TimedRobot}.
 
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[height=5cm]{vs-code-wpilib.png}
+  \caption{Le menu principal de l'extension WPILib.}
+\end{figure}
+
 \begin{enumerate}
-	\item Dans Eclipse, débutez la création d'un nouveau projet avec \commande{File > New > Other...}, puis, dans le dossier \commande{WPILib Robot Java Project}, sélectionnez \commande{Robot Java Project}.
-	\item Donnez un nom à votre projet (débutant avec une lettre majuscule).
-	\item Sélectionnez \commande{Command-Based Robot}ou \commande{Timed Robot}, selon le paradigme que vous souhaitez utiliser. Cliquez sur \commande{Finish}.
+	\item Dans VS Code, cliquez sur le bouton de l'extension WPILib.
+	\item Sélectionnez \commande{WPILib : Create a new project}.
+	\item Comme type de projet, sélectionnez \commande{Template}.
+	\item Comme langage, sélectionnez \commande{Java}.
+	\item Comme projet de base, sélectionnez \commande{Timed Robot}.
+	\item Sélectionnez le dossier de sauvegarde de votre projet.
+	\item Saisissez le nom de votre projet (sans espace et débutant par une majuscule).
+	\item Saisissez le numéro de l'équipe.
+	\item Cliquez sur \commande{Generate project}.
 \end{enumerate}
 
 Vous vous retrouverez ainsi avec un fichier \commande{Robot.java} contenant le squelette d'un programme pour la FRC.
 
 \section{Les méthodes \texttt{Init} et \texttt{Periodic}}
 
-La classe qu'Eclipse a générée pour vous contient déjà quelques méthodes prédéfinies. Chacune d'entre elles a un rôle bien précis.
+La classe \texttt{Robot} que VS Code a générée pour vous contient déjà quelques méthodes prédéfinies. Chacune d'entre elles a un rôle bien précis.
 
 \tikzset{>={Stealth[scale=1.3,angle'=45]}}
-\begin{figure}
+\begin{figure}[H]
 \begin{center}
-\begin{tikzpicture}[every node/.style = {shape=rectangle, rounded corners, fill=gray!50, draw, minimum width=3.25cm, minimum height=0.8cm, }]
+\begin{tikzpicture}[every node/.style = {shape=rectangle, rounded corners, fill=gray!50, draw, minimum width=3.25cm, minimum height=0.8cm, draw=green!60, fill=green!5, very thick},]
 
 \node (robotInit) at (0,5) {robotInit};
 \node (disabledInit) at (0,3) {disabledInit};
@@ -1139,7 +1170,7 @@ La classe qu'Eclipse a générée pour vous contient déjà quelques méthodes p
 \node (testInit) at (13.5,3) {testInit};
 \node (testPeriodic) at (13.5,1) {testPeriodic};
 
-\node (periode) [fill=white] at (6.75, 5) {Changement de période};
+\node (periode) [draw=blue!60, fill=blue!5] at (6.75, 5) {Changement de période};
 
 \draw[fill] (0,7) circle [radius=0.25];
 
@@ -1667,7 +1698,7 @@ En réalité, un encodeur ne calcule pas de distance ; il envoie au RoboRIO un s
 
 \section{ADIS16448\_IMU}\label{adis16448}
 
-Ce capteur est bien plus qu'un gyro : c'est un IMU (\textit{Inertial Measurement Unit}), c'est-à-dire qu'il mesure différentes  Cette classe n'est pas incluse dans WPILib : elle peut être \href{https://github.com/juchong/ADIS16448-RoboRIO-Driver/blob/master/Java/src/main/java/com/analog/adis16448/frc/ADIS16448_IMU.java}{télécharger ici}.
+Ce capteur est bien plus qu'un gyro, c'est un IMU (\textit{Inertial Measurement Unit}). À lui seul, il peut mesure la rotation, l'accélération, le champ magnétique, la température et la pression barométrique. Cette classe n'est pas incluse dans WPILib : elle peut être \href{https://github.com/juchong/ADIS16448-RoboRIO-Driver/blob/master/Java/src/main/java/com/analog/adis16448/frc/ADIS16448_IMU.java}{télécharger ici}.
 
 \begin{code}
 ADIS16448_IMU adis = new ADIS16448_IMU();
@@ -1681,13 +1712,9 @@ double accelY = adis.getAccelY();
 double accelZ = adis.getAccelZ();
 \end{code}
 
-Ce capteur peut également mesurer le champ magnétique dans les trois axes, la pression barométrique et la température.
+%Ce capteur peut également mesurer le champ magnétique dans les trois axes, la pression barométrique et la température.
 
-\section{Les autres capteurs}
-
-Les capteurs utilisés en FRC sont multiples : de nouveaux modèles sont créés chaque année et il est de notre responsabilité de s'informer de ce qui nous est offert. La documentation de WPILib est également l'endroit tout désigné pour en apprendre davantage. En voici quelques-uns que nous utilisons plus rarement.
-
-\subsection{Les accéléromètres}
+\section{Les accéléromètres}
 
 Un accéléromètre, comme son nom l'indique, mesure l'accélération. Comme les gyros, il la mesure habituellement dans trois différents axes (X, Y et Z). Par exemple, on peut l'utiliser pour détecter si le robot fonce dans un obstacle (décélération vers l'arrière). Le RoboRIO est équipé d'un accéléromètre de base : on y accède avec la classe \texttt{BuiltInAccelerometer}.
 
@@ -1700,7 +1727,7 @@ double accelZ = accel.getZ();
 \end{code}
 
 
-\subsection{Les capteurs ultrasons}
+\section{Les capteurs ultrasons}
 
 Un capteur ultrason mesure la distance entre lui et un obstacle. Ils ont une portée limitée. Certains sont branchés à deux ports digitaux (DIO).
 
@@ -1719,6 +1746,9 @@ double distance = VOLT_VERS_CM * ultra.getAverageVoltage();
 
 Dans cet exemple, on multiple le voltage mesuré par une constante (différente pour chaque modèle) afin de convertir les volts en centimètres.
 
+\section{Les autres capteurs}
+
+Les capteurs utilisés en FRC sont multiples : de nouveaux modèles sont créés chaque année et il est de notre responsabilité de s'informer de ce qui nous est offert. Pour en apprendre davantage, n'hésitez pas à consulter la \href{http://first.wpi.edu/FRC/roborio/release/docs/java/}{Javadoc de WPILib} et son \href{https://github.com/wpilibsuite/allwpilib}{code source}.
 
 \chapter{Commandes et sous-systèmes}
 
