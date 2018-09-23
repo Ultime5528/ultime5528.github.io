@@ -1123,8 +1123,82 @@ public class ValidationNaissance {
 
 \section{Les \textit{else if} multiples}
 
+Le \textit{if else} standard permet de gérer deux possibilités en même temps. Dans certains, on voudrait pouvoir gérer plusieurs cas exclusifs entre eux.
+
+Il est possible d'ajouter un \textit{if} immédiatement après un \textit{else}. Il n'y a donc plus de limite au nombre de possibilités!
+
+\begin{MyTCB}{MessageAge.java}
+/**
+ * Affiche un message selon l'âge de l'utilisateur.
+ */
+public class MessageAge {
+
+	public static void main(String[] args) {
+
+		final int AGE_PRIMAIRE = 5;
+		final int AGE_SECONDAIRE = 12;
+		final int AGE_MAJORITE = 18;		
+		
+		int age;
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		// Obtention de l'âge
+		System.out.print("Saisissez votre âge : ");
+		age = scanner.nextInt();
+		
+		// Message selon l'âge
+		if(age < 0) {
+			System.out.println("Âge invalide!");
+		}
+		else if(age < AGE_PRIMAIRE) {
+			System.out.println("Pas encore à l'école!");
+		}
+		else if(age < AGE_SECONDAIRE) {
+			System.out.println("Au primaire!");
+		}
+		else if(age < AGE_MAJORITE) {
+			System.out.println("Au secondaire!");
+		}
+		else {
+			System.out.println("Vous êtes majeur!");
+		}
+	}
+}
+\end{MyTCB}
+
+Comme les \textit{else if} sont imbriqués, \textbf{un seul cas} sera exécuté. Les conditions des \textit{if} sont vérifiés dans le même ordre qu'ils ont été écrits. 
+
+Par exemple, dans l'exemple précédent, supposons que l'âge est de 10 ans. Si on les vérifie individuellement, les deux dernières conditions sont vraies (\verb|age < AGE_SECONDAIRE| et \verb|age < AGE_MAJORITE|). Cependant, la première condition vraie est \verb|age < AGE_SECONDAIRE|, c'est donc ce \textit{if} qui sera exécuté.
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.6\linewidth]{else-if-multiples.png}
+	\caption{La structure de \textit{else if} multiples.}
+\end{figure}
+
+
+
+
+
+
+\chapter{Les méthodes}
+
+\textit{Manuel de référence : p. 69 à 77}
+
+\section{L'appel de méthodes}
+
+Jusqu'à présent, vous avez utilisé quelques méthodes prédéfinies. Certaines reçoivent des paramètres entre leurs parenthèses, d'autres non. Certaines retournent une valeur, d'autres non. 
+
+En Java, une \textbf{méthode} est une instruction qui réalise une opération prédéfinie. On utilise une méthode en écrivant son nom suivi d'une paire de parenthèses. Certaines méthodes ont besoin de paramètres pour effectuer leur travail.
+
+
+
+
 
 \part{La librairie WPILib}
+
+
 
 \chapter{La classe \texttt{TimedRobot}}
 
