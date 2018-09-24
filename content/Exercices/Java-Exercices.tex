@@ -121,6 +121,12 @@
   \endgroup
 }
 
+% Environnement console
+\newenvironment{console}
+	{
+	\tcolorbox[title={Sortie console}, sharp corners = south, boxsep = 1.5mm]{} \tt
+	}{\endtcolorbox}
+
 %Listings caption
 \renewcommand{\listingscaption}{Extrait de code}
 \renewcommand{\listoflistingscaption}{Liste des extraits de code}
@@ -244,29 +250,26 @@ Chapitres 1, 2 et 3.
 \subsection{Présentation}
 
 Votre programme doit demander à l'utilisateur son \textbf{nom}, son \textbf{âge} et son \textbf{salaire}. Par la suite, il doit le réafficher dans la console.
-
-Exemple de sortie console :
-
-{\footnotesize \fontfamily{pcr}\selectfont
-\begin{tabular}{|p{0.98\textwidth}|}
-\hline 
+ 
+\begin{console}
 Saisissez votre nom : \textcolor{blue}{Jonathan}\\
 Saisissez votre âge : \textcolor{blue}{24}\\
 Saisissez votre salaire : \textcolor{blue}{17.45}\\[\baselineskip]
-
-Bonjour Jonathan! Vous avez 24 ans et votre salaire est de 17.45 \$ par heure.\\
-\hline
-\end{tabular}
-}
+Bonjour Jonathan! Vous avez 24 ans et votre salaire est de 17.45 \$ par heure.
+\end{console}
 
 
-%
-%
-%
+
 
 \subsection{Aire d'un rectangle}
 
 Votre programme doit demander à l'utilisateur de saisir une largeur et une hauteur, puis retourner l'aire du rectangle correspondant.
+
+\begin{console}
+Largeur du rectangle :  \textcolor{blue}{12.5} \\
+Hauteur du rectangle :  \textcolor{blue}{7.25} \\[\baselineskip]
+L'aire du rectangle est de 90.625 unités carrés.
+\end{console}
 
 %
 %
@@ -279,6 +282,14 @@ Votre programme doit permettre à l’utilisateur de saisir cinq nombres, puis c
 
 \textit{Défi : Soyez astucieux et tentez d'utiliser une seule variable!}
 
+\begin{console}
+Nombre 1 :  \textcolor{blue}{-3} \\
+Nombre 2 :  \textcolor{blue}{2.5} \\
+Nombre 3 :  \textcolor{blue}{7.6} \\
+Nombre 4 :  \textcolor{blue}{12.5} \\
+Nombre 5 :  \textcolor{blue}{7.25} \\[\baselineskip]
+La moyenne est de 5.37.
+\end{console}
 
 
 
@@ -303,11 +314,22 @@ Votre programme doit permettre à l’utilisateur de saisir cinq nombres, puis c
 	\item[$\bullet$] Note qui n'est pas comprise et 0 et 100 : Affichez un message d'erreur.
 \end{itemize}
 
+\begin{console}
+Saisissez la note :  \textcolor{blue}{72} \\
+Examen réussi!
+\end{console}
+
+\begin{console}
+Saisissez la note :  \textcolor{blue}{53} \\
+Examen échoué. Il manquait 7\% pour avoir la note de passage.
+\end{console}
+
+
 % 
 %
 %
 
-\subsection{Compagnie de téléphone}
+\subsection{Compagnie de téléphone}\label{ex-telephone}
 
 À partir du nombre de minutes utilisées saisi par l’utilisateur, calculez et affichez le prix de la facture de téléphone selon les modalités ci-dessous. \textbf{Vous devez utiliser des constantes lorsque possible.}
 
@@ -317,7 +339,15 @@ Votre programme doit permettre à l’utilisateur de saisir cinq nombres, puis c
 	\item[$\bullet$] Les minutes suivantes sont facturées à un prix de 0,10\$ par minute.
 \end{itemize}
 
-Par exemple, une utilisation de 44 minutes serait facturée 17,40\$, tandis qu'une utilisation de 18 minutes serait facturée 13,60\$.
+\begin{console}
+Nombre de minutes utilisées :  \textcolor{blue}{44} \\
+La facture est de 17.40\$.
+\end{console}
+
+\begin{console}
+Nombre de minutes utilisées :  \textcolor{blue}{18} \\
+La facture est de 13.60\$.
+\end{console}
 
 %
 %
@@ -333,7 +363,25 @@ Votre programme doit demander à l'utilisateur s'il souhaite convertir une temp�
 	\text{Fahrenheit vers Celsius :} \quad C &= \frac{5}{9} \times (F - 32)
 \end{align*}
 
+\begin{console}
+Convertir de...\\
+1 - Celsius vers Fahrenheit\\
+2 - Fahrenheit vers Celsius\\[\baselineskip]
+Votre choix : \textcolor{blue}{1}\\[\baselineskip]
+Température (°C) : \textcolor{blue}{12}\\
+La température équivalente est 53.6°F.
+\end{console}
 
+\subsection{Les types d'angles}
+
+Votre programme doit demander un angle à l'utilisateur, puis afficher son type (aigu, droit, etc.). Il y a 7 types d'angles possibles. 
+
+\begin{console}
+Saisissez un angle (°) : \textcolor{blue}{63}\\
+Il s'agit d'un angle aigu.
+\end{console}
+
+\textit{Défi : En mathématiques, on considère habituellement que les angles peuvent être négatif et dépasser 360°. En effet, un angle de 382° est équivalent à 22°, un angle de -30° est équivalent à 330°, etc. Modifier votre programme pour qu'il puisse vérifier toutes ces valeurs.}
 %---------------------------------------------------
 %
 % Méthodes / fonctions
@@ -341,12 +389,41 @@ Votre programme doit demander à l'utilisateur s'il souhaite convertir une temp�
 %---------------------------------------------------
 
 \section{Les méthodes}
-%\vspace*{-\baselineskip}
 
+\subsection{Compagnie de téléphone avec méthode}
 
-\subsection{Aire d'un rectangle}
+Reprenez le contexte de l'exercice \ref{ex-telephone}. Cependant, le calcul de la facture doit se faire dans une méthode \texttt{calculerFacture}. Cette méthode devrait recevoir en paramètre un nombre entier (le nombre de minutes) et retourner un nombre à virgules (le prix à payer).
 
-À partir d’une hauteur et d’une largeur saisies par l’utilisateur, calculez et affichez l’aire du rectangle ($A = hauteur \times largeur $). Le calcul de l’aire doit se faire dans la méthode \verb|aireRectangle|, qui retourne l’aire.
+\subsection{Aire totale et volume d'un prisme régulier}
+
+Vous devez demander à l'utilisateur de saisir la hauteur du prisme, le nombre de côtés de la base, la longueur d'un côté de la base et l'apothème de la base. Vous devez ensuite afficher l'aire totale et le volume du prisme. 
+
+\begin{console}
+Hauteur : \textcolor{blue}{10}\\
+Nombre de côtés : \textcolor{blue}{6}\\
+Longueur d'un côté de la base : \textcolor{blue}{2.5}\\
+Apothème : \textcolor{blue}{2.165}\\[\baselineskip]
+Aire : 182.475 unités carrées\\
+Volume : 162.375 unités cubes
+\end{console}
+
+\vspace*{\baselineskip}
+
+Rappels :
+%
+\begingroup
+\addtolength{\jot}{1em}
+\begin{align*}
+	A_\text{polygone régulier} &= \frac{(\text{côté}) \cdot (\text{apothème}) \cdot (\text{nombre de côtés})}{2} \\
+	A_\text{latérale} &= (\text{périmètre}) \cdot (\text{hauteur}) \\
+	A_\text{prisme} &= A_\text{base} + A_\text{latérale} \\
+	V_\text{prisme} &= A_\text{base} \cdot (\text{hauteur})
+\end{align*}
+\endgroup
+
+\textit{Défi 1 : Calculer plutôt l'aire totale et le volume d'une pyramide régulière. De quelles informations supplémentaires aurez-vous besoin? Pouvez-vous en déduire certaines?}
+
+\textit{Défi 2 : Comme la base du cylindre (ou de la pyramide) est un polygone régulier, on peut déduire l'apothème à partir du nombre de côtés et de la longueur d'un côté. Modifier votre programme afin qu'il ne demande plus l'apothème. }
 
 %
 %
@@ -356,13 +433,17 @@ Votre programme doit demander à l'utilisateur s'il souhaite convertir une temp�
 
 À partir d’un numérateur et d’un diviseur entrés par l’utilisateur et transmis à une méthode, calculez et affichez le résultat de la division. Cette fois-ci, l’affichage du résultat ne doit pas se faire dans le \verb|main|, mais dans la méthode \verb|division|. Vous devez empêcher la division par zéro et affichez un message en conséquence si c'est le cas.
 
-%
-%
-%
 
-\subsection{Addition}
+\section{Récapitulatif}
 
-Votre programme doit demander à l’utilisateur s’il veut additionner deux ou trois nombres ensemble. Un message de bienvenue initial doit être écrit par la méthode \verb|bienvenue|. Selon son choix, votre programme transmettra ensuite les deux ou trois nombres à la méthode \verb|addition|, qui retournera la somme des nombres. \textbf{Vous devez utiliser la surcharge de méthodes.}
+\subsection{Les formes géométriques}
+
+Votre programme doit afficher un menu à l'utilisateur lui permettant de choisir entre plusieurs formes géométriques (cercle, rectangle, triangle, polygone régulier, trapèze, \dots). À partir de choix, le programme demande les informations pertinents à l'utilisateur pour calculer l'aire de cette forme. Tous les calculs d'aire doivent se faire dans une méthode. Chaque forme géométrique doit avoir sa méthode de calcul d'aire (\texttt{aireCercle}, \texttt{aireRectangle}, \dots). 
+
+\textit{Défi : Créer une classe \texttt{AireFormes} dans un second fichier qui contiendra toutes les méthodes de calculs d'aire.}
+
+\textit{Défi 2 : Entourez votre progamme d'une boucle \texttt{do \{\dots \} while(\dots);} afin de réafficher le menu jusqu'à ce que l'utilisateur choisisse le choix 0.}
+
 
 \end{document}
 
