@@ -573,7 +573,7 @@ public class MonPremierProgramme { ... }
 %
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[scale=1]{vs-code-javadoc.png}
+	\includegraphics[width=0.99\linewidth]{vs-code-javadoc.png}
 	\caption{Visualisation de la Javadoc dans VS Code}
 \end{figure}
 %
@@ -980,7 +980,7 @@ Vous connaissez déjà l'opération d'affectation de base : le symbole égal \co
 \end{center}
 
 
-\section{La librairie \texttt{Math}}
+\section{La librairie \texttt{Math}} \label{lib-math}
 Java a une librairie standard très fournie. Elle comprend, entre autres, la classe \texttt{Math}. Celle-ci fournit plusieurs fonctions mathématiques de base : 
 \begin{itemize}
 	\item la valeur absolue (\texttt{abs}),
@@ -1190,10 +1190,108 @@ Par exemple, dans l'exemple précédent, supposons que l'âge est de 10 ans. Si 
 
 Jusqu'à présent, vous avez utilisé quelques méthodes prédéfinies. Certaines reçoivent des paramètres entre leurs parenthèses, d'autres non. Certaines retournent une valeur, d'autres non. 
 
-En Java, une \textbf{méthode} est une instruction qui réalise une opération prédéfinie. On utilise une méthode en écrivant son nom suivi d'une paire de parenthèses. Certaines méthodes ont besoin de paramètres pour effectuer leur travail.
+En Java, une \textbf{méthode} est une instruction qui réalise une série d'opérations définies ailleurs. On utilise une méthode en écrivant son nom suivi d'une paire de parenthèses. Certaines méthodes ont besoin de paramètres pour effectuer leur travail. C'est le cas de \texttt{println()}, \texttt{nextLine()} et toutes les méthodes de classe \texttt{Math} (voir \ref{lib-math}).
+
+% Utiliser une méthode
+%
+\begin{tcolorbox}[enhanced,colframe=ultRed,
+	title={Utiliser une méthode},
+	sharp corners=south,
+	boxsep = 1.5mm]
+%
+Utiliser une méthode sur un objet (instancié avec \texttt{new}) \\[3pt]
+\texttt{{\color{ec-green} objet}.{\color[RGB]{255, 34, 12}nomMethode}({\color[RGB]{63, 136, 197}param1}, {\color[RGB]{63, 136, 197}param2}, ...);}\\
+\texttt{{\color{ultRed} typeRetour} {\color[RGB]{63, 136, 197}valeurRetournee} = {\color{ec-green} objet}.{\color[RGB]{255, 34, 12}nomMethode}({\color[RGB]{63, 136, 197}param1}, {\color[RGB]{63, 136, 197}param2}, ...);}%
+%
+\tcblower
+%
+Utiliser une méthode sur une classe (méthode statique) \\[3pt]
+\texttt{{\color{ec-purple} NomClasse}.{\color[RGB]{255, 34, 12}nomMethode}({\color[RGB]{63, 136, 197}param1}, {\color[RGB]{63, 136, 197}param2}, ...);}\\
+\texttt{{\color{ultRed} typeRetour} {\color[RGB]{63, 136, 197}valeurRetournee} = {\color{ec-purple} NomClasse}.{\color[RGB]{255, 34, 12}nomMethode}({\color[RGB]{63, 136, 197}param1}, {\color[RGB]{63, 136, 197}param2}, ...);}%
+%	
+\end{tcolorbox}
 
 
+\section{Créer une méthode}
 
+\begin{MyTCB}{Programme sans méthode}
+public class Bonjour {
+
+    public static void main(String[] args) {
+
+        System.out.println("Bonjour Étienne!");
+        System.out.println("Bonjour Camille!");
+        System.out.println("Bonjour Alexandre!");
+        System.out.println("Bonjour Chaymae!");
+
+    }
+
+}
+\end{MyTCB}
+
+Vous aurez sûrement remarqué qu'il vous arrive de réécrire la même opération plusieurs fois. Au lieu de copier-coller ces instructions, vous pouvez déplacer ce bout de code dans une méthode externe, puis l'utiliser comme bon vous semble.
+
+\begin{MyTCB}{Programme avec méthode}
+public class Bonjour {
+
+    public static void main(String[] args) {
+
+        direBonjour("Étienne");
+        direBonjour("Camille");
+        direBonjour("Alexandre");
+        direBonjour("Chaymae");
+        
+    }
+
+    public static void direBonjour(String nom) {
+        System.out.println("Bonjour " + nom + "!");
+    }
+
+}
+\end{MyTCB}
+
+Ainsi, si vous décidez de remplacer \texttt{"Bonjour"} par \texttt{"Bonne journée"}, il vous faudra le remplacer seulement une fois, et non quatre.
+
+\begin{tcolorbox}[enhanced,colframe=ultRed,
+	title={Déclarer une méthode},
+	sharp corners=south,
+	boxsep = 1.5mm]
+\texttt{public [static] {\color{ultRed} typeRetour} {\color[RGB]{12, 190, 12} nomMéthode} ({\color[RGB]{63, 136, 197}param1}, {\color[RGB]{63, 136, 197}param2}, ...) \{}\\[2pt]
+	\hspace*{0.5cm} \texttt{{\color[RGB]{63, 136, 197} instruction1};}\\
+	\hspace*{0.5cm} ... \texttt{// Autres instructions ou calculs}\\
+	\hspace*{0.5cm} \texttt{{\color{ultRed}return} {\color[RGB]{255, 34, 12}valeur}; // Facultatif, dépend du type de retour}\\[2pt]
+	\texttt{\}}
+\end{tcolorbox}
+
+Remarquez que la méthode \texttt{direBonjour} ne retourne aucune valeur. C'est pourquoi son type de retour est \texttt{void}. C'est aussi le cas de la méthode \texttt{println()}.
+
+Des méthodes peuvent, par exemple, effectuer un calcul et retourner un \texttt{double} ou \texttt{int}. D'autres peuvent vérifier une condition et retourner un \texttt{boolean}.
+
+Les méthodes, comme le \texttt{main}, doivent être à l'intérieur d'une classe. Faites attention à bien placer vos accolades.
+
+\begin{code}
+// Converti une durée en secondes
+public static int nombreDeSecondes(int heures, int minutes, int secondes) {
+	
+	int duree = 0;
+	
+	duree += 60 * 60 * heures;
+	duree += 60 * minutes;
+	duree += secondes;
+	
+	return duree;	
+	
+}
+\end{code}
+
+\begin{code}
+// Vérifie si une personne est majeure
+public static int nombreDeSecondes(int age) {
+	
+	return (age >= 18);
+	
+}
+\end{code}
 
 
 \part{La librairie WPILib}
