@@ -24,7 +24,7 @@
 <body>
 
     <script>
-        
+
         function sendEvent() {
             var tracker = ga.getAll()[0];
             ga('set', 'transport', 'beacon');
@@ -37,7 +37,7 @@
         }
 
         function outboundLink(event) {
-            sendEvent('Outbound link', 'click', event.href);            
+            sendEvent('Outbound link', 'click', event.href);
             return true;
         }
 
@@ -59,7 +59,9 @@
                         Java et WPILib</a></li>
                 <li><a href="content/Exercices/Java-Exercices.pdf" onclick="return downloadCallback('Exercices')">Exercices</a>
                     et <a href="solutions.html">solutions</a></li>
-                <li><a href="content/Apprenez-a-programmer-en-Java.pdf" onclick="return downloadCallback('Manuel de référence')">Manuel de référence</a> (<a href="https://openclassrooms.com/courses/apprenez-a-programmer-en-java" onclick="return outboundLink(this);">version
+                <li><a href="content/Apprenez-a-programmer-en-Java.pdf" onclick="return downloadCallback('Manuel de référence')">Manuel
+                        de référence</a> (<a href="https://openclassrooms.com/courses/apprenez-a-programmer-en-java"
+                        onclick="return outboundLink(this);">version
                         web</a>)</li>
                 <li>Exemple d'un projet complet</li>
             </ul>
@@ -72,13 +74,21 @@
 
             <h2>Liens utiles</h2>
             <ul class="more-spacing">
-                <li><a href="http://wpilib.screenstepslive.com/" onclick="return outboundLink(this);"><span>Tutoriels officiels de
+                <li><a href="http://wpilib.screenstepslive.com/" onclick="return outboundLink(this);"><span>Tutoriels
+                            officiels de
                             programmation FIRST </span><br> http://wpilib.screenstepslive.com/</a></li>
-                <li><a href="http://first.wpi.edu/FRC/roborio/release/docs/java/" onclick="return outboundLink(this);"> <span>Documentation Javadoc
+                <li><a href="https://support.gitkraken.com/start-here/guide" onclick="return outboundLink(this);">
+                        <span>
+                            Introduction à Git avec GitKraken
+                        </span> <br> https://github.com/wpilibsuite/allwpilib </a></li>
+                <li><a href="http://first.wpi.edu/FRC/roborio/release/docs/java/" onclick="return outboundLink(this);">
+                        <span>Documentation Javadoc
                             de WPILibJ </span> <br> http://first.wpi.edu/FRC/roborio/release/docs/java/</a></li>
-                <li><a href="https://github.com/ultime5528/" onclick="return outboundLink(this);"> <span> Répertoire GitHub de l'équipe
+                <li><a href="https://github.com/ultime5528/" onclick="return outboundLink(this);"> <span> Répertoire
+                            GitHub de l'équipe
                         </span> <br> https://github.com/ultime5528/ </a></li>
-                <li><a href="https://github.com/wpilibsuite/allwpilib" onclick="return outboundLink(this);"> <span> Code source de WPILib
+                <li><a href="https://github.com/wpilibsuite/allwpilib" onclick="return outboundLink(this);"> <span>
+                            Code source de WPILib
                         </span> <br> https://github.com/wpilibsuite/allwpilib </a></li>
             </ul>
 

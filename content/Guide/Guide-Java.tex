@@ -229,7 +229,7 @@
 
 \newpage
 %
-\tcblistof[\section*]{mybox}{Table des extraits de code}
+\tcblistof[\chapter*]{mybox}{Table des extraits de code}
 \addcontentsline{toc}{chapter}{Table des extraits de code}
 \newpage
 %
@@ -237,6 +237,27 @@
 \addcontentsline{toc}{chapter}{Table des figures}
 \newpage
 %
+
+\chapter*{Liens utiles}
+\addcontentsline{toc}{chapter}{Liens utiles}%
+
+\subsection*{Tutoriels officiels de programmation FIRST}
+\url{http://wpilib.screenstepslive.com/}
+
+\subsection*{Introduction à Git avec GitKraken}
+\url{https://support.gitkraken.com/start-here/guide}
+
+\subsection*{Documentation Javadoc de WPILibJ}
+\url{http://first.wpi.edu/FRC/roborio/release/docs/java/}
+
+\subsection*{Répertoire GitHub de l'équipe}
+\url{https://github.com/ultime5528/}
+
+\subsection*{Code source de WPILib}
+\url{https://github.com/wpilibsuite/allwpilib}
+
+} % Fin hyperliens noirs
+
 \chapter*{Les valeurs \textit{FIRST}}
 \addcontentsline{toc}{chapter}{Les valeurs FIRST} 
 
@@ -265,7 +286,7 @@ Nous apprécions et célébrons nos accomplissements.
 \normalsize
 \pagenumbering{arabic}
 \setcounter{page}{1}
-} % Fin hyperliens noirs
+
 
 
 %----------------------------------------------------
@@ -597,7 +618,7 @@ La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \comma
 \begin{itemize}
 	\item Cliquez sur \commande{Fichier > Préférences > Paramètres}, ou \commande{Ctrl + ,}.
 	\item Dans la barre de recherche, saisissez \commande{vmargs}, puis cliquez sur \commande{Modifier dans settings.json} du premier résultat.
-	\item Cliquez sur le crayon pour modifier la propriété sélectionnée, puis sur \\ \commande{Remplacer dans les paramètres}.
+	\item Cliquez sur le crayon pour modifier la propriété sélectionnée, puis sur \\ 	\commande{Remplacer dans les paramètres}.
 	\item À la fin de la chaîne de caractères sélectionnée, ajouter \commande{\texttt{-Dfile.encoding=UTF-8}}.
 	\item Sauvegardez avec \commande{Ctrl + S}.
 	\item Lorsque VS Code vous propose de redémarrer, sélectionner \commande{Restart now}.
@@ -2538,10 +2559,6 @@ question/.style={rectangle, draw=blue!60, fill=blue!5, very thick, inner sep=0.2
 \end{tikzpicture}}
 \caption{La séquence d'appels dans un programme WPILib.}
 \end{figure}
-
-\chapter*{Liens utiles}
-\addcontentsline{toc}{chapter}{\protect\numberline{}Liens utiles}%
-
 
 
 \end{document}
