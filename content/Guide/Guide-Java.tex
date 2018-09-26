@@ -87,7 +87,7 @@
 \tcbuselibrary{minted, skins, xparse, breakable}
 
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, shapes.geometric, positioning}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning, decorations.pathreplacing}
 
 % Ne pas copier les numéros de lignes de code
 \usepackage{accsupp}
@@ -377,6 +377,8 @@ L'interface est personnalisable, à vous de l'adapter comme il vous plaira!
 \section{Création d'un programme Java}
 %
 \begin{enumerate}
+\item Créez un dossier vide qui contiendra votre projet.
+\item Faites un clic droit sur votre dossier, puis sélectionnez \commande{Open with Code}. Vous pouvez aussi choisir \commande{Fichier > Ouvrir le dossier...}, directement dans VS Code. 
 \item Dans VS Code, créez un nouveau fichier avec \commande{Fichier > Nouveau fichier}. Un fichier vide sera créé.
 
 \item \begin{minipage}[t]{\linewidth}
@@ -388,7 +390,7 @@ L'interface est personnalisable, à vous de l'adapter comme il vous plaira!
           \end{center}
           
           \medskip
-          Enregistrez votre fichier avec \commande{Fichier > Enregistrer sous...}, ou \commande{Ctrl + S}. Donnez un nom à votre programme (sans espace débutant par une majuscule) et sélectionner \commande{Java} comme type de fichier. Cliquez sur \commande{Enregister}.
+          Enregistrez votre fichier dans le même dossier avec \commande{Fichier > Enregistrer sous...}, ou \commande{Ctrl + S}. Donnez un nom à votre programme (sans espace débutant par une majuscule) et sélectionner \commande{Java} comme type de fichier. Cliquez sur \commande{Enregister}.
        \end{minipage}
 
 \item Complétez votre fichier avec l'exemple suivant.
@@ -590,7 +592,22 @@ La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \comma
 %
 
 
+\section{Afficher les caractères internationaux dans VS Code}
 
+\begin{itemize}
+	\item Cliquez sur \commande{Fichier > Préférences > Paramètres}, ou \commande{Ctrl + ,}.
+	\item Dans la barre de recherche, saisissez \commande{vmargs}, puis cliquez sur \commande{Modifier dans settings.json} du premier résultat.
+	\item Cliquez sur le crayon pour modifier la propriété sélectionnée, puis sur \\ \commande{Remplacer dans les paramètres}.
+	\item À la fin de la chaîne de caractères sélectionnée, ajouter \commande{\texttt{-Dfile.encoding=UTF-8}}.
+	\item Sauvegardez avec \commande{Ctrl + S}.
+	\item Lorsque VS Code vous propose de redémarrer, sélectionner \commande{Restart now}.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.99\linewidth]{vscode-file-encoding.png}
+\caption{Afficher des caractères internationaux dans la console avec VS Code.}
+\end{figure}
 
 
 %----------------------------------------------------
@@ -691,6 +708,12 @@ Par exemple, les identificateurs \texttt{prix}, \texttt{ageUtilisateur}, \texttt
 \section{Lire la console}
 %
 Vous savez déjà comment afficher du texte dans la console avec la méthode \texttt{System.out.println()}. Par contre, il pourrait être pratique de lire ce qui est écrit dans la console. Pour effectuer cette tâche, nous utiliserons la class \texttt{Scanner} de la manière suivante.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.99\linewidth]{vscode-integrated-terminal.png}
+\caption{Configuration nécessaire pour lire la console dans VS Code.}
+\end{figure}
 
 % Code Scanner
 %
@@ -2368,18 +2391,75 @@ De plus, il est possible de démarrer une commande en appuyant sur un bouton, pu
 button1.toggleWhenPressed(new PrendreBallon());
 \end{code}
 
-\section{Les groupes de commandes}
+\section{Créer un groupe de commandes}
 
-addsequential, addparallel
+Les commandes simples peuvent être groupées ensemble pour former des séquences plus complexes. On les appelle des \textbf{groupes de commandes} (\textit{CommandGroup}).
 
-Waitcommand, WaitForchildren
+\begin{enumerate}
+	\item Dans le dossier \commande{src}, cliquez à droite sur le dossier \commande{commands}, puis sélectionnez\\ \commande{Create a new class/command}.
+	\item Dans le menu affiché, sélectionnez \commande{Command Group}.
+	\item Saisissez le nom de votre groupe de commandes. Il doit commencer par une majuscule et être sans espace.
+\end{enumerate}
 
-Créer des sous-groupes de commandes
+\begin{MyTCB}{Groupe de commandes avec addSequential}
+public class LancerBallonHaut {
+	
+	public LancerBallonHaut() {
+	
+		addSequential(new LeverElevateur());
+		addSequential(new LancerBallon());
+		addSequential(new DescendreElevateur());
+		
+	}
+	
+}
+\end{MyTCB}
+
+Dans un groupe de commandes, il suffit d'ajouter dans le bon ordre les commandes qu'on souhaite démarrer. La méthode \texttt{addSequential} ajoute les commandes \texttt{séquentiellement}, c'est-à-dire que l'exécution du groupe est « bloqué » jusqu'à ce que la sous-commande soit terminée. Dans l'exemple ci-dessus, le robot lève l'élévateur, il lance le ballon, puis il redescend l'élévateur. Ces actions sont réalisées l'une à la suite de l'autre.
+
+\begin{MyTCB}{Groupe de commandes avec addParallel}
+public class Autonome1 {
+	
+	public Autonome1() {
+	
+		addParallel(new Avancer1metre());
+		addParallel(new LeverElevateur());
+		
+	}
+	
+}
+\end{MyTCB}
+
+Contrairement à \texttt{addSequential}, la méthode \texttt{addParallel} ne bloque pas l'exécution du groupe. Les commandes s'exécutent donc \textbf{parallèlement} (en même temps). Dans cet exemple, on lève l'élévateur en même temps de faire avancer la base pilotable. Cela nous permet d'économiser du temps, ce qui est essentiel en mode autonome! Nécessairement, il faut que les commandes ajoutées en parallèle n'utilisent pas les mêmes sous-systèmes.
+
+\begin{MyTCB}{Groupe de commandes avec WaitForChildren et WaitCommand}
+public class Autonome2 {
+	
+	public Autonome2() {
+	
+		addParallel(new Avancer1metre());
+		addParallel(new LeverElevateur());
+		
+		addSequential(new WaitForChildren());
+		addSequential(new WaitCommand(2));
+		
+		addSequential(new LancerBallon());
+		
+		addParallel(new DescendreElevateur());
+		addParallel(new Reculer1metre());
+		
+	}
+	
+}
+\end{MyTCB}
+
+WPILib nous fournit deux commandes très utiles : \texttt{WaitForChildren} et \texttt{WaitCommand}. \texttt{WaitForChildren} bloque l'exécution jusqu'à ce que toutes les commandes démarrées jusqu'à présent soient terminées. Dans l'exemple, on attend donc que la base pilotable ait terminé d'avancer et que l'élévateur se soit levé. Ensuite, \texttt{WaitCommand} fait attendre le robot pendant 2 secondes avant de lancer le ballon. La commande se termine en faisant reculer le robot en même temps que de faire descendre l'élévateur.
 
 \section{Le processus de création d'une commande}
 
 Contrairement à ce qui a été présenté jusqu'à présent, il est rare que l'on sait exactement les méthodes dont un sous-système aura besoin avant de créer une commande. 
 
+\begin{figure}[H]
 \resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[
 action/.style={rectangle, draw=green!60, fill=green!5, very thick, minimum size=7mm, text width=6cm, inner sep=0.25cm, rounded corners},
@@ -2417,7 +2497,51 @@ question/.style={rectangle, draw=blue!60, fill=blue!5, very thick, minimum size=
 	\draw[->] (n14) -- (n15);
 	\draw[->] (n15.east) .. controls +(right:2cm) and +(left:2cm) .. ([yshift=-0.8cm]n10.west);
 \end{tikzpicture}}
+\caption{Le processus de création d'une commande.}
+\end{figure}
 
-\part{Git et les logiciels de gestion de versions}
+\begin{figure}[H]
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+action/.style={rectangle, draw=green!60, fill=green!5, very thick, inner sep=0.25cm, rounded corners, align=left},
+question/.style={rectangle, draw=blue!60, fill=blue!5, very thick, inner sep=0.25cm, rounded corners}
+]
+\draw [decorate,decoration={brace,mirror,amplitude=5pt}] (0, -0.1) -- (0, -1.9) node[midway,left,xshift=-0.5cm] {OI et Autonome};
+\draw [decorate,decoration={brace,mirror,amplitude=5pt}] (0,-2.1) -- (0,-3.9) node[midway,left,xshift=-0.5cm] {Commandes};
+\draw [decorate,decoration={brace,mirror,amplitude=5pt}] (0,-4.1) -- (0,-5.9) node[midway,left,xshift=-0.5cm] {Méthodes};
+\draw [decorate,decoration={brace,mirror,amplitude=5pt}] (0,-6.1) -- (0,-7.9) node[midway,left,xshift=-0.5cm] {Attributs};
+\draw [decorate,decoration={brace,mirror,amplitude=8pt}, xshift=-0.5cm,yshift=0pt] (-3,-4.1) -- (-3,-7.9) node[midway,left,xshift=-0.5cm] {Sous-systèmes};
+
+\node[action] (n1) at (3,-1) {Bouton A};
+\node[action] (n2) at (9,-1) {Autonome};
+
+\node[action] (n3) at (3,-3) {\texttt{TirerBallon}};
+\node[action] (n4) at (9,-3) {\texttt{Autonome(distance)}};
+
+\node[action] (n5) at (3,-5) {\texttt{shoot()}};
+\node[action] (n6) at (17,-5) {\texttt{arcadeDrive(forward, rotation)}};
+\node[action] (n7) at (9,-5) {\texttt{getDistance()}};
+
+\node[action] (n8) at (3,-7) {\texttt{moteur.set(0.6)}};
+\node[action, text width=5.8cm] (n9) at (9,-7) {\texttt{encoderGauche.getDistance() encoderDroit.getDistance()}};
+\node[action, text width=5.8cm] (n10) at (17,-7) {\texttt{drive.arcadreDrive(f, r)}};
+
+\draw[->] (n1) -- (n3);
+\draw[->] (n2) -- (n4);
+\draw[->] (n3) -- (n5);
+\draw[->] (n4) -- (n6);
+\draw[->] (n4) -- (n7);
+\draw[->] (n5) -- (n8);
+\draw[->] (n7) -- (n9);
+\draw[->] (n6) -- (n10);
+
+\end{tikzpicture}}
+\caption{La séquence d'appels dans un programme WPILib.}
+\end{figure}
+
+\chapter*{Liens utiles}
+\addcontentsline{toc}{chapter}{\protect\numberline{}Liens utiles}%
+
+
 
 \end{document}
