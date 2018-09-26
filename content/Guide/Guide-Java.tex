@@ -262,7 +262,7 @@
 \addcontentsline{toc}{chapter}{Les valeurs FIRST} 
 
 \subsection*{Découverte}
-Nous explorons de nouvelles idées et habilités.
+Nous explorons de nouvelles idées et habiletés.
 
 \subsection*{Innovation}
 Nous sommes créatifs et déterminés à résoudre des problèmes.
@@ -369,7 +369,7 @@ Visual Studio Code est disponible gratuitement sur \href{https://code.visualstud
   \caption{L'interface principale de Visual Studio Code.}
 \end{figure}
 %
-Visual Studio Code est un logiciel ayant plusieurs fonctionnalités. On peut d'ailleurs lui en ajouter à l'aide d'extensions (\emph{plugins}), comme celle que nous utiliserons pour développer sur le roboRIO. Voici les fenêtres qui nous intéresserons le plus :
+Visual Studio Code est un logiciel ayant plusieurs fonctionnalités. On peut d'ailleurs lui en ajouter à l'aide d'extensions (\emph{plugins}), comme celle que nous utiliserons pour développer sur le roboRIO. Voici les sections qui nous intéresseront le plus :
 
 \begin{labeling}{\ Package Explorer\ }
 %
@@ -411,7 +411,7 @@ L'interface est personnalisable, à vous de l'adapter comme il vous plaira!
           \end{center}
           
           \medskip
-          Enregistrez votre fichier dans le même dossier avec \commande{Fichier > Enregistrer sous...}, ou \commande{Ctrl + S}. Donnez un nom à votre programme (sans espace débutant par une majuscule) et sélectionner \commande{Java} comme type de fichier. Cliquez sur \commande{Enregister}.
+          Enregistrez votre fichier dans le même dossier avec \commande{Fichier > Enregistrer sous...}, ou \commande{Ctrl + S}. Donnez un nom à votre programme (sans espace débutant par une majuscule) et sélectionnez \commande{Java} comme type de fichier. Cliquez sur \commande{Enregister}.
        \end{minipage}
 
 \item Complétez votre fichier avec l'exemple suivant.
@@ -485,7 +485,7 @@ Vos instructions sont écrites dans la méthode \texttt{\bfseries main}. En Java
 %
 Le rôle de votre programme est d'afficher du texte dans la console. Vous avez sûrement remarqué que le texte à afficher est encadré de guillemets anglais ("..."), mais qu'ils n'apparaissent pas dans la console. Ils sont essentiels pour que le compilateur fasse la différence entre du code et du texte. On les appelle des \textbf{chaînes de caractères}, ou \emph{\bfseries String} en anglais. Essayer de modifier le texte entre les guillemets et d'exécuter votre programme : vous constaterez que la chaîne de caractères affichée dans la console s'est modifiée!
 
-On peut joindre plusieurs chaînes de caractères ensemble avec l'opérateur \commande{+}. Cette opération s'appelle la \textbf{concaténation}. On peut donc écrire :%
+On peut joindre plusieurs chaînes de caractères avec l'opérateur \commande{+}. Cette opération s'appelle la \textbf{concaténation}. On peut donc écrire :%
 \begin{code}
 System.out.println("Bonjour " + "à tous" + " et à toutes" + "!");
 \end{code} 
@@ -601,7 +601,7 @@ public class MonPremierProgramme { ... }
 \end{figure}
 %
 %
-La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \commande{@}. Les exemples de ce guide feront appel aux trois attributs suivants.
+La Javadoc possède plusieurs attributs spéciaux débutant par une arrobe \commande{@}. Les exemples de ce guide feront appel aux trois attributs suivants.
 
 \begin{labeling}{@author\ }
 
@@ -619,9 +619,9 @@ La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \comma
 	\item Cliquez sur \commande{Fichier > Préférences > Paramètres}, ou \commande{Ctrl + ,}.
 	\item Dans la barre de recherche, saisissez \commande{vmargs}, puis cliquez sur \commande{Modifier dans settings.json} du premier résultat.
 	\item Cliquez sur le crayon pour modifier la propriété sélectionnée, puis sur \\ 	\commande{Remplacer dans les paramètres}.
-	\item À la fin de la chaîne de caractères sélectionnée, ajouter \commande{\texttt{-Dfile.encoding=UTF-8}}.
+	\item À la fin de la chaîne de caractères sélectionnée, ajoutez \commande{\texttt{-Dfile.encoding=UTF-8}}.
 	\item Sauvegardez avec \commande{Ctrl + S}.
-	\item Lorsque VS Code vous propose de redémarrer, sélectionner \commande{Restart now}.
+	\item Lorsque VS Code vous propose de redémarrer, sélectionnez \commande{Restart now}.
 \end{itemize}
 
 \begin{figure}[H]
@@ -648,7 +648,7 @@ La Javadoc possède plusieurs attributs spéciaux débutant par un arrobe \comma
 %
 \section{La déclaration de variables}
 %
-Une \textbf{variable} est une case mémoire pouvant contenir un certain type de données. Comme son nom l'indique, sa valeur est \emph{variable} : elle peut changer au cours l'exécution.
+Une \textbf{variable} est une case mémoire pouvant contenir un certain type de données. Comme son nom l'indique, sa valeur est \emph{variable} : elle peut changer au cours de l'exécution.
 
 \begin{figure}[!ht]
 	\centering
@@ -1098,7 +1098,7 @@ Jusqu'à présent, vos programmes se sont exécutés de manière \textbf{séquen
 %
 \end{tcolorbox}
 
-Si la condition donnée est vraie, alors les instructions contenues dans le premier bloc seront exécutées. Sinon, ce sont celles du deuxième bloc qui seront exécutées. Le \emph{else} est facultatif. S'il n'y a pas de \emph{else} et que la condition est fausse, alors le programme continu son exécution normalement, sans exécuter le contenu du \emph{if}.
+Si la condition donnée est vraie, alors les instructions contenues dans le premier bloc seront exécutées. Sinon, ce sont celles du deuxième bloc qui seront exécutées. Le \emph{else} est facultatif. S'il n'y a pas de \emph{else} et que la condition est fausse, alors le programme continue son exécution normalement, sans exécuter le contenu du \emph{if}.
 
 Comme une condition peut être vraie ou fausse, on dit que c'est une condition \textbf{booléenne}. C'est d'ailleurs une des principales utilités du type \texttt{boolean}.
 
@@ -1211,14 +1211,14 @@ public class MessageAge {
 }
 \end{MyTCB}
 
-Comme les \textit{else if} sont imbriqués, \textbf{un seul cas} sera exécuté. Les conditions des \textit{if} sont vérifiés dans le même ordre qu'ils ont été écrits. 
+Comme les \textit{else if} sont imbriqués, \textbf{un seul cas} sera exécuté. Les conditions des \textit{if} sont vérifiées dans le même ordre qu'ils ont été écrits. 
 
 Par exemple, dans l'exemple précédent, supposons que l'âge est de 10 ans. Si on les vérifie individuellement, les deux dernières conditions sont vraies (\verb|age < AGE_SECONDAIRE| et \verb|age < AGE_MAJORITE|). Cependant, la première condition vraie est \verb|age < AGE_SECONDAIRE|, c'est donc ce \textit{if} qui sera exécuté.
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.6\linewidth]{else-if-multiples.png}
-	\caption{La structure de \textit{else if} multiples.}
+	\caption{La structure des \textit{else if} multiples.}
 \end{figure}
 
 
@@ -1314,7 +1314,7 @@ Des méthodes peuvent, par exemple, effectuer un calcul et retourner un \texttt{
 Les méthodes, comme le \texttt{main}, doivent être à l'intérieur d'une classe. Faites attention à bien placer vos accolades.
 
 \begin{code}
-// Converti une durée en secondes
+// Convertit une durée en secondes
 public static int nombreDeSecondes(int heures, int minutes, int secondes) {
 	
 	int duree = 0;
@@ -1404,7 +1404,7 @@ La classe \texttt{Robot} que VS Code a générée pour vous contient déjà quel
 \draw[->] (6.75, 4) -| (9,3.4);
 \draw[->] (6.75, 4) -| (13.5,3.4);
 \end{tikzpicture}
-\caption{Séquence d'éxécution des méthodes de la classe Robot.}
+\caption{Séquence d'exécution des méthodes de la classe Robot.}
 \end{center}
 \end{figure}
 
@@ -1495,7 +1495,7 @@ Physiquement, un système pneumatique est composé de plusieurs éléments :
 	\item des solénoïdes, pour laisser passer de l'air dans les vérins.
 \end{itemize}
 
-Au niveau de la programmation, les seuls éléments que nous devons gérer sont les solénoïdes. Ceux-ci agissent comme des « portes » qui laissent passer l'air (ou non) selon le signal qu'on leur envoit. Attention : les solénoïdes ne sont pas branchés au RoboRIO, mais bien au PCM.
+Au niveau de la programmation, les seuls éléments que nous devons gérer sont les solénoïdes. Ceux-ci agissent comme des « portes » qui laissent passer l'air (ou non) selon le signal qu'on leur envoie. Attention : les solénoïdes ne sont pas branchés au RoboRIO, mais bien au PCM.
 
 
 
@@ -1596,7 +1596,7 @@ Ce type de solénoïde est particulièrement utile pour ouvrir \textbf{et} ferme
 
 Attention! Il est important de toujours fermer les solénoïdes. Sinon, l'air continue de s'échapper et la bonbonne perd de l'air inutilement.
 
-Dans l'exemple précédent, le constructeur d'un \texttt{DoubleSolenoid} reçoit en paramètres deux entiers, car il est branché à deux ports du PCM. Cela permet de contrôler indépendemment les deux valves du solénoïde.
+Dans l'exemple précédent, le constructeur d'un \texttt{DoubleSolenoid} reçoit en paramètres deux entiers, car il est branché à deux ports du PCM. Cela permet de contrôler indépendamment les deux valves du solénoïde.
 
 
 \section{Les servomoteurs}
@@ -1846,7 +1846,7 @@ public class LigneDroiteGyro extends TimedRobot {
 
 Ce programme fait avancer le robot en ligne droite pendant tout le mode autonome. On pourrait penser que l'instruction \texttt{drive.arcadeDrive(0.5, 0.0)} (50 \% de puissance vers l'avant, et 0 \% de rotation) est suffisante pour faire avancer le robot. Cependant, le robot va dévier dès que les forces de chaque moteur ne sont pas tout à fait les mêmes ou que le poids du robot n'est pas réparti parfaitement.
 
-Pour corriger la rotation, on envoit comme paramètre une valeur qui dépend de l'angle mesuré par le gyro.
+Pour corriger la rotation, on envoie comme paramètre une valeur qui dépend de l'angle mesuré par le gyro.
 
 \begin{center}
 \begin{tabularx}{0.75\linewidth}{X X}\toprule
@@ -1861,7 +1861,7 @@ etc. \\ \bottomrule
 \end{tabularx}
 \end{center}
 
-Si l'angle est de zéro (le robot est droit), alors $K\_ANGLE \times 0 = -0.1 \times 0 = 0$. Si l'angle est de 1°, alors la valeur -0.1 sera envoyé, etc. La constante \texttt{K\_ANGLE} fait varier la rapidité de la correction : il faut l'ajuster selon la réaction de notre robot.
+Si l'angle est de zéro (le robot est droit), alors $K\_ANGLE \times 0 = -0.1 \times 0 = 0$. Si l'angle est de 1°, alors la valeur -0.1 sera envoyée, etc. La constante \texttt{K\_ANGLE} fait varier la rapidité de la correction : il faut l'ajuster selon la réaction de notre robot.
 
 
 \section{Les encodeurs}
@@ -1993,7 +1993,7 @@ Une  \textbf{commande} est une action que peut effectuer le robot à l'aide d'un
 	\item \texttt{AvancerEtLancerBalles} est une commande qui utilise les sous-systèmes \texttt{BasePilotable} et \texttt{Shooter}.
 \end{itemize}
 
-Chaque commande peut, par exemple, être lié à un bouton, qui activera la commande lorsqu'il est appuyé.
+Chaque commande peut, par exemple, être liée à un bouton, qui activera la commande lorsqu'il est appuyé.
 
 Attention! Un sous-système peut être utilisé par une seule commande à la fois, ce qui est tout à fait logique. Par exemple, on ne veut pas que les commandes \texttt{PrendreBallon} et \texttt{LancerBallon} puissent s'exécuter en même temps, car elles utilisent toutes les deux le sous-système \texttt{Intake}. Il s'agit de la principale contrainte qu'on doit garder en tête lorsque l'on modélise les sous-systèmes de notre robot.
 
@@ -2084,8 +2084,6 @@ public Intake() {
 }
 \end{code}
 
-% Dans le constructeur, la première chose à faire est d'appeler la méthode \texttt{super(String)} (le super constructeur). Cette méthode reçoit une chaîne de caractères représentant le nom de notre sous-système. Ce \texttt{String} est en quelque sorte une étiquette qui est attribué à notre sous-système pour mieux le repérer lorsque nous aurons à faire du débogage. 
-
 Dans le constructeur, on instancie les attributs de notre sous-système. Remarquez que pour chaque composante, on appelle également la méthode \texttt{addChild}. Son rôle est d'associer une étiquette à notre composante et de spécifier que c'est un « enfant » (\textit{child}) de notre sous-système. Cela rendra la structure de notre robot plus claire lors du débogage.
 
 \begin{code}
@@ -2132,7 +2130,7 @@ Un sous-système a habituellement deux types de méthodes : celles qui effectuen
 
 La majorité des méthodes qui effectuent des actions ne retournent pas d'information. Leur type de retour est donc \texttt{void}, pour indiquer qu'elles ne retournent rien.
 
-Par exemple, on veut que notre sous-système ait comme fonctionnalité de prendre un ballon. On lui ajoute la méthode \texttt{prendreBallon()}. Pour prendre un ballon, on doit activer son moteur. Cette méthode effectue une action pure : elle n'a pas a retourner d'information. C'est pourquoi son type de retour est \texttt{void}. 
+Par exemple, on veut que notre sous-système ait comme fonctionnalité de prendre un ballon. On lui ajoute la méthode \texttt{prendreBallon()}. Pour prendre un ballon, on doit activer son moteur. Cette méthode effectue une action pure : elle n'a pas à retourner d'information. C'est pourquoi son type de retour est \texttt{void}. 
 
 \begin{code}
 public void prendreBallon() {
@@ -2392,7 +2390,7 @@ public class OI {
 }
 \end{MyTCB}
 
-Dans un premier temps, on déclare les joysticks et les boutons comme attributs privés au haut de notre classe. Ensuite, dans le constructeur, on les intancie. Le constructeur d'un \texttt{JoystickButton} reçoit en paramètres le \texttt{Joystick} auquel il est lié et son numéro.
+Dans un premier temps, on déclare les joysticks et les boutons comme attributs privés au haut de notre classe. Ensuite, dans le constructeur, on les instancie. Le constructeur d'un \texttt{JoystickButton} reçoit en paramètres le \texttt{Joystick} auquel il est lié et son numéro.
 
 Pour démarrer une commande au moment où un bouton est appuyé, on utilise la méthode \texttt{whenPressed}.
 
@@ -2406,7 +2404,7 @@ Dans certains cas, on veut qu'une commande soit exécutée tant qu'on maintient 
 button1.whileHeld(new PrendreBallon());
 \end{code}
 
-De plus, il est possible de démarrer une commande en appuyant sur un bouton, puis de l'annuler en réappuyant sur le même bouton. Le bouton agit alors comme un interrupteur. La méthode \texttt{toggleWhenPressed} a été créé pour répondre à ce besoin.
+De plus, il est possible de démarrer une commande en appuyant sur un bouton, puis de l'annuler en réappuyant sur le même bouton. Le bouton agit alors comme un interrupteur. La méthode \texttt{toggleWhenPressed} a été créée pour répondre à ce besoin.
 
 \begin{code}
 button1.toggleWhenPressed(new PrendreBallon());
@@ -2436,7 +2434,7 @@ public class LancerBallonHaut {
 }
 \end{MyTCB}
 
-Dans un groupe de commandes, il suffit d'ajouter dans le bon ordre les commandes qu'on souhaite démarrer. La méthode \texttt{addSequential} ajoute les commandes \texttt{séquentiellement}, c'est-à-dire que l'exécution du groupe est « bloqué » jusqu'à ce que la sous-commande soit terminée. Dans l'exemple ci-dessus, le robot lève l'élévateur, il lance le ballon, puis il redescend l'élévateur. Ces actions sont réalisées l'une à la suite de l'autre.
+Dans un groupe de commandes, il suffit d'ajouter dans le bon ordre les commandes qu'on souhaite démarrer. La méthode \texttt{addSequential} ajoute les commandes \texttt{séquentiellement}, c'est-à-dire que l'exécution du groupe est « bloquée » jusqu'à ce que la sous-commande soit terminée. Dans l'exemple ci-dessus, le robot lève l'élévateur, il lance le ballon, puis il redescend l'élévateur. Ces actions sont réalisées l'une à la suite de l'autre.
 
 \begin{MyTCB}{Groupe de commandes avec addParallel}
 public class Autonome1 {
