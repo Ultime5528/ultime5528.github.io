@@ -1,11 +1,11 @@
 import java.util.Scanner;
 
 /**
+ * 
  * Exercice 1.1
+ * Présentation
  * 
  * Demande des informations sur l'utilisateur puis les affiche.
- * 
- * @author Etienne
  *
  */
 public class Presentation {
@@ -14,13 +14,13 @@ public class Presentation {
 		
 		Scanner scanner = new Scanner(System.in);
 		
-		//Renseignements de l'utilisateur
+		// Renseignements de l'utilisateur
 		String nom;
 		int age;
 		double salaire;
 		
 		
-		//Demande les informations
+		// Demande les informations
 		System.out.print("Saisissez votre nom : ");
 		nom = scanner.nextLine();
 		
@@ -31,7 +31,7 @@ public class Presentation {
 		salaire = scanner.nextDouble();
 		
 		
-		//Affichage des informations
+		// Affichage des informations
 		System.out.println("\nBonjour " + nom + "! Vous avez " + age
 				+ " ans et votre salaire est de " + salaire + " $ par heure.");
 

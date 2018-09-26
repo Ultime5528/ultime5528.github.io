@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
 /**
+ * 
  * Exercice 1.2
+ * AireRectangle
  * 
  * Calcul de l'aire d'un rectangle.
  * 
- * @author Etienne
- *
  */
 public class AireRectangle {
 
@@ -17,7 +17,7 @@ public class AireRectangle {
 		double hauteur, largeur, aire;
 		
 		
-		//Données de l'utilisateur
+		// Données de l'utilisateur
 		System.out.print("Hauteur du rectangle : ");
 		hauteur = scanner.nextDouble();
 		
@@ -25,11 +25,11 @@ public class AireRectangle {
 		largeur = scanner.nextDouble();
 		
 		
-		//Calcul de l'aire
+		// Calcul de l'aire
 		aire = hauteur * largeur;
 		
 		
-		//Affichage de l'aire
+		// Affichage de l'aire
 		System.out.println("\nLe rectangle a une aire de " + aire + " unités carrées.");
 
 	}

@@ -6,7 +6,8 @@
 }*/
 
 html {
-	--accent-color: rgb(230, 39, 57);
+    --accent-color: rgb(230, 39, 57);
+    --background-color: rgb(239, 239, 237);
 }
 
 ::selection {
@@ -67,7 +68,7 @@ ul {
 
 .content {
     max-width: 800px;
-    background-color: rgb(239, 239, 237);
+    background-color: var(--background-color);
     border-left: 1em solid rgb(230, 39, 57);
     padding: 0px 2em 0px 2em;
     overflow: auto;
@@ -88,6 +89,33 @@ a span {
     color: black;
 }
 
+a span:hover {
+    text-decoration-color: black;
+}
+
 .more-spacing li {
     margin-bottom: 0.8em;
+}
+
+.download {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#download {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.5em;
+}
+
+pre {
+    background-color: var(--background-color);
+    border: 2pt solid var(--accent-color);
+    border-radius: 3pt;
+}
+
+.padding-bottom {
+    padding-bottom: 2em;
 }

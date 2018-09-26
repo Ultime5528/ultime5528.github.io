@@ -2,6 +2,16 @@
 <html lang="fr">
 
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126472563-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-126472563-1');
+    </script>
+
     <meta charset="UTF-8" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" type="text/css" />
@@ -16,28 +26,55 @@
 <body>
 
     <div class="background">
-        <div class="content">
+
+        <div class="content padding-bottom">
+
             <h1 id="titre">Solutions</h1>
-            <p><a href="solutions.html">&lt; Page précédente</a></p>
-            <pre><code class="language-java" id="solution">
-                public static void main(String[] args) {
-                    System.out.println("Hello world!");
-                }
-            </code></pre>
+
+            <p class="download"><a href="solutions.html">&lt; Page précédente</a><a id="download" href="" download onclick="return downloadCallback();">Télécharger
+                    la solution</a></p>
+
+            <pre data-src="code/Solutions/" id="solution"></pre>
+
         </div>
 
     </div>
 
     <script>
-        var exercice = decodeURIComponent(location.search.substring(1));
-        document.getElementById("titre").innerHTML = "Solution - " + exercice;
+        var getStrings = location.search.substring(1).split("=");
 
-        var client = new XMLHttpRequest();
-        client.open('GET', 'code/Solutions/1-1-Presentation.java');
-        client.onreadystatechange = function () {
-            document.getElementById("solution").innerHTML = client.responseText;
+        var solURI = decodeURIComponent(getStrings[0]);
+        var solName = decodeURIComponent(getStrings[1]);
+
+        document.getElementById("titre").innerHTML = solName;
+        document.getElementById("solution").setAttribute("data-src", "code/Solutions/" + solURI + ".java");
+        document.getElementById("download").setAttribute("href", "code/solutions/" + solURI + ".java");
+        document.title = "Solution " + solName + " - Ultime 5528";
+
+        function downloadCallback(doc) {
+            ga('send', 'event', {
+                eventCategory: 'Download',
+                eventAction: 'click',
+                eventLabel: solURI,
+                transport: 'beacon'
+            });
+            return true;
         }
-        client.send();
+
+        function check_ga() {
+            if (typeof ga === 'function') {
+
+                ga('send', 'event', {
+                    eventCategory: 'Consultation solution',
+                    eventAction: 'click',
+                    eventLabel: solURI
+                });
+
+            } else {
+                setTimeout(check_ga, 500);
+            }
+        }
+        check_ga();
 
     </script>
 
