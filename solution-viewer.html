@@ -50,26 +50,21 @@
         document.getElementById("solution").setAttribute("data-src", "code/Solutions/" + solURI + ".java");
         document.getElementById("download").setAttribute("href", "code/solutions/" + solURI + ".java");
         document.title = "Solution " + solName + " - Ultime 5528";
+        
+        function sendEvent() {
+            var tracker = ga.getAll()[0];
+            ga('set', 'transport', 'beacon');
+            tracker.send('event', ...arguments);
+        }
 
         function downloadCallback(doc) {
-            ga('send', 'event', {
-                eventCategory: 'Download',
-                eventAction: 'click',
-                eventLabel: solURI,
-                transport: 'beacon'
-            });
+            sendEvent('Download', 'click', solURI);
             return true;
         }
 
         function check_ga() {
             if (typeof ga === 'function') {
-
-                ga('send', 'event', {
-                    eventCategory: 'Consultation solution',
-                    eventAction: 'click',
-                    eventLabel: solURI
-                });
-
+                sendEvent('Solution', 'click', solURI);
             } else {
                 setTimeout(check_ga, 500);
             }
