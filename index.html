@@ -25,25 +25,19 @@
 
     <script>
         
+        function sendEvent() {
+            var tracker = ga.getAll()[0];
+            ga('set', 'transport', 'beacon');
+            tracker.send('event', ...arguments);
+        }
+
         function downloadCallback(doc) {
-            ga('send', 'event', {
-                eventCategory: 'Download',
-                eventAction: 'click',
-                eventLabel: doc,
-                transport: 'beacon'
-            });
-            
+            sendEvent('Download', 'click', doc);
             return true;
         }
 
         function outboundLink(event) {
-            ga('send', 'event', {
-                eventCategory: 'Outbound link',
-                eventAction: 'click',
-                eventLabel: event.href,
-                transport: 'beacon'
-            });
-            
+            sendEvent('Outbound link', 'click', event.href);            
             return true;
         }
 
