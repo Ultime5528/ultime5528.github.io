@@ -48,7 +48,7 @@
 
         document.getElementById("titre").innerHTML = solName;
         document.getElementById("solution").setAttribute("data-src", "code/Solutions/" + solURI + ".java");
-        document.getElementById("download").setAttribute("href", "code/solutions/" + solURI + ".java");
+        document.getElementById("download").setAttribute("href", "code/Solutions/" + solURI + ".java");
         document.title = "Solution " + solName + " - Ultime 5528";
         
         function sendEvent() {
@@ -58,7 +58,7 @@
         }
 
         function downloadCallback(doc) {
-            sendEvent('Download', 'click', solURI);
+            sendEvent('Download', 'click', "Solution " + solURI);
             return true;
         }
 
