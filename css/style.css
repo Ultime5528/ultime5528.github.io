@@ -34,7 +34,7 @@ li {
         background-image: url(../images/fond-entete-programmation.jpg);
 
         /* Set a specific height */
-        min-height: 500px; 
+        min-height: 100vh; 
     
         /* Create the parallax scrolling effect */
         background-attachment: fixed;
