@@ -19,6 +19,7 @@ public class Moyenne {
 		
 		
 		// Saisies des données
+
 		System.out.print("Saisissez le premier nombre : ");
 		nbre1 = scanner.nextDouble();
 		
@@ -36,6 +37,7 @@ public class Moyenne {
 		
 		
 		// Calcul du résultat
+		
 		moyenne = (nbre1 + nbre2 + nbre3 + nbre4 + nbre5) / 5.0;
 		System.out.println("Moyenne : " + moyenne);
 		

@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 /**
  * 
- * Exercice 1.3
+ * Exercice 1.3 (défi)
  * Moyenne (défi)
  * 
  * Calcul de la moyenne de 5 nombres.
@@ -18,6 +18,7 @@ public class MoyenneDefi {
 		
 		
 		// Saisies des données
+
 		System.out.print("Saisissez le premier nombre : ");
 		moyenne = scanner.nextDouble();
 		
@@ -35,7 +36,9 @@ public class MoyenneDefi {
 		
 		
 		// Calcul du résultat
+
 		moyenne /= 5.0;
+		
 		System.out.println("Moyenne : " + moyenne);
 		
 	}

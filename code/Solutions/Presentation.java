@@ -14,13 +14,16 @@ public class Presentation {
 		
 		Scanner scanner = new Scanner(System.in);
 		
+		
 		// Renseignements de l'utilisateur
+
 		String nom;
 		int age;
 		double salaire;
 		
 		
 		// Demande les informations
+
 		System.out.print("Saisissez votre nom : ");
 		nom = scanner.nextLine();
 		
@@ -32,6 +35,7 @@ public class Presentation {
 		
 		
 		// Affichage des informations
+		
 		System.out.println("\nBonjour " + nom + "! Vous avez " + age
 				+ " ans et votre salaire est de " + salaire + " $ par heure.");
 
