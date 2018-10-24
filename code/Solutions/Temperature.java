@@ -1,11 +1,13 @@
 import java.util.Scanner;
 
-/**
+ /**
+ * 
+ * Exercice 2.3
+ * Conversion Celsius-Fahrenheit
+ * 
  * Convertit des températures entre les degrés Celsius
  * et les degrés Fahrenheit.
  * 
- * @author Etienne
- *
  */
 public class Temperature {
 
@@ -13,32 +15,36 @@ public class Temperature {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		char choix;
+		int choix;
 		double tempC, tempF;
 		
 		
-		//Choix
-		System.out.println("Écrire C pour Celsius->Fahrenheit, ou F pour Fahrenheit->Celsius : ");
-		choix = sc.nextLine().toLowerCase().charAt(0);
+		// Choix
+		System.out.print("Convertir de...\n"
+			+ "1 - Celsius vers Fahrenheit\n"
+			+ "2 - Fahrenheit vers Celsius\n\n"
+			+ "Votre choix : ");
+			
+		choix = sc.nextInt();
 		
-		if(choix == 'c') {
+		if(choix == 1) {
 			
 			System.out.print("Température (°C) : ");
 			tempC = sc.nextDouble();
 			
 			tempF = (9.0 / 5.0) * tempC + 32.0;
 			
-			System.out.println("Température (°F) : " + tempF);
+			System.out.println("La température équivalente est " + tempF + "°F.");
 			
 		}
-		else if(choix == 'f') {
+		else if(choix == 2) {
 			
 			System.out.print("Température (°F) : ");
 			tempF = sc.nextDouble();
 			
 			tempC = (5.0 / 9.0) * (tempF - 32.0);
 			
-			System.out.println("Température (°C) : " + tempC);
+			System.out.println("La température équivalente est " + tempC + "°C.");
 			
 		}
 		else {

@@ -1,9 +1,12 @@
-mport java.util.Scanner;
+import java.util.Scanner;
 
 /**
- * Affiche un message selon la note obtenue.
  * 
- * @author Etienne
+ * Exercice 2.1
+ * Résultats à l'examen
+ * 
+ * Affichage d'un message selon la note de l'utilisateur.
+ * 
  */
 public class Examen {
 
@@ -12,11 +15,11 @@ public class Examen {
 		Scanner scanner = new Scanner(System.in);
 		int note;
 		
-		//Obtention de la note
+		// Obtention de la note
 		System.out.print("Saisissez votre note : ");
 		note = scanner.nextInt();
 		
-		//Message
+		// Message
 		if(note == 100)
 			System.out.println("Wow! C'est une note parfaite!");
 		

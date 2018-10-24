@@ -1,9 +1,12 @@
 import java.util.Scanner;
 
 /**
- * Calcule la facture de la compagnie de téléphone.
  * 
- * @author Etienne
+ * Exercice 2.2
+ * Compagnie de téléphone
+ * 
+ * Affichage de la facture pour une compagnie de téléphone.
+ * 
  */
 public class Telephone {
 
@@ -18,22 +21,23 @@ public class Telephone {
 		final double NB_MINUTES_LIMITE = 30;
 		
 		
-		//Obtention du nombre de minutes
+		// Obtention du nombre de minutes
 		System.out.print("Saisissez le nombre de minutes : ");
 		minutes = scanner.nextDouble();
 		
 		
-		//Calcul
+		// Calcul
 		
 		prix = MONTANT_INITIAL;
 		
-		if(minutes <= NB_MINUTES_LIMITE)
+		if(minutes <= NB_MINUTES_LIMITE) {
 			prix += minutes * PREMIER_TAUX;
-		else
+		}
+		else {
 			prix += NB_MINUTES_LIMITE * PREMIER_TAUX + (minutes - NB_MINUTES_LIMITE) * DEUXIEME_TAUX;
+		}
 		
-		
-		//Affichage du résultat
+		// Affichage du résultat
 		System.out.println("Prix à payer : " + prix + " $");
 
 	}
