@@ -2159,8 +2159,8 @@ Pour savoir si l'intake a un ballon, il suffit de retourner l'état de notre \te
 Votre classe sera créée avec plusieurs méthodes vides. Voici un exemple utilisant le sous-système que nous avons créé précédemment.
 
 \begin{MyTCB}[breakable]{Création d'une commande}
-public class LancerBallon extends Command {
-  public LancerBallon() {
+public class PrendreBallon extends Command {
+  public PrendreBallon() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.intake);
   }
@@ -2173,7 +2173,7 @@ public class LancerBallon extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.intake.lancerBallon();
+    Robot.intake.prendreBallon();
   }
 
   // Make this return true when this Command no longer needs to run execute()
